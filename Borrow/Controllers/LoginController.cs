@@ -12,9 +12,9 @@ namespace Borrow.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly BorrowContext _context;
+        private readonly UserContext _context;
 
-        public LoginController(BorrowContext context)
+        public LoginController(UserContext context)
         {
             _context = context;
         }
