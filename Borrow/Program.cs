@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Borrow.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BorrowContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BorrowContext") ?? throw new InvalidOperationException("Connection string 'BorrowContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
