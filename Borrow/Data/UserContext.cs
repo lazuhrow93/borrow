@@ -15,5 +15,17 @@ namespace Borrow.Data
         }
 
         public DbSet<Borrow.Models.User> User { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User()
+                {
+                    Id = 1,
+                    UserName = "lazuhrow93",
+                    PasswordHash = "1234567899"
+                }
+            );
+        }
     }
 }
