@@ -7,9 +7,9 @@ using Borrow.Models;
 
 namespace Borrow.Data
 {
-    public class UserContext : DbContext
+    public class BorrowContext : DbContext
     {
-        public UserContext (DbContextOptions<UserContext> options)
+        public BorrowContext (DbContextOptions<BorrowContext> options)
             : base(options)
         {
         }

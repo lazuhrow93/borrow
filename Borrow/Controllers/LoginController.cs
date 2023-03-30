@@ -12,9 +12,9 @@ namespace Borrow.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly UserContext _context;
+        private readonly BorrowContext _context;
 
-        public LoginController(UserContext context)
+        public LoginController(BorrowContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace Borrow.Controllers
             return View();
         }
 
-        public IActionResult CreateUser()
+        public IActionResult CreateAccount()
         {
             return View();
         }
