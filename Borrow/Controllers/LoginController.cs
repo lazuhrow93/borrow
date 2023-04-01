@@ -25,14 +25,18 @@ namespace Borrow.Controllers
             return View();
         }
 
-        public IActionResult CreateAccount()
+        public IActionResult Login(User user)
         {
-            return View();
-        }
-
-        private bool UserExists(int id)
-        {
-          return (_context.User?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (_context.UserNameExists(user))
+            {
+                
+                return View("UserHome", _context.GetUser(user));
+            }
+            else
+            {
+                return View("Index");
+            }
+            
         }
     }
 }

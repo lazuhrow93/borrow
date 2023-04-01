@@ -23,9 +23,27 @@ namespace Borrow.Data
                 {
                     Id = 1,
                     UserName = "lazuhrow93",
-                    PasswordHash = "1234567899"
+                    PasswordHash = "1234567899",
+                    EmailAddress = "test@tset.com",
+                    FirstName = "Lazaro", 
+                    LastName = "Hernandez",
+                    PhoneNumber = "2813308004",
                 }
             );
         }
+
+        #region User
+
+        public User GetUser(User user)
+        {
+            return (this.User?.Where(u => u.UserName == user.UserName)).First();
+        }
+
+        public bool UserNameExists(User user)
+        {
+            return (this.User?.Any(e => e.UserName == user.UserName)).GetValueOrDefault();
+        }
+
+        #endregion
     }
 }
