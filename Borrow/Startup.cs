@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Borrow.Data;
 using Microsoft.AspNetCore.Identity;
-using Borrow.Models.Identity;
+using Borrow.Models;
 
 public class Startup
 {
@@ -9,6 +9,7 @@ public class Startup
     {
         Configuration = configuration;
     }
+
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
@@ -28,7 +29,9 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseSession();
     }
 }

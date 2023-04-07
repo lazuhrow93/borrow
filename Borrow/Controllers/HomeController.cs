@@ -1,4 +1,5 @@
 ﻿using Borrow.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,11 +7,14 @@ namespace Borrow.Controllers
 {
     public class HomeController : Controller
     {
+        private UserManager<User> userManager;
+        private SignInManager<User> signInManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SignInManager<User> sm, UserManager<User> um)
         {
-            _logger = logger;
+            userManager = um;
+            signInManager = sm;
         }
 
         public IActionResult Index()
