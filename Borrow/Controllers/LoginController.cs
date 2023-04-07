@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Borrow.Data;
-using Borrow.Models;
+using Borrow.Models.Identity;
 
 namespace Borrow.Controllers
 {

@@ -1,5 +1,5 @@
 ﻿using Borrow.Data;
-using Borrow.Models;
+using Borrow.Models.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Borrow.Controllers

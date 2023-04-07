@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230407065054_AddIdentityTables")]
+    partial class AddIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,9 +104,9 @@ namespace Borrow.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "47a79a6d-b943-4d05-897b-49885656a005",
+                            Id = "eef31324-3310-4451-8757-b685bd2a69fc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f85cdc30-f312-4698-9379-18e13ee52251",
+                            ConcurrencyStamp = "2be60171-9c95-462d-aabc-ef553bf53b50",
                             Email = "test@tset.com",
                             EmailConfirmed = false,
                             FirstName = "Lazaro",
@@ -112,7 +115,7 @@ namespace Borrow.Migrations
                             PasswordHash = "1234567899",
                             PhoneNumber = "2813308004",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "48ba9fad-8041-4057-95b6-613413faf3fd",
+                            SecurityStamp = "c3cbacbf-e7ab-4d87-823f-452ac81c987a",
                             TwoFactorEnabled = false,
                             UserName = "lazuhrow93"
                         });
