@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Startup.cs">
+    <Content Update="Views\Shared\_Layout.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
+    </Content>
   </ItemGroup>
 
 </Project>

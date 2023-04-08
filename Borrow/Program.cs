@@ -13,19 +13,17 @@ public class Program
         builder.Services.AddDbContext<BorrowContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("BorrowContext") ?? throw new InvalidOperationException("Connection string 'BorrowContext' not found.")));
 
-        var start = new Startup(builder.Configuration);
-        start.ConfigureServices(builder.Services);
-        
-        ////idnetity
-        //builder.Services.AddDbContext<BorrowContext>(options =>
-        //        options.UseSqlServer(builder.Configuration.GetConnectionString("BorrowContext")));
+        //idnetity
+        builder.Services.AddDbContext<BorrowContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("BorrowContext")));
 
-        //builder.Services.AddIdentity<User, IdentityRole>(options => {
-        //    options.Password.RequiredLength = 6;
-        //    options.Password.RequireNonAlphanumeric = false;
-        //    options.Password.RequireDigit = false;
-        //}).AddEntityFrameworkStores<BorrowContext>()
-        //  .AddDefaultTokenProviders();
+        builder.Services.AddIdentity<User, IdentityRole>(options =>
+        {
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireDigit = false;
+        }).AddEntityFrameworkStores<BorrowContext>()
+          .AddDefaultTokenProviders();
 
 
         // Add services to the container.
