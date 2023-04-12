@@ -11,7 +11,7 @@ namespace Borrow.Models.Identity.Views
         [Required(ErrorMessage = "Please Enter Password")]
         [StringLength(255)]
         public string PasswordHash { get; set; }
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
         public bool RememberMe { get; set;}
     }
 }

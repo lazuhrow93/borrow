@@ -18,21 +18,33 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnURL = "")
+        public IActionResult Login(string ReturnURL = "")
         {
-            var model = new LoginViewModel { ReturnUrl = returnURL };
+            var model = new LoginViewModel { ReturnUrl = ReturnURL };
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel lvm)
+        public async Task<IActionResult> Login(LoginViewModel lvm)
         {
-            //lvm.ReturnUrl = "23432";
+            
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = lvm.UserName };
+                var loginResult = await signInManager
+                .PasswordSignInAsync(lvm.UserName, lvm.PasswordHash, isPersistent: lvm.RememberMe, lockoutOnFailure: false);
+
+                if (loginResult.Succeeded)
+                {
+                    if(!string.IsNullOrEmpty(lvm.ReturnUrl) && Url.IsLocalUrl(lvm.ReturnUrl))
+                    {
+                        return Redirect(lvm.ReturnUrl);
+                    }
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
             }
-            return RedirectToAction("Index", "Home");
+            ModelState.AddModelError("", "Invalid username/password");
+            return View(lvm);
         }
 
         [HttpGet]
@@ -59,7 +71,7 @@ namespace Borrow.Controllers
 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(newUser, isPersistent: true);
+                    await signInManager.SignInAsync(newUser, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -73,9 +85,11 @@ namespace Borrow.Controllers
             return View(rvw);
         }
 
-        public IActionResult Logout()
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            throw new NotImplementedException();
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
