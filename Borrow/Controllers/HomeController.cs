@@ -1,4 +1,5 @@
 ﻿using Borrow.Models;
+using Borrow.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

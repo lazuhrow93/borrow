@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Borrow.Data;
 using System;
-using Borrow.Models;
 using Microsoft.AspNetCore.Identity;
+using Borrow.Models.Identity;
 
 public class Program
 {

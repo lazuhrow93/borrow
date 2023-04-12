@@ -1,5 +1,5 @@
-﻿using Borrow.Models;
-using Borrow.Models.Identity.Views;
+﻿using Borrow.Models.Identity;
+using Borrow.Models.Views;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

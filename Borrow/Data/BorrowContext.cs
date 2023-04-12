@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Borrow.Models;
+using Borrow.Models.Identity;
 
 namespace Borrow.Data
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Borrow.Models.Identity.Views
+namespace Borrow.Models.Views
 {
     public class RegisterViewModel
     {

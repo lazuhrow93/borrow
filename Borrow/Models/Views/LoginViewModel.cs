@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Borrow.Models.Identity.Views
+namespace Borrow.Models.Views
 {
     public class LoginViewModel
     {
@@ -12,6 +12,6 @@ namespace Borrow.Models.Identity.Views
         [StringLength(255)]
         public string PasswordHash { get; set; }
         public string? ReturnUrl { get; set; }
-        public bool RememberMe { get; set;}
+        public bool RememberMe { get; set; }
     }
 }
