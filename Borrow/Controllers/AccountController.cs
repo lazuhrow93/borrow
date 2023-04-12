@@ -18,15 +18,16 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl = "")
+        public IActionResult Login(string returnURL = "")
         {
-            var model = new LoginViewModel { ReturnUrl = returnUrl };
+            var model = new LoginViewModel { ReturnUrl = returnURL };
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel lvm)
+        public IActionResult Login(LoginViewModel lvm)
         {
+            //lvm.ReturnUrl = "23432";
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = lvm.UserName };

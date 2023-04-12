@@ -9,7 +9,7 @@ namespace Borrow.Models.Identity.Views
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please Enter Password")]
-        [DataType(DataType.Password)]
+        [StringLength(255)]
         public string PasswordHash { get; set; }
         public string ReturnUrl { get; set; }
         public bool RememberMe { get; set;}
