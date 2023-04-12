@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Borrow.Models.Identity;
+using Borrow.Models.Views;
 
 namespace Borrow.Data
 {
@@ -42,6 +43,8 @@ namespace Borrow.Data
         {
             return (this.User?.Any(e => e.UserName == user.UserName)).GetValueOrDefault();
         }
+
+        public DbSet<Borrow.Models.Views.ItemViewModel>? ItemViewModel { get; set; }
 
         #endregion
     }
