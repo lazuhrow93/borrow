@@ -4,6 +4,8 @@ using Borrow.Data;
 using System;
 using Microsoft.AspNetCore.Identity;
 using Borrow.Models.Identity;
+using AutoMapper;
+using Borrow.Models.Views;
 
 public class Program
 {
@@ -25,10 +27,12 @@ public class Program
         }).AddEntityFrameworkStores<BorrowContext>()
           .AddDefaultTokenProviders();
 
+        //builder.Services.AddMvc().AddSessionStateTempDataProvider();
+        builder.Services.AddMemoryCache();
+        builder.Services.AddSession();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -38,14 +42,16 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
         app.UseStaticFiles();
 
         app.UseRouting();
         app.UseAuthorization();
         app.UseAuthentication();
-        //app.UseSession();
+        app.UseSession();
+
+
 
 
         app.MapControllerRoute(
