@@ -11,20 +11,21 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private SignInManager<User> sm;
-        private UserManager<User> um;
+        private SignInManager<User> _SignInManager;
+        private UserManager<User> _UserManager;
 
         public ProfileController(SignInManager<User> sm, UserManager<User> um)
         {
-            sm = sm;
-            um = um;
+            _SignInManager = sm;
+            _UserManager = um;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
+            var u = await _UserManager.GetUserAsync(User);
             var mapper = MapperConfig.InitializeAutomapper();
-            var user = await um.GetUserAsync(this.User);
+            var user = await _UserManager.GetUserAsync(this.User);
             var pvm = mapper.Map<ProfileViewModel>(user);
             return View(pvm);
         }

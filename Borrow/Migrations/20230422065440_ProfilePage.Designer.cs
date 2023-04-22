@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230422065440_ProfilePage")]
+    partial class ProfilePage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,9 +100,9 @@ namespace Borrow.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3cbc2359-bd33-4f98-b191-61668d237796",
+                            Id = "f17964ed-1a91-46cd-a27c-a4738eeedc63",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91800456-22e8-46a1-81c2-8fcc1d8fb1cb",
+                            ConcurrencyStamp = "e162d459-c0f2-4f95-8fd5-2d25bf4df8a2",
                             Email = "test@tset.com",
                             EmailConfirmed = false,
                             FirstName = "Lazaro",
@@ -108,7 +111,7 @@ namespace Borrow.Migrations
                             PasswordHash = "1234567899",
                             PhoneNumber = "2813308004",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "094967a0-dabb-4e5f-8ace-18c59f430b81",
+                            SecurityStamp = "40a40b28-fde0-49a4-894c-50514ea565ec",
                             TwoFactorEnabled = false,
                             UserName = "lazuhrow93"
                         });
@@ -137,9 +140,6 @@ namespace Borrow.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Item");
@@ -154,24 +154,21 @@ namespace Borrow.Migrations
                             Id = 1,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
                             Description = "Machine to mow lawns",
-                            Name = "Lawn Mower",
-                            OwnerId = 0
+                            Name = "Lawn Mower"
                         },
                         new
                         {
                             Id = 2,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
                             Description = "Machine to Trim and cut lawns",
-                            Name = "Weed Eater",
-                            OwnerId = 0
+                            Name = "Weed Eater"
                         },
                         new
                         {
                             Id = 3,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
                             Description = "Machine to blow",
-                            Name = "Leaf Blower",
-                            OwnerId = 0
+                            Name = "Leaf Blower"
                         });
                 });
 

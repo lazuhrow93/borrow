@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
+using Borrow.Models.Listings;
 
 namespace Borrow.Data
 {
@@ -28,6 +29,29 @@ namespace Borrow.Data
                     FirstName = "Lazaro", 
                     LastName = "Hernandez",
                     PhoneNumber = "2813308004",
+                }
+            );
+            modelBuilder.Entity<Item>().HasData(
+                new Item
+                {
+                    Id = 1,
+                    Name = "Lawn Mower",
+                    Description = $"Machine to mow lawns",
+                    Age = new TimeSpan(1, 0, 0, 0)
+                },
+                new Item
+                {
+                    Id = 2,
+                    Name = "Weed Eater",
+                    Description = $"Machine to Trim and cut lawns",
+                    Age = new TimeSpan(1, 0, 0, 0)
+                },
+                new Item
+                {
+                    Id = 3,
+                    Name = "Leaf Blower",
+                    Description = $"Machine to blow",
+                    Age = new TimeSpan(1, 0, 0, 0)
                 }
             );
         }
