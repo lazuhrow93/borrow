@@ -20,6 +20,7 @@ namespace Borrow.Controllers
             um = um;
         }
 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var mapper = MapperConfig.InitializeAutomapper();

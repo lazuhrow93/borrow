@@ -44,11 +44,10 @@ public class Program
         }
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-        app.UseStaticFiles();
 
         app.UseRouting();
-        app.UseAuthorization();
         app.UseAuthentication();
+        app.UseAuthorization();
         app.UseSession();
 
 
