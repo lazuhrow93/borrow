@@ -16,6 +16,7 @@ namespace Borrow.Data
         }
 
         public DbSet<User> User { get; set; } = default!;
+        public DbSet<Item>? Item { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,7 @@ namespace Borrow.Data
                     FirstName = "Lazaro", 
                     LastName = "Hernandez",
                     PhoneNumber = "2813308004",
+                    OwnerId = 2
                 }
             );
             modelBuilder.Entity<Item>().HasData(
@@ -37,21 +39,27 @@ namespace Borrow.Data
                     Id = 1,
                     Name = "Lawn Mower",
                     Description = $"Machine to mow lawns",
-                    Age = new TimeSpan(1, 0, 0, 0)
+                    Age = new TimeSpan(1, 0, 0, 0),
+                    DailyRate = 10.00M,
+                    OwnerId = 1
                 },
                 new Item
                 {
                     Id = 2,
                     Name = "Weed Eater",
                     Description = $"Machine to Trim and cut lawns",
-                    Age = new TimeSpan(1, 0, 0, 0)
+                    Age = new TimeSpan(1, 0, 0, 0),
+                    DailyRate = 5.00M,
+                    OwnerId = 1
                 },
                 new Item
                 {
                     Id = 3,
                     Name = "Leaf Blower",
                     Description = $"Machine to blow",
-                    Age = new TimeSpan(1, 0, 0, 0)
+                    Age = new TimeSpan(1, 0, 0, 0),
+                    DailyRate = 5.00M,
+                    OwnerId = 1
                 }
             );
         }
@@ -67,8 +75,6 @@ namespace Borrow.Data
         {
             return (this.User?.Any(e => e.UserName == user.UserName)).GetValueOrDefault();
         }
-
-        public DbSet<Borrow.Models.Views.ItemViewModel>? ItemViewModel { get; set; }
 
         #endregion
     }

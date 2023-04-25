@@ -1,4 +1,5 @@
-﻿namespace Borrow.Models.Views
+﻿using System;
+namespace Borrow.Models.Views
 {
     public class ProfileViewModel
     {
@@ -7,5 +8,10 @@
         public string LastName { get; set; }
         public int Exchanges { get; set; }
         public List<ItemViewModel> OwnerItems { get; set; }
+
+        public void GetOwnerItems()
+        {
+
+        }
     }
 }

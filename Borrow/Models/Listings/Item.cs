@@ -7,5 +7,8 @@
         public string Description { get; set; }
         public TimeSpan Age { get; set; }
         public int OwnerId { get; set; }
+        public bool Available { get; set; }
+        public decimal DailyRate { get; set; }
+        public decimal WeeklyRate { get; set;}
     }
 }

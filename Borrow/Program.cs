@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Borrow.Data;
-using System;
 using Microsoft.AspNetCore.Identity;
 using Borrow.Models.Identity;
-using AutoMapper;
-using Borrow.Models.Views;
 
 public class Program
 {
@@ -30,6 +26,7 @@ public class Program
         //builder.Services.AddMvc().AddSessionStateTempDataProvider();
         builder.Services.AddMemoryCache();
         builder.Services.AddSession();
+        builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();

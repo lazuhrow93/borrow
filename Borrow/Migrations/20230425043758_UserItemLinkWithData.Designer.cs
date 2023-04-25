@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230425043758_UserItemLinkWithData")]
+    partial class UserItemLinkWithData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace Borrow.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -100,19 +100,18 @@ namespace Borrow.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6db418fa-727f-4df6-99ba-8c674f58d191",
+                            Id = "43ed83b5-9624-4d38-a20e-3314e31f5204",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bf133c78-99c0-4f34-afcb-12138d479d16",
+                            ConcurrencyStamp = "7adeca73-74fb-469c-b292-584e1d445600",
                             Email = "test@tset.com",
                             EmailConfirmed = false,
                             FirstName = "Lazaro",
                             LastName = "Hernandez",
                             LockoutEnabled = false,
-                            OwnerId = 2,
                             PasswordHash = "1234567899",
                             PhoneNumber = "2813308004",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f42f3371-d8f9-42bf-aef1-5b79a8c18d19",
+                            SecurityStamp = "e429a1b7-508e-45cd-a22b-0c9eb859f9dd",
                             TwoFactorEnabled = false,
                             UserName = "lazuhrow93"
                         });
@@ -129,13 +128,11 @@ namespace Borrow.Migrations
                     b.Property<TimeSpan>("Age")
                         .HasColumnType("time");
 
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("DailyRate")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -146,46 +143,38 @@ namespace Borrow.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("WeeklyRate")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Item");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Item");
+
+                    b.UseTphMappingStrategy();
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
-                            Available = false,
-                            DailyRate = 10.00m,
                             Description = "Machine to mow lawns",
                             Name = "Lawn Mower",
-                            OwnerId = 1,
-                            WeeklyRate = 0m
+                            OwnerId = 1
                         },
                         new
                         {
                             Id = 2,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
-                            Available = false,
-                            DailyRate = 5.00m,
                             Description = "Machine to Trim and cut lawns",
                             Name = "Weed Eater",
-                            OwnerId = 1,
-                            WeeklyRate = 0m
+                            OwnerId = 1
                         },
                         new
                         {
                             Id = 3,
                             Age = new TimeSpan(1, 0, 0, 0, 0),
-                            Available = false,
-                            DailyRate = 5.00m,
                             Description = "Machine to blow",
                             Name = "Leaf Blower",
-                            OwnerId = 1,
-                            WeeklyRate = 0m
+                            OwnerId = 1
                         });
                 });
 
@@ -320,6 +309,22 @@ namespace Borrow.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Borrow.Models.Views.ItemViewModel", b =>
+                {
+                    b.HasBaseType("Borrow.Models.Listings.Item");
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("DailyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("WeeklyRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasDiscriminator().HasValue("ItemViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
