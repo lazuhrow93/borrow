@@ -36,5 +36,25 @@
     </dl>
 </div>
 
-<h1>Your Listing</h1>
+<div>
+    <h1>Your Listing</h1>
+    <div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Available</th>
+            </tr>
+            @foreach (var item in @Model.OwnerItems)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Age</td>
+                    <td>@item.Available.ToString()</td>
+                </tr>
+            }
+        </table>
+    
+    </div>
+</div>
 

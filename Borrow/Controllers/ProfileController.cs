@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Borrow.Data;
+using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Borrow.Models.Views;
@@ -15,25 +15,23 @@ namespace Borrow.Controllers
         private SignInManager<User> _SignInManager;
         private UserManager<User> _UserManager;
         private readonly IMapper _mapper;
-        private readonly BorrowContext _borrowContext;
+        private readonly IUserDataAccess _userDataAccess;
 
-        public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, BorrowContext bc)
+        public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
         {
             _SignInManager = sm;
             _UserManager = um;
             _mapper = mapper;
-            _borrowContext = bc;
+            _userDataAccess = ia;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var u = await _UserManager.GetUserAsync(User);
             var user = await _UserManager.GetUserAsync(this.User);
             var pvm = _mapper.Map<ProfileViewModel>(user);
 
-            var query = _borrowContext.Item.Where(i => i.OwnerId.Equals(user.OwnerId));
-            List<Item> ownedItems = query.ToList();
+            List<Item> ownedItems = _userDataAccess.Items(user.OwnerId);
             pvm.OwnerItems = _mapper.Map<List<ItemViewModel>>(ownedItems);
 
             return View(pvm);

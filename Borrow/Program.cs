@@ -2,6 +2,8 @@
 using Borrow.Data;
 using Microsoft.AspNetCore.Identity;
 using Borrow.Models.Identity;
+using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Data.DataAccessLayer;
 
 public class Program
 {
@@ -27,6 +29,7 @@ public class Program
         builder.Services.AddMemoryCache();
         builder.Services.AddSession();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
+        builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
