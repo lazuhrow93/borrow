@@ -1,0 +1,44 @@
+﻿@model NewItemViewModel
+@{
+    ViewBag.Title = "New Item";
+}
+
+<h1>Add Item</h1>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post" asp-action="AddItem">
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Item Name:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="Name"
+                  class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Description:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="Description" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="Description"
+                  class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Date Acquired:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="DateAcquired" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="DateAcquired"
+                  class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+</form>
