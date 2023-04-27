@@ -6,7 +6,7 @@ namespace Borrow.Models.Views
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Age { get; set; }
+        public string OwnedSince { get; set; }
         public decimal DailyRate { get; set; }
         public decimal WeeklyRate { get; set; }
         public bool Available { get; set; }

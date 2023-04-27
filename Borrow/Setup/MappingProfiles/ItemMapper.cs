@@ -11,7 +11,12 @@ namespace Borrow.Setup.MappingProfiles
             CreateMap<Item, ItemViewModel>()
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.Description))
-                .ForMember(dest => dest.Age, o => o.MapFrom(src => src.Age));
+                .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.OwnedSince.ToString("MM/dd/yyyy")));
+
+            CreateMap<NewItemViewModel, Item>()
+                .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, o => o.MapFrom(src => src.Description))
+                .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.DateAcquired.ToString("MM/dd/yyyy")));
         }
     }
 }

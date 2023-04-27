@@ -35,21 +35,22 @@
         </dd>
     </dl>
 </div>
+<hr />
 
 <div>
-    <h1>Your Listing</h1>
+    <h1>Your Listings</h1>
     <div>
-        <table>
+        <table style="width:100%">
             <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Available</th>
+                <th style="width:33%">Item</th>
+                <th style="width:33%">Owned Since</th>
+                <th style="width:33%">Available</th>
             </tr>
             @foreach (var item in @Model.OwnerItems)
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>@item.Age</td>
+                    <td>@item.OwnedSince</td>
                     <td>@item.Available.ToString()</td>
                 </tr>
             }

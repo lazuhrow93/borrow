@@ -39,27 +39,30 @@ namespace Borrow.Data
                     Id = 1,
                     Name = "Lawn Mower",
                     Description = $"Machine to mow lawns",
-                    Age = new TimeSpan(1, 0, 0, 0),
+                    OwnedSince = new DateTime(2023, 05, 01),
                     DailyRate = 10.00M,
-                    OwnerId = 1
+                    OwnerId = 1,
+                    Available = false
                 },
                 new Item
                 {
                     Id = 2,
                     Name = "Weed Eater",
                     Description = $"Machine to Trim and cut lawns",
-                    Age = new TimeSpan(1, 0, 0, 0),
+                    OwnedSince = new DateTime(2023, 05, 02),
                     DailyRate = 5.00M,
-                    OwnerId = 1
+                    OwnerId = 1,
+                    Available = true
                 },
                 new Item
                 {
                     Id = 3,
                     Name = "Leaf Blower",
                     Description = $"Machine to blow",
-                    Age = new TimeSpan(1, 0, 0, 0),
+                    OwnedSince = new DateTime(2023, 05, 03),
                     DailyRate = 5.00M,
-                    OwnerId = 1
+                    OwnerId = 1,
+                    Available = false
                 }
             );
         }

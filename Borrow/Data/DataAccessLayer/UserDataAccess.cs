@@ -19,5 +19,12 @@ namespace Borrow.Data.DataAccessLayer
             var query = _dbAccess.Item.Where(i => i.OwnerId.Equals(ownerId));
             return query.ToList();
         }
+
+        public void InsertItem(User user, Item item)
+        {
+            item.OwnerId = user.OwnerId;
+            _dbAccess.Add(item);
+            _dbAccess.SaveChanges();
+        }
     }
 }
