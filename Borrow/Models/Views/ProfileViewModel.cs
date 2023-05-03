@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Borrow.Models.Views
 {
     public class ProfileViewModel

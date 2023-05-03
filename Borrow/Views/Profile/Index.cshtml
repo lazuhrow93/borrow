@@ -40,7 +40,9 @@
 <div>
     <div>
         <h1>Your Listings</h1>
-        <button asp-action="Index" asp-controller="AddItem">Add Item</button>
+        <a asp-action ="Index" asp-controller="AddItem">
+            <button class="btn btn-primary">Add Item</button>
+        </a>
     </div>
     <div>
         <table style="width:100%">
@@ -58,7 +60,6 @@
                 </tr>
             }
         </table>
-    
     </div>
 </div>
 

@@ -1,38 +1,38 @@
-﻿@model NewItemViewModel
+﻿@model Borrow.Models.Views.AddItem.AddItemViewModel
 @{
     ViewBag.Title = "New Item";
 }
 
 <h1>Add Item</h1>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<form method="post" asp-action="AddItem">
+<form method="post" asp-action="Index">
     <div class="form-group row">
         <div class="col-sm-2"><label>Item Name:</label></div>
         <div class="col-sm-4">
-            <input asp-for="Name" class="form-control" />
+            <input asp-for="@Model.NewItemViewModel.Name" class="form-control" />
         </div>
         <div class="col">
-            <span asp-validation-for="Name"
+            <span asp-validation-for="@Model.NewItemViewModel.Name"
                   class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-2"><label>Description:</label></div>
         <div class="col-sm-4">
-            <input asp-for="Description" class="form-control" />
+            <input asp-for="@Model.NewItemViewModel.Description" class="form-control" />
         </div>
         <div class="col">
-            <span asp-validation-for="Description"
+            <span asp-validation-for="@Model.NewItemViewModel.Description"
                   class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-2"><label>Date Acquired:</label></div>
         <div class="col-sm-4">
-            <input asp-for="DateAcquired" class="form-control" />
+            <input asp-for="@Model.NewItemViewModel.DateAcquired" class="form-control" />
         </div>
         <div class="col">
-            <span asp-validation-for="DateAcquired"
+            <span asp-validation-for="@Model.NewItemViewModel.DateAcquired"
                   class="text-danger"></span>
         </div>
     </div>
@@ -42,3 +42,24 @@
         </div>
     </div>
 </form>
+<h1>Pending New Items</h1>
+<div>
+    <table style="width:100%">
+        <tr>
+            <th style="width:33%">ItemName</th>
+            <th style="width:33%">Description</th>
+            <th style="width:33%">Acquired</th>
+        </tr>
+
+    @for(int index = 0; index<Model.ItemsToSave.Count(); ++index)
+    {
+        <tr>
+            <td>@Model.ItemsToSave[index].Name</td>
+            <td>@Model.ItemsToSave[index].Description</td>
+            <td>@Model.ItemsToSave[index].DateAcquired.ToString("MM/dd/yyyy")</td>
+        </tr>
+    }
+    </table>
+
+</div>
+

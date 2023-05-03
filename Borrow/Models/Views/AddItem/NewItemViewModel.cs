@@ -1,4 +1,4 @@
-﻿namespace Borrow.Models.Views
+﻿namespace Borrow.Models.Views.AddItem
 {
     public class NewItemViewModel
     {
