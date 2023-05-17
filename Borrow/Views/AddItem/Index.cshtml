@@ -38,28 +38,48 @@
     </div>
     <div class="row">
         <div class="offset-2 col-sm-4">
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-primary">Add To List</button>
+        </div>
+    </div>
+    @for (int i = 0; i < Model.ItemsToSave.Count; ++i) //bind the list
+    {
+        @Html.HiddenFor(m=>m.ItemsToSave[i].Name)
+        @Html.HiddenFor(m=>m.ItemsToSave[i].Description)
+        @Html.HiddenFor(m=>m.ItemsToSave[i].DateAcquired)
+    }
+</form>
+
+<form method="post" asp-action="AddInventory">
+    <div>
+        <table style="width:100%">
+
+            <tr>
+                <th style="width:33%">ItemName</th>
+                <th style="width:33%">Description</th>
+                <th style="width:33%">Acquired</th>
+                <th style="width:33%">Count</th>
+            </tr>
+
+            @for (int index = 0; index < Model.ItemsToSave.Count(); ++index)
+            {
+                <tr>
+                    <td>@Model.ItemsToSave[index].Name</td>
+                    <td>@Model.ItemsToSave[index].Description</td>
+                    <td>@Model.ItemsToSave[index].DateAcquired.ToString("MM/dd/yyyy")</td>
+                </tr>
+            }
+            @for (int i = 0; i < Model.ItemsToSave.Count; ++i) //bind the list
+            {
+                @Html.HiddenFor(m=>m.ItemsToSave[i].Name)
+                @Html.HiddenFor(m=>m.ItemsToSave[i].Description)
+                @Html.HiddenFor(m=>m.ItemsToSave[i].DateAcquired)
+            }
+        </table>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Add To Inventory</button>
         </div>
     </div>
 </form>
-<h1>Pending New Items</h1>
-<div>
-    <table style="width:100%">
-        <tr>
-            <th style="width:33%">ItemName</th>
-            <th style="width:33%">Description</th>
-            <th style="width:33%">Acquired</th>
-        </tr>
-
-    @for(int index = 0; index<Model.ItemsToSave.Count(); ++index)
-    {
-        <tr>
-            <td>@Model.ItemsToSave[index].Name</td>
-            <td>@Model.ItemsToSave[index].Description</td>
-            <td>@Model.ItemsToSave[index].DateAcquired.ToString("MM/dd/yyyy")</td>
-        </tr>
-    }
-    </table>
-
-</div>
 

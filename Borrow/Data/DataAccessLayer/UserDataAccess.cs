@@ -26,5 +26,16 @@ namespace Borrow.Data.DataAccessLayer
             _dbAccess.Add(item);
             _dbAccess.SaveChanges();
         }
+
+        public void InsertItem(User user, List<Item> items)
+        {
+            foreach (var item in items)
+            {
+                item.OwnerId = user.OwnerId;
+                _dbAccess.Add(item);
+            }  
+
+            _dbAccess.SaveChanges();
+        }
     }
 }

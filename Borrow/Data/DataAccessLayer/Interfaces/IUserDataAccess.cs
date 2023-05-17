@@ -7,6 +7,7 @@ namespace Borrow.Data.DataAccessLayer.Interfaces
     {
         public List<Item> Items(int ownerId);
         public void InsertItem(User user, Item item); 
+        public void InsertItem(User user, List<Item> item); 
 
     }
 }

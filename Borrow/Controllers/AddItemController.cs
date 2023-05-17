@@ -36,9 +36,23 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (viewModel.ItemsToSave is null) viewModel.ItemsToSave = new List<NewItemViewModel>();
                 viewModel.ItemsToSave.Add(viewModel.NewItemViewModel);
             }
-            viewModel.NewItemViewModel = new();
+            //viewModel.NewItemViewModel = new();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddInventory(AddItemViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _UserManager.GetUserAsync(this.User);
+                var items = _mapper.Map<List<Item>>(viewModel.ItemsToSave);
+                _userDataAccess.InsertItem(user, items);
+            }
+
             return View(viewModel);
         }
     }

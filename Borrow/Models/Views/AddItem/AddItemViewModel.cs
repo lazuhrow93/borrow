@@ -2,12 +2,12 @@
 {
     public class AddItemViewModel
     {
-        public NewItemViewModel NewItemViewModel { get; set; }
-        public List<NewItemViewModel> ItemsToSave { get; set; }
+        public NewItemViewModel? NewItemViewModel { get; set; }
+        public List<NewItemViewModel>? ItemsToSave { get; set; }
 
         public AddItemViewModel()
         {
-            this.ItemsToSave = new List<NewItemViewModel>();
+            //this.ItemsToSave = new List<NewItemViewModel>();
         }
     }
 }
