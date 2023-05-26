@@ -55,5 +55,12 @@ namespace Borrow.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromPending(AddItemViewModel viewModel)
+        {
+            viewModel.Remove(viewModel.IndexToRemove);
+            return View("Index", viewModel);
+        }
     }
 }
