@@ -1,4 +1,4 @@
-﻿@model Borrow.Models.Views.RemoveItemsViewModel
+﻿@model Borrow.Models.Views.Item.RemoveItemsViewModel
 
 @{
     ViewData["Title"] = "RemoveItems";
@@ -13,15 +13,22 @@
         <table style="width:100%">
             <tr>
                 <th style="width:33%">Item</th>
+                <th style="width:33%">Description</th>
                 <th style="width:33%">Owned Since</th>
                 <th style="width:33%">Available</th>
+                <th style="width:33%">Daily Rate</th>
+                <th style="width:33%">Weekly Rate</th>
             </tr>
-            @foreach (var item in @Model.OwnerItems)
+            @foreach (var item in @Model.Items)
             {
                 <tr>
+                    <td><input type="checked" name="SelectedItems" value="@item"/></td>
                     <td>@item.Name</td>
+                    <td>@item.Description</td>
                     <td>@item.OwnedSince</td>
                     <td>@item.Available.ToString()</td>
+                    <td>@item.DailyRate.ToString()</td>
+                    <td>@item.WeeklyRate.ToString()</td>
                 </tr>
             }
         </table>

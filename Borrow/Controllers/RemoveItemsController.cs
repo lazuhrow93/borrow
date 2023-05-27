@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
+using Borrow.Models.Views.Item;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using System;
 namespace Borrow.Controllers
 {
     [Authorize]
-    public class RemoveItemsController
+    public class RemoveItemsController : Controller
     {
         private SignInManager<User> _SignInManager;
         private UserManager<User> _UserManager;
@@ -24,10 +25,13 @@ namespace Borrow.Controllers
             _userDataAccess = ia;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-
-            throw new NotImplementedException();
+            var user = await _UserManager.GetUserAsync(this.User);
+            var rivm = new RemoveItemsViewModel();
+            var userItems = _userDataAccess.GetItems(user.OwnerId);
+            rivm.Items = _mapper.Map<List<ItemViewModel>>(userItems);
+            return View(rivm);
         }
     }
 }
