@@ -1,0 +1,30 @@
+﻿@model Borrow.Models.Views.RemoveItemsViewModel
+
+@{
+    ViewData["Title"] = "RemoveItems";
+}
+
+<h1>RemoveItems</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th style="width:33%">Item</th>
+                <th style="width:33%">Owned Since</th>
+                <th style="width:33%">Available</th>
+            </tr>
+            @foreach (var item in @Model.OwnerItems)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.OwnedSince</td>
+                    <td>@item.Available.ToString()</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+

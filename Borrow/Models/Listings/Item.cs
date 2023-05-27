@@ -1,4 +1,6 @@
-﻿namespace Borrow.Models.Listings
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Borrow.Models.Listings
 {
     public class Item
     {
@@ -8,7 +10,10 @@
         public DateTime OwnedSince { get; set; }
         public int OwnerId { get; set; }
         public bool Available { get; set; }
+        [Precision(18, 2)]
         public decimal DailyRate { get; set; }
+        [Precision(18, 2)]
         public decimal WeeklyRate { get; set;}
+        public Guid Identifier { get; set; }
     }
 }

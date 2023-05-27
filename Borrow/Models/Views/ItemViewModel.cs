@@ -1,4 +1,5 @@
 ﻿using Borrow.Models.Listings;
+using System;
 
 namespace Borrow.Models.Views
 {
@@ -10,5 +11,6 @@ namespace Borrow.Models.Views
         public decimal DailyRate { get; set; }
         public decimal WeeklyRate { get; set; }
         public bool Available { get; set; }
+        public Guid Identifier { get; set; }
     }
 }

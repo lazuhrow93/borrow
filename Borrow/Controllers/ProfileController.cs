@@ -31,11 +31,27 @@ namespace Borrow.Controllers
             var user = await _UserManager.GetUserAsync(this.User);
             var pvm = _mapper.Map<ProfileViewModel>(user);
 
-            List<Item> ownedItems = _userDataAccess.Items(user.OwnerId);
+            List<Item> ownedItems = _userDataAccess.GetItems(user.OwnerId);
             pvm.OwnerItems = _mapper.Map<List<ItemViewModel>>(ownedItems);
 
             return View(pvm);
         }
 
+        [Authorize]
+        public async Task<ActionResult> Remove(ProfileViewModel pvm)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            int? indextoRemove = pvm.RemoveAtIndex;
+            if (indextoRemove is null) return View();
+            else if (indextoRemove < 0 || indextoRemove >= pvm.OwnerItems.Count()) return View();
+            else
+            {
+                var itemDelete = pvm.OwnerItems[(int)indextoRemove];
+                var ownerId = user.OwnerId;
+                _userDataAccess.DeleteItem(ownerId, itemDelete.Identifier);
+                pvm.RemoveFromProfile((int)pvm.RemoveAtIndex);
+            }
+            return View(pvm);
+        }
     }
 }

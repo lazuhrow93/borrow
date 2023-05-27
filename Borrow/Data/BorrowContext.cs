@@ -42,7 +42,8 @@ namespace Borrow.Data
                     OwnedSince = new DateTime(2023, 05, 01),
                     DailyRate = 10.00M,
                     OwnerId = 1,
-                    Available = false
+                    Available = false,
+                    Identifier = Guid.NewGuid()
                 },
                 new Item
                 {
@@ -52,7 +53,8 @@ namespace Borrow.Data
                     OwnedSince = new DateTime(2023, 05, 02),
                     DailyRate = 5.00M,
                     OwnerId = 1,
-                    Available = true
+                    Available = true,
+                    Identifier = Guid.NewGuid()
                 },
                 new Item
                 {
@@ -62,7 +64,8 @@ namespace Borrow.Data
                     OwnedSince = new DateTime(2023, 05, 03),
                     DailyRate = 5.00M,
                     OwnerId = 1,
-                    Available = false
+                    Available = false,
+                    Identifier = Guid.NewGuid()
                 }
             );
         }
