@@ -12,17 +12,18 @@
     <div>
         <table style="width:100%">
             <tr>
-                <th style="width:33%">Item</th>
-                <th style="width:33%">Description</th>
-                <th style="width:33%">Owned Since</th>
-                <th style="width:33%">Available</th>
-                <th style="width:33%">Daily Rate</th>
-                <th style="width:33%">Weekly Rate</th>
+                <th></th>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Owned Since</th>
+                <th>Available</th>
+                <th>Daily Rate</th>
+                <th>Weekly Rate</th>
             </tr>
             @foreach (var item in @Model.Items)
             {
                 <tr>
-                    <td><input type="checked" name="SelectedItems" value="@item"/></td>
+                    <td><input type="checkbox" name="SelectedItems" value ="@item"/></td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
                     <td>@item.OwnedSince</td>

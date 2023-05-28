@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
+using Borrow.Models.Views;
 using Borrow.Models.Views.Item;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +33,23 @@ namespace Borrow.Controllers
             var userItems = _userDataAccess.GetItems(user.OwnerId);
             rivm.Items = _mapper.Map<List<ItemViewModel>>(userItems);
             return View(rivm);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Remove(ProfileViewModel pvm)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            int? indextoRemove = pvm.RemoveAtIndex;
+            if (indextoRemove is null) return View();
+            else if (indextoRemove < 0 || indextoRemove >= pvm.OwnerItems.Count()) return View();
+            else
+            {
+                var itemDelete = pvm.OwnerItems[(int)indextoRemove];
+                var ownerId = user.OwnerId;
+                _userDataAccess.DeleteItem(ownerId, itemDelete.Identifier);
+                pvm.RemoveFromProfile((int)pvm.RemoveAtIndex);
+            }
+            return View(pvm);
         }
     }
 }
