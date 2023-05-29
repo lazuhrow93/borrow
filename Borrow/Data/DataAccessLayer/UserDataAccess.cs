@@ -54,5 +54,13 @@ namespace Borrow.Data.DataAccessLayer
             return true;
         }
 
+        public bool DeleteItem(int ownerId, List<Guid> identifier)
+        {
+            var toDelete = _dbAccess.Item.Where(i => identifier.Contains(i.Identifier)).ToList();
+            if (toDelete is null) return false;
+            _dbAccess.RemoveRange(toDelete);
+            _dbAccess.SaveChanges();
+            return true;
+        }
     }
 }

@@ -15,5 +15,11 @@ namespace Borrow.Models.Listings
         [Precision(18, 2)]
         public decimal WeeklyRate { get; set;}
         public Guid Identifier { get; set; }
+
+        public Item()
+        {
+            Identifier = Guid.NewGuid();
+            Available = true;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
+using Borrow.Models.Listings;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Item;
 using Microsoft.AspNetCore.Authorization;
@@ -31,25 +32,19 @@ namespace Borrow.Controllers
             var user = await _UserManager.GetUserAsync(this.User);
             var rivm = new RemoveItemsViewModel();
             var userItems = _userDataAccess.GetItems(user.OwnerId);
-            rivm.Items = _mapper.Map<List<ItemViewModel>>(userItems);
+            var mappedItems = _mapper.Map<List<ItemViewModel>>(userItems);
+            rivm.Items = mappedItems.Select(i=> { i.IsSelected = false; return i; }).ToList();
             return View(rivm);
         }
 
+        [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Remove(ProfileViewModel pvm)
+        public async Task<ActionResult> Remove(RemoveItemsViewModel rivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            int? indextoRemove = pvm.RemoveAtIndex;
-            if (indextoRemove is null) return View();
-            else if (indextoRemove < 0 || indextoRemove >= pvm.OwnerItems.Count()) return View();
-            else
-            {
-                var itemDelete = pvm.OwnerItems[(int)indextoRemove];
-                var ownerId = user.OwnerId;
-                _userDataAccess.DeleteItem(ownerId, itemDelete.Identifier);
-                pvm.RemoveFromProfile((int)pvm.RemoveAtIndex);
-            }
-            return View(pvm);
+            var itemsToDelete = _mapper.Map<List<Item>>(rivm.Items.Where(i => i.IsSelected));
+            _userDataAccess.DeleteItem(user.OwnerId, itemsToDelete.Select(i => i.Identifier).ToList());
+            return RedirectToAction("Index", "Profile");
         }
     }
 }

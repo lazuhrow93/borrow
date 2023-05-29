@@ -10,6 +10,7 @@ namespace Borrow.Data.DataAccessLayer.Interfaces
         public void InsertItem(User user, Item item); 
         public void InsertItem(User user, List<Item> item);
         public bool DeleteItem(int ownerId, Guid itemIdentifer);
+        public bool DeleteItem(int ownerId, List<Guid> itemIdentifers);
         
     }
 }
