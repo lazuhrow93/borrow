@@ -47,41 +47,49 @@
             <button class="btn btn-primary">Remove Item</button>
         </a>
     </div>
-    <div>
-        <table style="width:100%">
-            <tr>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Owned Since</th>
-                <th>Available</th>
-                <th>Daily Rate</th>
-                <th>Weekly Rate</th>
-            </tr>
-            @for (int i = 0; i < Model.OwnerItems.Count(); ++i)
-            {
-                var item = Model.OwnerItems[i];
+    <form asp-action="Edit" method="Get">
+        <div>
+            <table style="width:100%">
                 <tr>
-                    <td>
-                        @item.Name
-                    </td>
-                    <td>
-                        @item.Description
-                    </td>
-                    <td>
-                        @item.OwnedSince
-                    </td>
-                    <td>
-                        @item.Available
-                    </td>
-                    <td>
-                        @item.DailyRate
-                    </td>
-                    <td>
-                        @item.WeeklyRate
-                    </td>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Owned Since</th>
+                    <th>Available</th>
+                    <th>Daily Rate</th>
+                    <th>Weekly Rate</th>
+                    <th></th>
                 </tr>
-            }
-        </table>
-    </div>
+                @for (int i = 0; i < Model.OwnerItems.Count(); ++i)
+                {
+                    var item = Model.OwnerItems[i];
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            @item.OwnedSince
+                        </td>
+                        <td>
+                            @item.Available
+                        </td>
+                        <td>
+                            @item.DailyRate
+                        </td>
+                        <td>
+                            @item.WeeklyRate
+                        </td>
+                        <td>
+                            <button type="submit" name="EditItem" value=@item.Identifier class="btn btn-primary">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </form>
 </div>
 

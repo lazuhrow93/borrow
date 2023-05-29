@@ -37,5 +37,25 @@ namespace Borrow.Controllers
 
             return View(pvm);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult> Edit(ProfileViewModel pvm)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var itemToEdit = _userDataAccess.GetItem(user.OwnerId, pvm.EditItem);
+            var itemView = _mapper.Map<ItemViewModel>(itemToEdit);
+            return View(itemView);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> SubmitEdit(ItemViewModel ivm)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var item = _mapper.Map<Item>(ivm);
+            var itemToEdit = _userDataAccess.EditItem(user.OwnerId, item);
+            return RedirectToAction("IndeX", "Profile");
+        }
     }
 }

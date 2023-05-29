@@ -12,6 +12,7 @@ namespace Borrow.Models.Views
         public int Exchanges { get; set; }
         public List<ItemViewModel> OwnerItems { get; set; }
         public int? RemoveAtIndex { get; set; }
+        public Guid EditItem { get; set; }
 
         public void RemoveFromProfile(int index)
         {

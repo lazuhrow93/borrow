@@ -62,5 +62,14 @@ namespace Borrow.Data.DataAccessLayer
             _dbAccess.SaveChanges();
             return true;
         }
+
+        public bool EditItem(int ownerId, Item newItem)
+        {
+            var checker = GetItem(ownerId, newItem.Identifier);
+            if (checker is null) return false;
+            _dbAccess.Update(newItem);
+            _dbAccess.SaveChanges();
+            return true;
+        }
     }
 }
