@@ -23,7 +23,7 @@ namespace Borrow.Data.DataAccessLayer
 
         public Item? GetItem(int ownerId, Guid itemIdentifer)
         {
-            return _dbAccess.Item.Where(i => i.Identifier.Equals(itemIdentifer) && i.OwnerId.Equals(ownerId)).FirstOrDefault();
+            return _dbAccess.Item.SingleOrDefault(i => i.Identifier.Equals(itemIdentifer));
         }
 
         public void InsertItem(User user, Item item)
@@ -65,9 +65,13 @@ namespace Borrow.Data.DataAccessLayer
 
         public bool EditItem(int ownerId, Item newItem)
         {
-            var checker = GetItem(ownerId, newItem.Identifier);
-            if (checker is null) return false;
-            _dbAccess.Update(newItem);
+            var currentItem = GetItem(ownerId, newItem.Identifier);//_dbAccess.Item.SingleOrDefault(i => i.Identifier.Equals(newItem.Identifier));
+            if (currentItem is null) return false;
+            currentItem.WeeklyRate = newItem.WeeklyRate;
+            currentItem.DailyRate = newItem.DailyRate;
+            currentItem.Available = newItem.Available;
+            currentItem.Description = newItem.Description;
+            currentItem.Name = newItem.Name;
             _dbAccess.SaveChanges();
             return true;
         }

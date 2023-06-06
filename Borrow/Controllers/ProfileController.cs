@@ -55,7 +55,7 @@ namespace Borrow.Controllers
             var user = await _UserManager.GetUserAsync(this.User);
             var item = _mapper.Map<Item>(ivm);
             var itemToEdit = _userDataAccess.EditItem(user.OwnerId, item);
-            return RedirectToAction("IndeX", "Profile");
+            return RedirectToAction("Index", "Profile");
         }
     }
 }
