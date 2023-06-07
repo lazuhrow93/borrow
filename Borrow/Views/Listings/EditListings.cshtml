@@ -1,35 +1,22 @@
-﻿@model RemoveItemsViewModel
+﻿@model EditListingsViewModel
 
-@{
-    ViewData["Title"] = "RemoveItems";
-}
-
-<h1>RemoveItems</h1>
-
-<h4>Item</h4>
-<hr />
-<div class="row">
-    <form method="post" asp-action="Remove" asp-controller="RemoveItems">
+<div>
+    <form>
         <div>
             <table style="width:100%">
                 <tr>
-                    <th></th>
                     <th>Item</th>
                     <th>Description</th>
                     <th>Owned Since</th>
                     <th>Available</th>
                     <th>Daily Rate</th>
                     <th>Weekly Rate</th>
+                    <th></th>
                 </tr>
-                @for(int i = 0; i<Model.Items.Count(); ++i)
+                @for (int i = 0; i < Model.Items.Count(); ++i)
                 {
                     var item = Model.Items[i];
-                    
-                    @Html.HiddenFor(m=>m.Items[i].Identifier)
                     <tr>
-                        <td>
-                            @Html.CheckBoxFor(m=>m.Items[i].IsSelected)
-                        </td>
                         <td>
                             @item.Name
                         </td>
@@ -48,11 +35,25 @@
                         <td>
                             @item.WeeklyRate
                         </td>
+                        @if (item.IsSelected)
+                        {
+                            <td>
+                                <button type="submit" name="EditItem" value=@item.Identifier class="btn btn-primary">
+                                    Unlist
+                                </button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button type="submit" name="EditItem" value=@item.Identifier class="btn btn-primary">
+                                    List
+                                </button>
+                            </td>
+                        }
                     </tr>
                 }
             </table>
-            <button class="btn btn-primary" type="submit">Delete Selected</button>
         </div>
     </form>
 </div>
-

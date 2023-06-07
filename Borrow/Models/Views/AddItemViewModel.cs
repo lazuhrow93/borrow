@@ -1,4 +1,4 @@
-﻿namespace Borrow.Models.Views.Item
+﻿namespace Borrow.Models.Views
 {
     public class AddItemViewModel
     {
@@ -8,7 +8,7 @@
 
         public void Remove(int index)
         {
-            this.ItemsToSave.RemoveAt(index);
+            ItemsToSave.RemoveAt(index);
         }
     }
 }

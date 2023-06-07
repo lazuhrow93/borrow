@@ -39,12 +39,15 @@
 
 <div>
     <div>
-        <h1>Your Listings</h1>
+        <h1>Your Items</h1>
         <a asp-action ="Index" asp-controller="AddItem">
-            <button class="btn btn-primary">Add Item</button>
+            <button class="btn btn-primary">Add Item To Inventory</button>
         </a>
         <a asp-action="Index" asp-controller="RemoveItems">
-            <button class="btn btn-primary">Remove Item</button>
+            <button class="btn btn-primary">Remove Item from Inventory</button>
+        </a>
+        <a asp-action="EditListings" asp-controller="Listings">
+            <button class="btn btn-primary">Edit Listings</button>
         </a>
     </div>
     <form asp-action="Edit" method="Get">

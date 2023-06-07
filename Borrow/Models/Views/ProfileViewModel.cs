@@ -1,5 +1,4 @@
-﻿using Borrow.Models.Views.Item;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Borrow.Models.Views

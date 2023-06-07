@@ -43,7 +43,8 @@ namespace Borrow.Data
                     DailyRate = 10.00M,
                     OwnerId = 1,
                     Available = false,
-                    Identifier = Guid.NewGuid()
+                    Identifier = Guid.NewGuid(),
+                    IsListed = false
                 },
                 new Item
                 {
@@ -54,7 +55,8 @@ namespace Borrow.Data
                     DailyRate = 5.00M,
                     OwnerId = 1,
                     Available = true,
-                    Identifier = Guid.NewGuid()
+                    Identifier = Guid.NewGuid(),
+                    IsListed = false
                 },
                 new Item
                 {
@@ -65,7 +67,8 @@ namespace Borrow.Data
                     DailyRate = 5.00M,
                     OwnerId = 1,
                     Available = false,
-                    Identifier = Guid.NewGuid()
+                    Identifier = Guid.NewGuid(),
+                    IsListed = false
                 }
             );
         }

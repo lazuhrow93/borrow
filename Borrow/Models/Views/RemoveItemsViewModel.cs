@@ -1,4 +1,4 @@
-﻿namespace Borrow.Models.Views.Item
+﻿namespace Borrow.Models.Views
 {
     public class RemoveItemsViewModel
     {

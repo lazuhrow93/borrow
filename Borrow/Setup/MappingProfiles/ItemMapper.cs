@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Models.Listings;
-using Borrow.Models.Views.Item;
+using Borrow.Models.Views;
 
 namespace Borrow.Setup.MappingProfiles
 {

@@ -1,0 +1,76 @@
+﻿@model UserListingsViewModel
+
+<div>
+    <h1>Listed Items</h1>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Owned Since</th>
+                <th>Available</th>
+                <th>Daily Rate</th>
+                <th>Weekly Rate</th>
+                <th></th>
+            </tr>
+            @for (int i = 0; i < Model.ListedItems.Count(); ++i)
+            {
+                var item = Model.ListedItems[i];
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.OwnedSince
+                    </td>
+                    <td>
+                        @item.Available
+                    </td>
+                    <td>
+                        @item.DailyRate
+                    </td>
+                    <td>
+                        @item.WeeklyRate
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <h1>NonListed Items</h1>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Owned Since</th>
+                <th>Daily Rate</th>
+                <th>Weekly Rate</th>
+                <th></th>
+            </tr>
+            @for (int i = 0; i < Model.NonListedItems.Count(); ++i)
+            {
+                var item = Model.NonListedItems[i];
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.OwnedSince
+                    </td>
+                    <td>
+                        @item.DailyRate
+                    </td>
+                    <td>
+                        @item.WeeklyRate
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
