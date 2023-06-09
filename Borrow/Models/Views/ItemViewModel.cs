@@ -6,6 +6,7 @@ namespace Borrow.Models.Views
     public class ItemViewModel
     {
         public bool IsSelected { get; set; }
+        public bool IsListed { get; set; } = false;
         public string Name { get; set; }
         public string Description { get; set; }
         public string OwnedSince { get; set; }

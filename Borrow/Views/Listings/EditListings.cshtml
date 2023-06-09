@@ -1,7 +1,7 @@
 ﻿@model EditListingsViewModel
 
 <div>
-    <form>
+    @*<form>*@
         <div>
             <table style="width:100%">
                 <tr>
@@ -35,25 +35,27 @@
                         <td>
                             @item.WeeklyRate
                         </td>
-                        @if (item.IsSelected)
+                        @if (item.IsListed)
                         {
                             <td>
-                                <button type="submit" name="EditItem" value=@item.Identifier class="btn btn-primary">
-                                    Unlist
-                                </button>
+                                @using(Html.BeginForm("Unlist", "Listings", FormMethod.Post))
+                                {
+                                    <button class="btn btn-primary" type="submit" name="unlistItem" value=@item.Identifier>Unlist</button>
+                                }
                             </td>
                         }
                         else
                         {
                             <td>
-                                <button type="submit" name="EditItem" value=@item.Identifier class="btn btn-primary">
-                                    List
-                                </button>
+                                @using (Html.BeginForm("List", "Listings", FormMethod.Post))
+                                {
+                                    <button class="btn btn-primary" type="submit" name="listItem" value=@item.Identifier>List</button>
+                                }
                             </td>
                         }
                     </tr>
                 }
             </table>
         </div>
-    </form>
+    @*</form>*@
 </div>

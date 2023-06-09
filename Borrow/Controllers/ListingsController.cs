@@ -35,14 +35,20 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditListings()
         {
-            var ulvm = new UserListingsViewModel(_mapper);
+            var elvm = new EditListingsViewModel(_mapper);
             var user = await _userManager.GetUserAsync(this.User);
-            ulvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
-            return View(ulvm);
+            elvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
+            return View(elvm);
         }
 
-        // GET: ListingsController/Create
-        public ActionResult Create()
+        [HttpPost]
+        public async Task<ActionResult> Unlist(Guid unlistItem)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(Guid listItem)
         {
             return View();
         }
