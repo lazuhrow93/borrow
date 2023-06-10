@@ -32,27 +32,6 @@ namespace Borrow.Controllers
             return View(ulvm);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> EditListings()
-        {
-            var elvm = new EditListingsViewModel(_mapper);
-            var user = await _userManager.GetUserAsync(this.User);
-            elvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
-            return View(elvm);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Unlist(Guid unlistItem)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> List(Guid listItem)
-        {
-            return View();
-        }
-
         // POST: ListingsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

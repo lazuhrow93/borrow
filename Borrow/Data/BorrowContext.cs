@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Borrow.Models.Listings;
+using Borrow.Models.Backend;
 
 namespace Borrow.Data
 {
@@ -17,7 +18,7 @@ namespace Borrow.Data
 
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Item>? Item { get; set; }
-
+        public DbSet<Neighborhood> Neighborhood { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -33,6 +34,15 @@ namespace Borrow.Data
                     OwnerId = 2
                 }
             );
+
+            modelBuilder.Entity<Neighborhood>().HasData(
+                new Neighborhood()
+                {
+                    Id = 1,
+                    Name = "Spring Lakes"
+                }
+            );
+
             modelBuilder.Entity<Item>().HasData(
                 new Item
                 {

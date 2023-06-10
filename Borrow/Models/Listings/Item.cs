@@ -22,5 +22,15 @@ namespace Borrow.Models.Listings
             Identifier = Guid.NewGuid();
             Available = true;
         }
+
+        internal void Unlist()
+        {
+            this.IsListed = false;
+        }
+
+        internal void List()
+        {
+            this.IsListed = true;
+        }
     }
 }

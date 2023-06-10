@@ -43,14 +43,14 @@
         <a asp-action ="Index" asp-controller="AddItem">
             <button class="btn btn-primary">Add Item To Inventory</button>
         </a>
-        <a asp-action="Index" asp-controller="RemoveItems">
+        <a asp-action="Remove" asp-controller="Profile">
             <button class="btn btn-primary">Remove Item from Inventory</button>
         </a>
-        <a asp-action="EditListings" asp-controller="Listings">
-            <button class="btn btn-primary">Edit Listings</button>
+        <a asp-action="ListUnlist" asp-controller="Profile">
+            <button class="btn btn-primary">Unlist and List</button>
         </a>
     </div>
-    <form asp-action="Edit" method="Get">
+    <form asp-action="EditItem" method="Get">
         <div>
             <table style="width:100%">
                 <tr>

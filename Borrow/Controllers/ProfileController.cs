@@ -6,6 +6,7 @@ using Borrow.Models.Views;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
 namespace Borrow.Controllers
@@ -39,7 +40,7 @@ namespace Borrow.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult> Edit(ProfileViewModel pvm)
+        public async Task<ActionResult> EditItem(ProfileViewModel pvm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var itemToEdit = _userDataAccess.GetItem(user.OwnerId, pvm.EditItem);
@@ -49,12 +50,65 @@ namespace Borrow.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> SubmitEdit(ItemViewModel ivm)
+        public async Task<ActionResult> EditItem(ItemViewModel ivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var item = _mapper.Map<Item>(ivm);
             var itemToEdit = _userDataAccess.EditItem(user.OwnerId, item);
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ListUnlist()
+        {
+            var elvm = new EditListingsViewModel(_mapper);
+            var user = await _UserManager.GetUserAsync(this.User);
+            elvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
+            return View(elvm);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Unlist(Guid unlistItem)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var oldItem = _userDataAccess.GetItem(user.OwnerId, unlistItem);
+            oldItem.Unlist();
+            var newItem = oldItem;
+            _userDataAccess.EditItem(user.OwnerId, newItem);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> List(Guid listItem)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var oldItem = _userDataAccess.GetItem(user.OwnerId, listItem);
+            oldItem.List();
+            var newItem = oldItem;
+            _userDataAccess.EditItem(user.OwnerId, newItem);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Remove()
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var rivm = new RemoveItemsViewModel();
+            var userItems = _userDataAccess.GetItems(user.OwnerId);
+            var mappedItems = _mapper.Map<List<ItemViewModel>>(userItems);
+            rivm.Items = mappedItems.Select(i => { i.IsSelected = false; return i; }).ToList();
+            return View(rivm);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Remove(RemoveItemsViewModel rivm)
+        {
+            var user = await _UserManager.GetUserAsync(this.User);
+            var itemsToDelete = _mapper.Map<List<Item>>(rivm.Items.Where(i => i.IsSelected));
+            _userDataAccess.DeleteItem(user.OwnerId, itemsToDelete.Select(i => i.Identifier).ToList());
+            return RedirectToAction("Index");
+
         }
     }
 }
