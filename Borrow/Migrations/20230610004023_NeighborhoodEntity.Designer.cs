@@ -13,7 +13,7 @@ namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
     [Migration("20230610004023_Neighborhood")]
-    partial class Neighborhood
+    partial class NeighborhoodEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

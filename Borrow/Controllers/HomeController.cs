@@ -1,5 +1,7 @@
-﻿using Borrow.Models;
+﻿using AutoMapper;
+using Borrow.Models;
 using Borrow.Models.Identity;
+using Borrow.Models.Views.Home;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -11,15 +13,25 @@ namespace Borrow.Controllers
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
         private readonly ILogger<HomeController> _logger;
+        private readonly IMapper _mapper;
 
-        public HomeController(SignInManager<User> sm, UserManager<User> um)
+        public HomeController(SignInManager<User> sm, UserManager<User> um, IMapper mapper)
         {
             userManager = um;
             signInManager = sm;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
+            var hvm = new HomeViewModel(_mapper);
+            if (signInManager.IsSignedIn(this.User))
+            {
+                var user = await userManager.GetUserAsync(this.User);
+                
+            }
+
             return View();
         }
 

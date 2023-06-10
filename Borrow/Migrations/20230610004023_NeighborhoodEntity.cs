@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Borrow.Migrations
 {
     /// <inheritdoc />
-    public partial class Neighborhood : Migration
+    public partial class NeighborhoodEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
