@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models;
+using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views.Home;
 using Microsoft.AspNetCore.Identity;
@@ -14,25 +16,29 @@ namespace Borrow.Controllers
         private SignInManager<User> signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IMapper _mapper;
+        private readonly IUserDataAccess _userDataAccess;
 
-        public HomeController(SignInManager<User> sm, UserManager<User> um, IMapper mapper)
+        public HomeController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
         {
             userManager = um;
             signInManager = sm;
             _mapper = mapper;
+            _userDataAccess = ia;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var hvm = new HomeViewModel(_mapper);
+            var hvm = new HomeViewModel();
             if (signInManager.IsSignedIn(this.User))
             {
                 var user = await userManager.GetUserAsync(this.User);
-                
+                var profile = _userDataAccess.GetAppProfile(user);
+                var neighborhood = _userDataAccess.GetNeighborhood(profile);
+                hvm = _mapper.Map<HomeViewModel>(user);
+                _mapper.Map<Neighborhood, HomeViewModel>(neighborhood, hvm);
             }
-
-            return View();
+            return View(hvm);
         }
 
         public IActionResult Privacy()

@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230611222208_AddingProfileTable")]
+    partial class AddingProfileTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace Borrow.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("NeighborhoodId")
+                    b.Property<int>("Neighborhood")
                         .HasColumnType("int");
 
                     b.Property<int>("OwnerId")
@@ -68,7 +71,7 @@ namespace Borrow.Migrations
                         new
                         {
                             Id = 1,
-                            NeighborhoodId = 1,
+                            Neighborhood = 1,
                             OwnerId = 2
                         });
                 });
@@ -151,9 +154,9 @@ namespace Borrow.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bb4abced-678e-4644-a74e-982cba2a60aa",
+                            Id = "d242c612-9e11-4de0-97e4-c48533d59acb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b648f949-6c46-437e-aff8-3b3de5fadf82",
+                            ConcurrencyStamp = "2f41b8f2-0606-4558-9398-a228eeac0abb",
                             Email = "test@tset.com",
                             EmailConfirmed = false,
                             FirstName = "Lazaro",
@@ -163,7 +166,7 @@ namespace Borrow.Migrations
                             PhoneNumber = "2813308004",
                             PhoneNumberConfirmed = false,
                             ProfileId = 0,
-                            SecurityStamp = "0c744a41-1148-4e31-a308-f762c3ae4874",
+                            SecurityStamp = "6b699d74-9558-4385-a087-d7dbc15c16c1",
                             TwoFactorEnabled = false,
                             UserName = "lazuhrow93"
                         });
@@ -198,9 +201,6 @@ namespace Borrow.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NeighborhoodId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OwnedSince")
                         .HasColumnType("datetime2");
 
@@ -222,10 +222,9 @@ namespace Borrow.Migrations
                             Available = false,
                             DailyRate = 10.00m,
                             Description = "Machine to mow lawns",
-                            Identifier = new Guid("70a8438f-4d71-4cba-bfbd-44e8a08ff704"),
+                            Identifier = new Guid("7aed5f95-50ee-4e65-9e66-f8419983cce7"),
                             IsListed = false,
                             Name = "Lawn Mower",
-                            NeighborhoodId = 0,
                             OwnedSince = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OwnerId = 1,
                             WeeklyRate = 0m
@@ -236,10 +235,9 @@ namespace Borrow.Migrations
                             Available = true,
                             DailyRate = 5.00m,
                             Description = "Machine to Trim and cut lawns",
-                            Identifier = new Guid("186cabbd-e336-43ff-9771-54666e7e586e"),
+                            Identifier = new Guid("b58ffd3a-3235-4eb6-b7a1-54e3b62a06be"),
                             IsListed = false,
                             Name = "Weed Eater",
-                            NeighborhoodId = 0,
                             OwnedSince = new DateTime(2023, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OwnerId = 1,
                             WeeklyRate = 0m
@@ -250,10 +248,9 @@ namespace Borrow.Migrations
                             Available = false,
                             DailyRate = 5.00m,
                             Description = "Machine to blow",
-                            Identifier = new Guid("12dce27c-08db-4ce4-b1ae-e45e001cbe84"),
+                            Identifier = new Guid("86025a07-5443-4d1f-becc-4959b4454df9"),
                             IsListed = false,
                             Name = "Leaf Blower",
-                            NeighborhoodId = 0,
                             OwnedSince = new DateTime(2023, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OwnerId = 1,
                             WeeklyRate = 0m

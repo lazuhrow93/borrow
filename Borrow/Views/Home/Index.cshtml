@@ -1,10 +1,8 @@
-﻿@{
+﻿@model Borrow.Models.Views.Home.HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to your Neighborhood HUB!</h1>
-</div>
 
 
 @using Microsoft.AspNetCore.Identity
@@ -13,7 +11,17 @@
 {
     //links for signed in peeps
     <div>
+        <div class="text-center">
+            <h1 class="display-4">Welcome, @Model.FirstName, to @Model.NeighborhoodName's Neighborhood hub!</h1>
+        </div>
         <a asp-action="UserListings" asp-controller="Listings" asp-area="" class="nav-link">View Your Listed Items</a>
+        <a asp-action="NeighborhoodListings" asp-controller="Listings" asp-area="" class="nav-link">View Listings at @Model.NeighborhoodName</a>
+    </div>
+}
+else{
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome to your Neighborhood HUB! Please sign in</h1>
     </div>
 }
 

@@ -1,4 +1,5 @@
-﻿using Borrow.Models.Identity;
+﻿using Borrow.Models.Backend;
+using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using System;
 namespace Borrow.Data.DataAccessLayer.Interfaces
@@ -6,7 +7,9 @@ namespace Borrow.Data.DataAccessLayer.Interfaces
     public interface IUserDataAccess
     {
         public AppProfile? GetAppProfile(User ownerId);
-        public List<Item> GetItems(AppProfile userProfile);
+        public Neighborhood? GetNeighborhood(AppProfile appProfile);
+        public List<Item> GetNeighborhoodItems(AppProfile userProfile);
+        public List<Item> GetItems(AppProfile neighborhood);
         public Item? GetItem(AppProfile userProfile, Guid id);
         public void InsertItem(AppProfile userProfile, Item item); 
         public void InsertItem(AppProfile userProfile, List<Item> item);

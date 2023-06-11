@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public int Neighborhood { get; set; }
+        public int NeighborhoodId { get; set; }
 
     }
 }

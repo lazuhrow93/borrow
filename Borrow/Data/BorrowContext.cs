@@ -41,7 +41,7 @@ namespace Borrow.Data
                 {
                     Id = 1,
                     OwnerId = 2,
-                    Neighborhood = 1
+                    NeighborhoodId = 1
                 });
 
             modelBuilder.Entity<Neighborhood>().HasData(

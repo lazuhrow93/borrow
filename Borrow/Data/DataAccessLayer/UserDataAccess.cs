@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,11 @@ namespace Borrow.Data.DataAccessLayer
         public AppProfile? GetAppProfile(User user)
         {
             return _dbAccess.AppProfile.Where(p => p.Id.Equals(user.ProfileId)).FirstOrDefault();
+        }
+
+        public List<Item> GetNeighborhoodItems(AppProfile userProfile)
+        {
+            return _dbAccess.Item.Where(i=>i.NeighborhoodId.Equals(userProfile.NeighborhoodId)).ToList();
         }
 
         public List<Item> GetItems(AppProfile userProfile)
@@ -79,6 +85,11 @@ namespace Borrow.Data.DataAccessLayer
             currentItem.Name = newItem.Name;
             _dbAccess.SaveChanges();
             return true;
+        }
+
+        public Neighborhood? GetNeighborhood(AppProfile appProfile)
+        {
+            return _dbAccess.Neighborhood.Where(n => n.Id.Equals(appProfile.NeighborhoodId)).FirstOrDefault();
         }
     }
 }

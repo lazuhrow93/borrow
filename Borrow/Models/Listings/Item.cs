@@ -16,6 +16,7 @@ namespace Borrow.Models.Listings
         public decimal WeeklyRate { get; set;}
         public Guid Identifier { get; set; }
         public bool IsListed { get; set; } = false;
+        public int NeighborhoodId { get; set; }
 
         public Item()
         {

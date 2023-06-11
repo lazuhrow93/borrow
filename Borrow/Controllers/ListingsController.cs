@@ -28,24 +28,21 @@ namespace Borrow.Controllers
         {
             var ulvm = new UserListingsViewModel(_mapper);
             var user = await _userManager.GetUserAsync(this.User);
-            int profile = _userDataAccess.GetAppProfile(user);
+            var profile = _userDataAccess.GetAppProfile(user);
             ulvm.MapItems(_userDataAccess.GetItems(profile));
             return View(ulvm);
         }
 
-        // POST: ListingsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet]
+        public async Task<ActionResult> NeighborhoodListings()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var user = await _userManager.GetUserAsync(this.User);
+            var profile = _userDataAccess.GetAppProfile(user);
+            var neighborhoodItems = _userDataAccess.GetNeighborhoodItems(profile);
+
+            var nlvm = new NeighborhoodListingsViewModel();
+            nlvm.NeighborhoodListings = _mapper.Map<List<ItemViewModel>>(neighborhoodItems);
+            return View(nlvm);
         }
 
         // GET: ListingsController/Edit/5
