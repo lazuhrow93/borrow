@@ -19,6 +19,8 @@ namespace Borrow.Data
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Item>? Item { get; set; }
         public DbSet<Neighborhood> Neighborhood { get; set; }
+        public DbSet<AppProfile> AppProfile { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,9 +33,16 @@ namespace Borrow.Data
                     FirstName = "Lazaro", 
                     LastName = "Hernandez",
                     PhoneNumber = "2813308004",
-                    OwnerId = 2
                 }
             );
+
+            modelBuilder.Entity<AppProfile>().HasData(
+                new AppProfile()
+                {
+                    Id = 1,
+                    OwnerId = 2,
+                    Neighborhood = 1
+                });
 
             modelBuilder.Entity<Neighborhood>().HasData(
                 new Neighborhood()

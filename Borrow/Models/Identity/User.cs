@@ -6,6 +6,6 @@ namespace Borrow.Models.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int OwnerId { get; set; }
+        public int ProfileId { get; set; }
     }
 }

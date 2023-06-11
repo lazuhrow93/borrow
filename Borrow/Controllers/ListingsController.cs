@@ -28,7 +28,8 @@ namespace Borrow.Controllers
         {
             var ulvm = new UserListingsViewModel(_mapper);
             var user = await _userManager.GetUserAsync(this.User);
-            ulvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
+            int profile = _userDataAccess.GetAppProfile(user);
+            ulvm.MapItems(_userDataAccess.GetItems(profile));
             return View(ulvm);
         }
 

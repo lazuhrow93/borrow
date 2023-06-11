@@ -31,8 +31,9 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var pvm = _mapper.Map<ProfileViewModel>(user);
+            var p = _userDataAccess.GetAppProfile(user);
 
-            List<Item> ownedItems = _userDataAccess.GetItems(user.OwnerId);
+            List<Item> ownedItems = _userDataAccess.GetItems(p);
             pvm.OwnerItems = _mapper.Map<List<ItemViewModel>>(ownedItems);
 
             return View(pvm);
@@ -43,7 +44,8 @@ namespace Borrow.Controllers
         public async Task<ActionResult> EditItem(ProfileViewModel pvm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var itemToEdit = _userDataAccess.GetItem(user.OwnerId, pvm.EditItem);
+            var p = _userDataAccess.GetAppProfile(user);
+            var itemToEdit = _userDataAccess.GetItem(p, pvm.EditItem);
             var itemView = _mapper.Map<ItemViewModel>(itemToEdit);
             return View(itemView);
         }
@@ -54,7 +56,8 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var item = _mapper.Map<Item>(ivm);
-            var itemToEdit = _userDataAccess.EditItem(user.OwnerId, item);
+            var p = _userDataAccess.GetAppProfile(user);
+            var itemToEdit = _userDataAccess.EditItem(p, item);
             return RedirectToAction("Index");
         }
 
@@ -63,7 +66,8 @@ namespace Borrow.Controllers
         {
             var elvm = new EditListingsViewModel(_mapper);
             var user = await _UserManager.GetUserAsync(this.User);
-            elvm.MapItems(_userDataAccess.GetItems(user.OwnerId));
+            var p = _userDataAccess.GetAppProfile(user);
+            elvm.MapItems(_userDataAccess.GetItems(p));
             return View(elvm);
         }
 
@@ -71,10 +75,11 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Unlist(Guid unlistItem)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var oldItem = _userDataAccess.GetItem(user.OwnerId, unlistItem);
+            var p = _userDataAccess.GetAppProfile(user);
+            var oldItem = _userDataAccess.GetItem(p, unlistItem);
             oldItem.Unlist();
             var newItem = oldItem;
-            _userDataAccess.EditItem(user.OwnerId, newItem);
+            _userDataAccess.EditItem(p, newItem);
             return RedirectToAction("Index");
         }
 
@@ -82,10 +87,11 @@ namespace Borrow.Controllers
         public async Task<ActionResult> List(Guid listItem)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var oldItem = _userDataAccess.GetItem(user.OwnerId, listItem);
+            var p = _userDataAccess.GetAppProfile(user);
+            var oldItem = _userDataAccess.GetItem(p, listItem);
             oldItem.List();
             var newItem = oldItem;
-            _userDataAccess.EditItem(user.OwnerId, newItem);
+            _userDataAccess.EditItem(p, newItem);
             return RedirectToAction("Index");
         }
 
@@ -93,8 +99,9 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Remove()
         {
             var user = await _UserManager.GetUserAsync(this.User);
+            var p = _userDataAccess.GetAppProfile(user);
             var rivm = new RemoveItemsViewModel();
-            var userItems = _userDataAccess.GetItems(user.OwnerId);
+            var userItems = _userDataAccess.GetItems(p);
             var mappedItems = _mapper.Map<List<ItemViewModel>>(userItems);
             rivm.Items = mappedItems.Select(i => { i.IsSelected = false; return i; }).ToList();
             return View(rivm);
@@ -105,8 +112,9 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Remove(RemoveItemsViewModel rivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
+            var p = _userDataAccess.GetAppProfile(user);
             var itemsToDelete = _mapper.Map<List<Item>>(rivm.Items.Where(i => i.IsSelected));
-            _userDataAccess.DeleteItem(user.OwnerId, itemsToDelete.Select(i => i.Identifier).ToList());
+            _userDataAccess.DeleteItem(p, itemsToDelete.Select(i => i.Identifier).ToList());
             return RedirectToAction("Index");
 
         }

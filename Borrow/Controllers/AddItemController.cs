@@ -49,8 +49,9 @@ namespace Borrow.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _UserManager.GetUserAsync(this.User);
+                var p = _userDataAccess.GetAppProfile(user);
                 var items = _mapper.Map<List<Item>>(viewModel.ItemsToSave);
-                _userDataAccess.InsertItem(user, items);
+                _userDataAccess.InsertItem(p, items);
             }
 
             return View(viewModel);

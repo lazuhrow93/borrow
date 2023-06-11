@@ -5,12 +5,13 @@ namespace Borrow.Data.DataAccessLayer.Interfaces
 {
     public interface IUserDataAccess
     {
-        public List<Item> GetItems(int ownerId);
-        public Item? GetItem(int ownerId, Guid id);
-        public void InsertItem(User user, Item item); 
-        public void InsertItem(User user, List<Item> item);
-        public bool DeleteItem(int ownerId, Guid itemIdentifer);
-        public bool DeleteItem(int ownerId, List<Guid> itemIdentifers);
-        public bool EditItem(int ownerId, Item newItem);
+        public AppProfile? GetAppProfile(User ownerId);
+        public List<Item> GetItems(AppProfile userProfile);
+        public Item? GetItem(AppProfile userProfile, Guid id);
+        public void InsertItem(AppProfile userProfile, Item item); 
+        public void InsertItem(AppProfile userProfile, List<Item> item);
+        public bool DeleteItem(AppProfile userProfile, Guid itemIdentifer);
+        public bool DeleteItem(AppProfile userProfile, List<Guid> itemIdentifers);
+        public bool EditItem(AppProfile userProfile, Item newItem);
     }
 }
