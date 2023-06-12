@@ -1,4 +1,6 @@
-﻿using Borrow.Models.Identity;
+﻿using AutoMapper;
+using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,11 +12,15 @@ namespace Borrow.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private readonly IMapper _mapper;
+        private readonly IUserDataAccess _userDataAccess;
 
-        public AccountController(SignInManager<User> sm, UserManager<User> um)
+        public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
         {
             userManager = um;
             signInManager = sm;
+            _mapper = mapper;
+            _userDataAccess = ia;
         }
 
         [HttpGet]
@@ -51,6 +57,11 @@ namespace Borrow.Controllers
         public IActionResult Register()
         {
 
+            var appProfile = _userDataAccess.InsertAppProfile(new Models.Backend.Neighborhood()
+            {
+                Id = 1
+            });
+
             return View();
         }
 
@@ -59,19 +70,23 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newUser = new User
-                {
-                    FirstName = rvw.FirstName,
-                    LastName = rvw.LastName,
-                    UserName = rvw.Username,
-                    Email = rvw.Email,
-                    PhoneNumber = rvw.PhoneNumber
-                };
+                var newUser = _mapper.Map<User>(rvw);
                 var result = await userManager.CreateAsync(newUser, rvw.Password);
 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(newUser, isPersistent: false);
+                    var signingIn = signInManager.SignInAsync(newUser, isPersistent: false);
+
+                    var appProfile = _userDataAccess.InsertAppProfile(new Models.Backend.Neighborhood()
+                    {
+                        Id = rvw.Neighborhood
+                    });
+
+                    await signingIn;
+                    var user = await userManager.GetUserAsync(this.User);
+                    _userDataAccess.AssociateProfile(user, appProfile);
+
+
                     return RedirectToAction("Index", "Home");
                 }
                 else

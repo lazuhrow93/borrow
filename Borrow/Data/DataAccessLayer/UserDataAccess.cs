@@ -22,6 +22,29 @@ namespace Borrow.Data.DataAccessLayer
             return _dbAccess.AppProfile.Where(p => p.Id.Equals(user.ProfileId)).FirstOrDefault();
         }
 
+        public AppProfile? InsertAppProfile(Neighborhood neighborhood)
+        {
+            var currentOwnerId = _dbAccess.AppProfile.Max(p => p.OwnerId);
+            var newAppProfile = new AppProfile()
+            {
+                NeighborhoodId = neighborhood.Id,
+                OwnerId = currentOwnerId+1
+            };
+
+            var t = _dbAccess.Add(newAppProfile);
+            var y = t.Entity;
+            _dbAccess.SaveChanges();
+            return t.Entity;
+        }
+
+        public bool AssociateProfile(User user, AppProfile profile)
+        {
+            var currentUser = _dbAccess.User.Where(u => u.Id.Equals(user.Id)).FirstOrDefault();
+            currentUser.ProfileId = profile.Id;
+            _dbAccess.SaveChanges();
+            return true;
+        }
+
         public List<Item> GetNeighborhoodItems(AppProfile userProfile)
         {
             return _dbAccess.Item.Where(i=>i.NeighborhoodId.Equals(userProfile.NeighborhoodId)).ToList();

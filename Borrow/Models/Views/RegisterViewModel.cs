@@ -24,7 +24,7 @@ namespace Borrow.Models.Views
 
         [Required(ErrorMessage = "Please enter Username")]
         [StringLength(255)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter Password")]
         [DataType(DataType.Password)]
@@ -35,5 +35,9 @@ namespace Borrow.Models.Views
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Please select your Neighborhood")]
+        [Display(Name = "Neighborhood Id")]
+        public int Neighborhood { get; set; }
     }
 }
