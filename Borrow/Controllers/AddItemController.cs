@@ -39,7 +39,6 @@ namespace Borrow.Controllers
                 if (viewModel.ItemsToSave is null) viewModel.ItemsToSave = new List<NewItemViewModel>();
                 viewModel.ItemsToSave.Add(viewModel.NewItemViewModel);
             }
-            //viewModel.NewItemViewModel = new();
             return View(viewModel);
         }
 

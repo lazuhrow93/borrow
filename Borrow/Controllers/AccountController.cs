@@ -2,6 +2,7 @@
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
+using Borrow.Models.Backend;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace Borrow.Controllers
         private SignInManager<User> signInManager;
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
+        private readonly IMasterDL _masterDL;
 
-        public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
+        public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
             userManager = um;
             signInManager = sm;
             _mapper = mapper;
             _userDataAccess = ia;
+            _masterDL  = masterDL;
         }
 
         [HttpGet]
@@ -56,12 +59,6 @@ namespace Borrow.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-
-            var appProfile = _userDataAccess.InsertAppProfile(new Models.Backend.Neighborhood()
-            {
-                Id = 1
-            });
-
             return View();
         }
 
@@ -70,21 +67,26 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
+                var neighborhood = new Neighborhood()
+                {
+                    Id = rvw.Neighborhood
+                };
+
+                if(_masterDL.NeighborhoodDL.Exist(neighborhood) == false)
+                    return View("NoNeighborhood");
+
                 var newUser = _mapper.Map<User>(rvw);
                 var result = await userManager.CreateAsync(newUser, rvw.Password);
 
                 if (result.Succeeded)
                 {
                     var signingIn = signInManager.SignInAsync(newUser, isPersistent: false);
-
-                    var appProfile = _userDataAccess.InsertAppProfile(new Models.Backend.Neighborhood()
-                    {
-                        Id = rvw.Neighborhood
-                    });
-
+                    var currentNeighborhood = _masterDL.NeighborhoodDL.Get(neighborhood);
+                    var appProfile = _userDataAccess.InsertAppProfile(currentNeighborhood);
                     await signingIn;
+                    
                     var user = await userManager.GetUserAsync(this.User);
-                    _userDataAccess.AssociateProfile(user, appProfile);
+                    _userDataAccess.AssociateProfile(newUser, appProfile);
 
 
                     return RedirectToAction("Index", "Home");

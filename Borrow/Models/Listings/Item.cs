@@ -17,6 +17,7 @@ namespace Borrow.Models.Listings
         public Guid Identifier { get; set; }
         public bool IsListed { get; set; } = false;
         public int NeighborhoodId { get; set; }
+        public string UserName { get; set; }
 
         public Item()
         {

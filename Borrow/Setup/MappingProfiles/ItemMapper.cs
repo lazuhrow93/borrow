@@ -12,7 +12,8 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.Description))
                 .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.OwnedSince.ToString("MM/dd/yyyy")))
-                .ForMember(dest => dest.Identifier, o => o.MapFrom(src => src.Identifier));
+                .ForMember(dest => dest.Identifier, o => o.MapFrom(src => src.Identifier))
+                .ForMember(dest=>dest.OwnerUserName, o=>o.MapFrom(src=>src.UserName));
 
             CreateMap<ItemViewModel, Item>()
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
@@ -21,12 +22,14 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.DailyRate, o => o.MapFrom(src => src.DailyRate))
                 .ForMember(dest => dest.WeeklyRate, o => o.MapFrom(src => src.WeeklyRate))
                 .ForMember(dest => dest.Available, o => o.MapFrom(src => src.Available))
-                .ForMember(dest => dest.Identifier, o => o.MapFrom(src => src.Identifier));
+                .ForMember(dest => dest.Identifier, o => o.MapFrom(src => src.Identifier))
+                .ForMember(dest => dest.UserName, o => o.MapFrom(src => src.OwnerUserName)); 
 
             CreateMap<NewItemViewModel, Item>()
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.Description))
-                .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.DateAcquired.ToString("MM/dd/yyyy")));
+                .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.DateAcquired.ToString("MM/dd/yyyy")))
+                .ForMember(dest => dest.UserName, o => o.MapFrom(src => src.UserName));
         }
     }
 }

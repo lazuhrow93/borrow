@@ -63,7 +63,10 @@ namespace Borrow.Data.DataAccessLayer
 
         public void InsertItem(AppProfile userProfile, Item item)
         {
+            var user = _dbAccess.User.Where(u => u.ProfileId.Equals(userProfile.Id)).First(); //should always exist at this point?
+            item.UserName = user.UserName;
             item.OwnerId = userProfile.OwnerId;
+            item.NeighborhoodId = userProfile.NeighborhoodId;
             item.Identifier = Guid.NewGuid();
             _dbAccess.Add(item);
             _dbAccess.SaveChanges();
@@ -71,9 +74,13 @@ namespace Borrow.Data.DataAccessLayer
 
         public void InsertItem(AppProfile userProfile, List<Item> items)
         {
+            var user = _dbAccess.User.Where(u => u.ProfileId.Equals(userProfile.Id)).First(); //should always exist at this point?
             foreach (var item in items)
             {
+                item.UserName = user.UserName;
                 item.OwnerId = userProfile.OwnerId;
+                item.NeighborhoodId = userProfile.NeighborhoodId;
+                item.Identifier = Guid.NewGuid();
                 _dbAccess.Add(item);
             }  
 
@@ -99,7 +106,7 @@ namespace Borrow.Data.DataAccessLayer
         }
 
         public bool EditItem(AppProfile userProfile, Item newItem) {
-            var currentItem = GetItem(userProfile, newItem.Identifier);//_dbAccess.Item.SingleOrDefault(i => i.Identifier.Equals(newItem.Identifier));
+            var currentItem = GetItem(userProfile, newItem.Identifier);
             if (currentItem is null) return false;
             currentItem.WeeklyRate = newItem.WeeklyRate;
             currentItem.DailyRate = newItem.DailyRate;

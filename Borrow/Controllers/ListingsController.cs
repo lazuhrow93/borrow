@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
@@ -38,10 +39,12 @@ namespace Borrow.Controllers
         {
             var user = await _userManager.GetUserAsync(this.User);
             var profile = _userDataAccess.GetAppProfile(user);
+            var neighborhood = _userDataAccess.GetNeighborhood(profile);
             var neighborhoodItems = _userDataAccess.GetNeighborhoodItems(profile);
+            var nlvm = new NeighborhoodListingsViewModel(_mapper);
+            nlvm.Name = neighborhood.Name;
+            nlvm.OrganizeItems(neighborhoodItems);
 
-            var nlvm = new NeighborhoodListingsViewModel();
-            nlvm.NeighborhoodListings = _mapper.Map<List<ItemViewModel>>(neighborhoodItems);
             return View(nlvm);
         }
 

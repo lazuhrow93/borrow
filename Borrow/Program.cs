@@ -29,6 +29,7 @@ public class Program
         builder.Services.AddMemoryCache();
         builder.Services.AddSession();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
+        builder.Services.AddTransient<IMasterDL, MasterDL>();
         builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
 
         // Add services to the container.

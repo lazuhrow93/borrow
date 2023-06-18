@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230618033628_ItemPropertyUsername")]
+    partial class ItemPropertyUsername
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,13 +40,6 @@ namespace Borrow.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Neighborhood");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Spring Lakes"
-                        });
                 });
 
             modelBuilder.Entity("Borrow.Models.Identity.AppProfile", b =>
@@ -63,14 +59,6 @@ namespace Borrow.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppProfile");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            NeighborhoodId = 1,
-                            OwnerId = 1
-                        });
                 });
 
             modelBuilder.Entity("Borrow.Models.Identity.User", b =>
