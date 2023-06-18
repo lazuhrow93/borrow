@@ -48,10 +48,15 @@ namespace Borrow.Controllers
             return View(nlvm);
         }
 
-        // GET: ListingsController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpPost]
+        public async Task<ActionResult> ViewListing(Guid Identifier)
         {
-            return View();
+            var user = await _userManager.GetUserAsync(this.User);
+            var profile = _userDataAccess.GetAppProfile(user);
+            var item = _userDataAccess.GetItem(profile, Identifier);
+            var vlvm = new ViewListingViewModel();
+            vlvm.ItemViewModel = _mapper.Map<ItemViewModel>(item);
+            return View(vlvm);
         }
 
         // POST: ListingsController/Edit/5
