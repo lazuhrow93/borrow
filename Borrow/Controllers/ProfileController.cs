@@ -39,6 +39,39 @@ namespace Borrow.Controllers
             return View(pvm);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> AddItem()
+        {
+            AddItemViewModel setup = new();
+            setup.ItemsToSave = new List<NewItemViewModel>();
+            return View(setup);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddItem(AddItemViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (viewModel.ItemsToSave is null) viewModel.ItemsToSave = new List<NewItemViewModel>();
+                viewModel.ItemsToSave.Add(viewModel.NewItemViewModel);
+            }
+            return View(viewModel);
+        }
+
+        public async Task<ActionResult> SubmitItems(AddItemViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _UserManager.GetUserAsync(this.User);
+                var p = _userDataAccess.GetAppProfile(user);
+                var items = _mapper.Map<List<Item>>(viewModel.ItemsToSave);
+                _userDataAccess.InsertItem(p, items);
+            }
+
+            return View(viewModel);
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<ActionResult> EditItem(ProfileViewModel pvm)
