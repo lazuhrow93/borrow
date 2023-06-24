@@ -12,7 +12,7 @@ namespace Borrow.Data.DataAccessLayer.Interfaces
         public Neighborhood? GetNeighborhood(AppProfile appProfile);
         public List<Item> GetNeighborhoodItems(AppProfile userProfile);
         public List<Item> GetItems(AppProfile neighborhood);
-        public Item? GetItem(AppProfile userProfile, Guid id);
+        public Item? GetItem(Guid id);
         public void InsertItem(AppProfile userProfile, Item item); 
         public void InsertItem(AppProfile userProfile, List<Item> item);
         public bool DeleteItem(AppProfile userProfile, Guid itemIdentifer);

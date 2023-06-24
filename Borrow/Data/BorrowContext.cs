@@ -20,22 +20,11 @@ namespace Borrow.Data
         public DbSet<Item>? Item { get; set; }
         public DbSet<Neighborhood> Neighborhood { get; set; }
         public DbSet<AppProfile> AppProfile { get; set; }
+        public DbSet<BorrowRequest> BorrowRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<User>().HasData(
-            //    new User()
-            //    {
-            //        UserName = "lazuhrow93",
-            //        PasswordHash = "1234567899",
-            //        Email = "test@tset.com",
-            //        FirstName = "Lazaro",
-            //        LastName = "Hernandez",
-            //        PhoneNumber = "2813308004",
-            //        ProfileId = 1
-            //    }
-            //);
 
             modelBuilder.Entity<AppProfile>().HasData(
                 new AppProfile()

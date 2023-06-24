@@ -78,7 +78,7 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var p = _userDataAccess.GetAppProfile(user);
-            var itemToEdit = _userDataAccess.GetItem(p, pvm.EditItem);
+            var itemToEdit = _userDataAccess.GetItem(pvm.EditItem);
             var itemView = _mapper.Map<ItemViewModel>(itemToEdit);
             return View(itemView);
         }
@@ -109,7 +109,7 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var p = _userDataAccess.GetAppProfile(user);
-            var oldItem = _userDataAccess.GetItem(p, unlistItem);
+            var oldItem = _userDataAccess.GetItem(unlistItem);
             oldItem.Unlist();
             var newItem = oldItem;
             _userDataAccess.EditItem(p, newItem);
@@ -121,7 +121,7 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var p = _userDataAccess.GetAppProfile(user);
-            var oldItem = _userDataAccess.GetItem(p, listItem);
+            var oldItem = _userDataAccess.GetItem(listItem);
             oldItem.List();
             var newItem = oldItem;
             _userDataAccess.EditItem(p, newItem);

@@ -56,7 +56,7 @@ namespace Borrow.Data.DataAccessLayer
             return query.ToList();
         }
 
-        public Item? GetItem(AppProfile userProfile, Guid itemIdentifer)
+        public Item? GetItem(Guid itemIdentifer)
         {
             return _dbAccess.Item.SingleOrDefault(i => i.Identifier.Equals(itemIdentifer));
         }
@@ -89,7 +89,7 @@ namespace Borrow.Data.DataAccessLayer
 
         public bool DeleteItem(AppProfile userProfile, Guid itemIdentifer)
         {
-            var toDelete = GetItem(userProfile, itemIdentifer);
+            var toDelete = GetItem(itemIdentifer);
             if (toDelete is null) return false;
             _dbAccess.Remove((Item)toDelete);
             _dbAccess.SaveChanges();
@@ -106,7 +106,7 @@ namespace Borrow.Data.DataAccessLayer
         }
 
         public bool EditItem(AppProfile userProfile, Item newItem) {
-            var currentItem = GetItem(userProfile, newItem.Identifier);
+            var currentItem = GetItem(newItem.Identifier);
             if (currentItem is null) return false;
             currentItem.WeeklyRate = newItem.WeeklyRate;
             currentItem.DailyRate = newItem.DailyRate;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using AutoMapper;
+using Microsoft.Identity.Client;
 
 namespace Borrow.Models.Backend
 {
