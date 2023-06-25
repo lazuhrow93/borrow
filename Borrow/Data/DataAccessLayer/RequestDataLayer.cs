@@ -14,12 +14,12 @@ namespace Borrow.Data.DataAccessLayer
 
         public IEnumerable<BorrowRequest> Incoming(AppProfile profile)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.OwnerId.Equals(profile.OwnerId));
+            return BorrowContext.BorrowRequests.Where(r => r.OwnerKey.Equals(profile.RequestKey));
         }
 
         public IEnumerable<BorrowRequest> Outgoing(AppProfile profile)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.RequesterOwnerId.Equals(profile.OwnerId));
+            return BorrowContext.BorrowRequests.Where(r => r.RequesterKey.Equals(profile.RequestKey));
         }
 
         public void Create(BorrowRequest request)

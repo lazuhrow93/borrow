@@ -14,9 +14,8 @@ namespace Borrow.Models.Backend
     public class BorrowRequest
     {
         public int Id { get; set; }
-        public int RequestDetailsId { get; set; }
-        public int OwnerId { get; set; }
-        public int RequesterOwnerId { get; set; }
+        public Guid OwnerKey { get; set; }
+        public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }
         public Status Status { get; set; }
         public DateTime ReturnDate { get; set; }

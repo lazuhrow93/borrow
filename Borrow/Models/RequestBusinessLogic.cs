@@ -27,11 +27,11 @@ namespace Borrow.Models
         {
             var item = ItemDataLayer.Get(itemIdentifier);
             var requester = AppProfileDataLayer.Get(user.ProfileId);
+            var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
 
             var newborrowRequest = new BorrowRequest();
-            newborrowRequest.RequestDetailsId = 0;
-            newborrowRequest.OwnerId = item.OwnerId;
-            newborrowRequest.RequesterOwnerId = requester.OwnerId;
+            newborrowRequest.OwnerKey = owner.RequestKey;
+            newborrowRequest.RequesterKey = requester.RequestKey;
             newborrowRequest.ItemId = item.Id;
             newborrowRequest.CreatedAt = DateTime.UtcNow;
             newborrowRequest.UpdatedAt = DateTime.UtcNow;
