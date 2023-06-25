@@ -1,7 +1,7 @@
 ﻿using Borrow.Models.Listings;
 using System;
 
-namespace Borrow.Models.Views
+namespace Borrow.Models.Views.TableViews
 {
     public class ItemViewModel
     {

@@ -6,6 +6,7 @@ using Borrow.Models.Backend;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Borrow.Models;
 
 namespace Borrow.Controllers
 {
@@ -16,6 +17,7 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
         private readonly IMasterDL _masterDL;
+        private readonly RequestBusinessLogic RBL;
 
         public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
@@ -72,7 +74,7 @@ namespace Borrow.Controllers
                     Id = rvw.Neighborhood
                 };
 
-                if(_masterDL.NeighborhoodDL.Exist(neighborhood) == false)
+                if(_masterDL.NeighborhoodDataLayer.Exist(neighborhood) == false)
                     return View("NoNeighborhood");
 
                 var newUser = _mapper.Map<User>(rvw);
@@ -81,7 +83,7 @@ namespace Borrow.Controllers
                 if (result.Succeeded)
                 {
                     var signingIn = signInManager.SignInAsync(newUser, isPersistent: false);
-                    var currentNeighborhood = _masterDL.NeighborhoodDL.Get(neighborhood);
+                    var currentNeighborhood = _masterDL.NeighborhoodDataLayer.Get(neighborhood);
                     var appProfile = _userDataAccess.InsertAppProfile(currentNeighborhood);
                     await signingIn;
                     

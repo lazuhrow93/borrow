@@ -2,11 +2,11 @@
 
 namespace Borrow.Data.DataAccessLayer
 {
-    public class NeighborhoodDL
+    public class NeighborhoodDataLayer
     {
         private BorrowContext BorrowContext { get; set; }
 
-        public NeighborhoodDL(BorrowContext borrowContext)
+        public NeighborhoodDataLayer(BorrowContext borrowContext)
         {
             BorrowContext = borrowContext;
         }

@@ -3,6 +3,7 @@ using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Borrow.Models.Views;
+using Borrow.Models.Views.TableViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

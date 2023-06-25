@@ -2,6 +2,10 @@
 {
     public interface IMasterDL
     {
-        public NeighborhoodDL NeighborhoodDL { get; set; }
+        public NeighborhoodDataLayer NeighborhoodDataLayer { get; set; }
+        public RequestDataLayer RequestDataLayer { get; set; }
+        public ItemDataLayer ItemDataLayer { get; set; }
+        public AppProfileDataLayer AppProfileDataLayer { get; set; }
+
     }
 }
