@@ -53,7 +53,11 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> OutgoingRequests()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(this.User);
+            var ubrvm = new UserBorrowRequestsViewModel();
+            ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
+            ubrvm.Incoming = RBL.GetIncoming(user).ToList();
+            return View(ubrvm);
         }
     }
 }

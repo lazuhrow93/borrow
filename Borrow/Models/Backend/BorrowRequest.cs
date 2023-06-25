@@ -17,7 +17,7 @@ namespace Borrow.Models.Backend
         public Guid OwnerKey { get; set; }
         public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Pending;
         public DateTime ReturnDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get;set; }
