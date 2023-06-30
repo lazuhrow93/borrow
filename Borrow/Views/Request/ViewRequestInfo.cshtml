@@ -1,0 +1,23 @@
+﻿@model Borrow.Models.Views.TableViews.BorrowRequestViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Current Request</h1>
+<div>
+    <h4>Here is your Request</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Item)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDateUtc)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+    </dl>
+</div>
+<hr />

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Borrow.Models;
 using Microsoft.AspNetCore.Authorization;
 using Borrow.Data.DataAccessLayer;
+using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Controllers
 {
@@ -47,7 +48,7 @@ namespace Borrow.Controllers
             var ubrvm = new UserBorrowRequestsViewModel();
             ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
             ubrvm.Incoming = RBL.GetIncoming(user).ToList();
-            RBL.UpdateStatus(ubrvm.Incoming.Select(r => r.Id), BorrowRequest.Status.Seen); //these are incoming, so we mark them as seen
+            RBL.UpdateStatus(ubrvm.Incoming.Select(r => r.Id), BorrowRequest.RequestStatus.Viewed); //these are incoming, so we mark them as seen
             return View(ubrvm);
         }
 
@@ -59,6 +60,12 @@ namespace Borrow.Controllers
             ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
             ubrvm.Incoming = RBL.GetIncoming(user).ToList();
             return View(ubrvm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewRequestInfo(BorrowRequestViewModel RequestInformation)
+        {
+            return View(RequestInformation);
         }
     }
 }

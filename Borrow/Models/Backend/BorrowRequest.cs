@@ -6,38 +6,38 @@ namespace Borrow.Models.Backend
 
     public class BorrowRequest
     {
-        public enum Status
+        public enum RequestStatus
         {
             Pending,
-            Seen,
+            Viewed,
             Declined,
             Accepted
         }
 
         public int Id { get; set; }
-        public Guid OwnerKey { get; set; }
+        public Guid LenderKey { get; set; }
         public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }
-        public Status RequestStatus { get; set; } = Status.Pending;
+        public RequestStatus Status { get; set; } = RequestStatus.Pending;
         public DateTime ReturnDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get;set; }
 
-        public void UpdateStatus (Status newStatus)
+        public void UpdateStatus (RequestStatus newStatus)
         {
             switch (newStatus)
             {
-                case Status.Pending:
-                    this.RequestStatus = newStatus;
+                case RequestStatus.Pending:
+                    this.Status = newStatus;
                     break;
-                case Status.Seen:
-                    if (this.RequestStatus <= Status.Seen) this.RequestStatus = newStatus; //only pending can be marked to Seen...others cannot
+                case RequestStatus.Viewed:
+                    if (this.Status <= RequestStatus.Viewed) this.Status = newStatus; //only pending can be marked to Seen...others cannot
                     break;
-                case Status.Declined:
-                    this.RequestStatus = newStatus;
+                case RequestStatus.Declined:
+                    this.Status = newStatus;
                     break;
-                case Status.Accepted:
-                    this.RequestStatus = newStatus;
+                case RequestStatus.Accepted:
+                    this.Status = newStatus;
                     break;
                 default:
                     throw new NotImplementedException($"The new Status is not implemented");

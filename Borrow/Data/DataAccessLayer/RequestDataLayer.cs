@@ -14,7 +14,7 @@ namespace Borrow.Data.DataAccessLayer
 
         public IEnumerable<BorrowRequest> Incoming(AppProfile profile)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.OwnerKey.Equals(profile.RequestKey));
+            return BorrowContext.BorrowRequests.Where(r => r.LenderKey.Equals(profile.RequestKey));
         }
 
         public IEnumerable<BorrowRequest> Outgoing(AppProfile profile)

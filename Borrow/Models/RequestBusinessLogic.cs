@@ -30,7 +30,7 @@ namespace Borrow.Models
             var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
 
             var newborrowRequest = new BorrowRequest();
-            newborrowRequest.OwnerKey = owner.RequestKey;
+            newborrowRequest.LenderKey = owner.RequestKey;
             newborrowRequest.RequesterKey = requester.RequestKey;
             newborrowRequest.ItemId = item.Id;
             newborrowRequest.CreatedAt = DateTime.UtcNow;
@@ -48,10 +48,11 @@ namespace Borrow.Models
                 var item = ItemDataLayer.Get(request.ItemId);
                 listOfRequestsViews.Add(new BorrowRequestViewModel()
                 {
+                    Id = request.Id,
                     OwnerUserName = item.UserName,
                     Item = item.Name,
                     CreatedDateUtc = request.CreatedAt,
-                    Status = request.RequestStatus
+                    Status = request.Status
                 });
             }
 
@@ -72,21 +73,21 @@ namespace Borrow.Models
                     OwnerUserName = item.UserName,
                     Item = item.Name,
                     CreatedDateUtc = request.CreatedAt,
-                    Status = request.RequestStatus
+                    Status = request.Status
                 });
             }
 
             return listOfRequestsViews;
         }
 
-        public void UpdateStatus(int requestId, BorrowRequest.Status newStatus)
+        public void UpdateStatus(int requestId, BorrowRequest.RequestStatus newStatus)
         {
             var request = RequestDataLayer.Get(requestId);
-            request.RequestStatus = newStatus;
+            request.Status = newStatus;
             RequestDataLayer.Update(request);
         }
 
-        public void UpdateStatus(IEnumerable<int> ids, BorrowRequest.Status newStatus)
+        public void UpdateStatus(IEnumerable<int> ids, BorrowRequest.RequestStatus newStatus)
         {
             var requests = RequestDataLayer.Get(ids).ToList();
             for(int i = 0; i< requests.Count; i++)
