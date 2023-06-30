@@ -27,5 +27,32 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext.Add(request);
             BorrowContext.SaveChanges();
         }
+
+        public BorrowRequest? Get(int id)
+        {
+            return BorrowContext.BorrowRequests.Where(r => r.Id.Equals(id)).FirstOrDefault();
+        }
+
+        public IEnumerable<BorrowRequest> Get(IEnumerable<int> ids)
+        {
+            return BorrowContext.BorrowRequests.Where(r => ids.Contains(r.Id));
+        }
+
+        internal void Update(BorrowRequest newRequest)
+        {
+            var request = BorrowContext.BorrowRequests.Where(r => r.Id.Equals(newRequest.Id)).FirstOrDefault();
+            request = newRequest;
+            BorrowContext.SaveChanges();
+        }
+
+        internal void Update(IEnumerable<BorrowRequest> newRequest)
+        {
+            foreach(var request in newRequest)
+            {
+                var currentRequest = BorrowContext.BorrowRequests.Where(r => r.Id.Equals(request.Id)).FirstOrDefault();
+                currentRequest = request;
+                BorrowContext.SaveChanges();
+            }
+        }
     }
 }

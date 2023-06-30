@@ -47,6 +47,7 @@ namespace Borrow.Controllers
             var ubrvm = new UserBorrowRequestsViewModel();
             ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
             ubrvm.Incoming = RBL.GetIncoming(user).ToList();
+            RBL.UpdateStatus(ubrvm.Incoming.Select(r => r.Id), BorrowRequest.Status.Seen); //these are incoming, so we mark them as seen
             return View(ubrvm);
         }
 

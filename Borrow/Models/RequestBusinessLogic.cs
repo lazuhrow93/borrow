@@ -51,7 +51,7 @@ namespace Borrow.Models
                     OwnerUserName = item.UserName,
                     Item = item.Name,
                     CreatedDateUtc = request.CreatedAt,
-                    Status = request.Status
+                    Status = request.RequestStatus
                 });
             }
 
@@ -68,14 +68,30 @@ namespace Borrow.Models
                 var item = ItemDataLayer.Get(request.ItemId);
                 listOfRequestsViews.Add(new BorrowRequestViewModel()
                 {
+                    Id = request.Id,
                     OwnerUserName = item.UserName,
                     Item = item.Name,
                     CreatedDateUtc = request.CreatedAt,
-                    Status = request.Status
+                    Status = request.RequestStatus
                 });
             }
 
             return listOfRequestsViews;
+        }
+
+        public void UpdateStatus(int requestId, BorrowRequest.Status newStatus)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            request.RequestStatus = newStatus;
+            RequestDataLayer.Update(request);
+        }
+
+        public void UpdateStatus(IEnumerable<int> ids, BorrowRequest.Status newStatus)
+        {
+            var requests = RequestDataLayer.Get(ids).ToList();
+            for(int i = 0; i< requests.Count; i++)
+                requests[i].UpdateStatus(newStatus);
+            RequestDataLayer.Update(requests);
         }
     }
 }
