@@ -46,8 +46,8 @@
 <a asp-action="NeighborhoodListings" asp-controller="Listings">
     <button class="btn btn-primary">Back</button>
 </a>
-@using (Html.BeginForm("RequestItem", "Request", FormMethod.Post))
+@using (Html.BeginForm("RequestItem", "Request", FormMethod.Get))
 {
-    <button class="btn btn-primary" type="submit" name="Identifier" value=@Model.ItemViewModel.Identifier>Request to Borrow!</button>
+    <button class="btn btn-primary" type="submit" name="itemId" value=@Model.ItemViewModel.ItemId>Request to Borrow!</button>
 }
 <hr />

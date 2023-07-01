@@ -29,7 +29,7 @@ namespace Borrow.Models
             var requester = AppProfileDataLayer.Get(user.ProfileId);
             var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
 
-            var newborrowRequest = new BorrowRequest();
+            var newborrowRequest = new Request();
             newborrowRequest.LenderKey = owner.RequestKey;
             newborrowRequest.RequesterKey = requester.RequestKey;
             newborrowRequest.ItemId = item.Id;
@@ -38,15 +38,30 @@ namespace Borrow.Models
             RequestDataLayer.Create(newborrowRequest);
         }
 
-        public IEnumerable<BorrowRequestViewModel> GetIncoming(User user)
+        public void CreateRequest(int itemId, User user)
+        {
+            var item = ItemDataLayer.Get(itemId);
+            var requester = AppProfileDataLayer.Get(user.ProfileId);
+            var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
+
+            var newborrowRequest = new Request();
+            newborrowRequest.LenderKey = owner.RequestKey;
+            newborrowRequest.RequesterKey = requester.RequestKey;
+            newborrowRequest.ItemId = item.Id;
+            newborrowRequest.CreatedAt = DateTime.UtcNow;
+            newborrowRequest.UpdatedAt = DateTime.UtcNow;
+            RequestDataLayer.Create(newborrowRequest);
+        }
+
+        public IEnumerable<RequestViewModel> GetIncoming(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
             var rawRequest = RequestDataLayer.Incoming(appProfile);
-            var listOfRequestsViews = new List<BorrowRequestViewModel>();
+            var listOfRequestsViews = new List<RequestViewModel>();
             foreach(var request in rawRequest)
             {
                 var item = ItemDataLayer.Get(request.ItemId);
-                listOfRequestsViews.Add(new BorrowRequestViewModel()
+                listOfRequestsViews.Add(new RequestViewModel()
                 {
                     Id = request.Id,
                     OwnerUserName = item.UserName,
@@ -59,15 +74,15 @@ namespace Borrow.Models
             return listOfRequestsViews;
         }
 
-        public IEnumerable<BorrowRequestViewModel> GetOutGoing(User user)
+        public IEnumerable<RequestViewModel> GetOutGoing(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
             var rawRequest = RequestDataLayer.Outgoing(appProfile);
-            var listOfRequestsViews = new List<BorrowRequestViewModel>();
+            var listOfRequestsViews = new List<RequestViewModel>();
             foreach (var request in rawRequest)
             {
                 var item = ItemDataLayer.Get(request.ItemId);
-                listOfRequestsViews.Add(new BorrowRequestViewModel()
+                listOfRequestsViews.Add(new RequestViewModel()
                 {
                     Id = request.Id,
                     OwnerUserName = item.UserName,
@@ -80,19 +95,33 @@ namespace Borrow.Models
             return listOfRequestsViews;
         }
 
-        public void UpdateStatus(int requestId, BorrowRequest.RequestStatus newStatus)
+        public void UpdateStatus(int requestId, Request.RequestStatus newStatus)
         {
             var request = RequestDataLayer.Get(requestId);
             request.Status = newStatus;
             RequestDataLayer.Update(request);
         }
 
-        public void UpdateStatus(IEnumerable<int> ids, BorrowRequest.RequestStatus newStatus)
+        public void UpdateStatus(IEnumerable<int> ids, Request.RequestStatus newStatus)
         {
             var requests = RequestDataLayer.Get(ids).ToList();
             for(int i = 0; i< requests.Count; i++)
                 requests[i].UpdateStatus(newStatus);
             RequestDataLayer.Update(requests);
+        }
+
+        public RequestViewModel GetRequest(int requestId)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            var item = ItemDataLayer.Get(request.ItemId);
+            return new RequestViewModel()
+            {
+                Id = request.Id,
+                Item = item.Name,
+                OwnerUserName = item.UserName,
+                CreatedDateUtc = request.CreatedAt,
+                Status = request.Status
+            };
         }
     }
 }

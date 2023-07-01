@@ -4,7 +4,7 @@ using Microsoft.Identity.Client;
 namespace Borrow.Models.Backend
 {
 
-    public class BorrowRequest
+    public class Request
     {
         public enum RequestStatus
         {
@@ -14,11 +14,18 @@ namespace Borrow.Models.Backend
             Accepted
         }
 
+        public enum RequestType
+        {
+            Daily,
+            Weekly
+        }
+
         public int Id { get; set; }
         public Guid LenderKey { get; set; }
         public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
+        public RequestType? Type { get; set; } = RequestType.Daily;
         public DateTime ReturnDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get;set; }

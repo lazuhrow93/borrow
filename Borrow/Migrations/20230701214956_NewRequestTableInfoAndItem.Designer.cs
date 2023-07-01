@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230701214956_NewRequestTableInfoAndItem")]
+    partial class NewRequestTableInfoAndItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,7 @@ namespace Borrow.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Type")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -110,7 +113,7 @@ namespace Borrow.Migrations
                             Id = 1,
                             NeighborhoodId = 1,
                             OwnerId = 1,
-                            RequestKey = new Guid("38a89605-4021-4905-83ed-19ac7732a0ab")
+                            RequestKey = new Guid("398977fc-5476-490a-8400-5ee8aa000a6d")
                         });
                 });
 

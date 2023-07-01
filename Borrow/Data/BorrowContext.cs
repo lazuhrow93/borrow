@@ -20,7 +20,7 @@ namespace Borrow.Data
         public DbSet<Item>? Item { get; set; }
         public DbSet<Neighborhood> Neighborhood { get; set; }
         public DbSet<AppProfile> AppProfile { get; set; }
-        public DbSet<BorrowRequest> BorrowRequests { get; set; }
+        public DbSet<Request> Request { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

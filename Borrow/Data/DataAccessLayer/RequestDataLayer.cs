@@ -12,44 +12,44 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext = borrowContext;  
         }
 
-        public IEnumerable<BorrowRequest> Incoming(AppProfile profile)
+        public IEnumerable<Request> Incoming(AppProfile profile)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.LenderKey.Equals(profile.RequestKey));
+            return BorrowContext.Request.Where(r => r.LenderKey.Equals(profile.RequestKey));
         }
 
-        public IEnumerable<BorrowRequest> Outgoing(AppProfile profile)
+        public IEnumerable<Request> Outgoing(AppProfile profile)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.RequesterKey.Equals(profile.RequestKey));
+            return BorrowContext.Request.Where(r => r.RequesterKey.Equals(profile.RequestKey));
         }
 
-        public void Create(BorrowRequest request)
+        public void Create(Request request)
         {
             BorrowContext.Add(request);
             BorrowContext.SaveChanges();
         }
 
-        public BorrowRequest? Get(int id)
+        public Request? Get(int id)
         {
-            return BorrowContext.BorrowRequests.Where(r => r.Id.Equals(id)).FirstOrDefault();
+            return BorrowContext.Request.Where(r => r.Id.Equals(id)).FirstOrDefault();
         }
 
-        public IEnumerable<BorrowRequest> Get(IEnumerable<int> ids)
+        public IEnumerable<Request> Get(IEnumerable<int> ids)
         {
-            return BorrowContext.BorrowRequests.Where(r => ids.Contains(r.Id));
+            return BorrowContext.Request.Where(r => ids.Contains(r.Id));
         }
 
-        internal void Update(BorrowRequest newRequest)
+        internal void Update(Request newRequest)
         {
-            var request = BorrowContext.BorrowRequests.Where(r => r.Id.Equals(newRequest.Id)).FirstOrDefault();
+            var request = BorrowContext.Request.Where(r => r.Id.Equals(newRequest.Id)).FirstOrDefault();
             request = newRequest;
             BorrowContext.SaveChanges();
         }
 
-        internal void Update(IEnumerable<BorrowRequest> newRequest)
+        internal void Update(IEnumerable<Request> newRequest)
         {
             foreach(var request in newRequest)
             {
-                var currentRequest = BorrowContext.BorrowRequests.Where(r => r.Id.Equals(request.Id)).FirstOrDefault();
+                var currentRequest = BorrowContext.Request.Where(r => r.Id.Equals(request.Id)).FirstOrDefault();
                 currentRequest = request;
                 BorrowContext.SaveChanges();
             }

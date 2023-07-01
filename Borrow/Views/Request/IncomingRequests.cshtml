@@ -28,7 +28,7 @@
                     <td>
                         @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
                         {
-                            <button class="btn btn-primary" type="submit" name="RequestInformation" value=@item>View Request Information</button>
+                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.Id>View Request Information</button>
                         }
                     </td>
                 </tr>

@@ -33,11 +33,19 @@ namespace Borrow.Controllers
             RBL = new(masterDL, _mapper);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RequestItem(Guid Identifier)
+        [HttpGet]
+        public async Task<ActionResult> RequestItem(int itemId)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(Identifier, user);
+            RBL.CreateRequest(itemId, user);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RequestItem(RequestViewModel brvm)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            RBL.CreateRequest(brvm.ItemId, user);
             return RedirectToAction("Index", "Home");
         }
 
@@ -48,7 +56,7 @@ namespace Borrow.Controllers
             var ubrvm = new UserBorrowRequestsViewModel();
             ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
             ubrvm.Incoming = RBL.GetIncoming(user).ToList();
-            RBL.UpdateStatus(ubrvm.Incoming.Select(r => r.Id), BorrowRequest.RequestStatus.Viewed); //these are incoming, so we mark them as seen
+            
             return View(ubrvm);
         }
 
@@ -63,9 +71,12 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewRequestInfo(BorrowRequestViewModel RequestInformation)
+        public async Task<IActionResult> ViewRequestInfo(int requestId)
         {
-            return View(RequestInformation);
+            var brvm = RBL.GetRequest(requestId);
+            if (brvm == null) throw new Exception("OOPS!");
+            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
+            return View(brvm);
         }
     }
 }

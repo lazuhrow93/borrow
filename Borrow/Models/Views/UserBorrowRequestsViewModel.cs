@@ -7,7 +7,7 @@ namespace Borrow.Models.Views
     public class UserBorrowRequestsViewModel
     {
         private IMapper _mapper { get; set; }
-        public List<BorrowRequestViewModel> Outgoing { get; set; }
-        public List<BorrowRequestViewModel> Incoming { get; set; }
+        public List<RequestViewModel> Outgoing { get; set; }
+        public List<RequestViewModel> Incoming { get; set; }
     }
 }
