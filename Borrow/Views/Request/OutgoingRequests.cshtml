@@ -7,6 +7,9 @@
             <tr>
                 <th>Item</th>
                 <th>Owner</th>
+                <th>Term</th>
+                <th>Rate</th>
+                <th>Return Date</th>
                 <th>Requested Created</th>
                 <th>Status</th>
                 <th></th>
@@ -20,6 +23,15 @@
                     </td>
                     <td>
                         @item.OwnerUserName
+                    </td>
+                    <td>
+                        @item.RequestType
+                    </td>
+                    <td>
+                        @item.RequestRate
+                    </td>
+                    <td>
+                        @item.ReturnDate
                     </td>
                     <td>
                         @item.CreatedDateUtc

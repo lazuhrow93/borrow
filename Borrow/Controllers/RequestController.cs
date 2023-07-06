@@ -36,16 +36,16 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> RequestItem(int itemId)
         {
-            var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(itemId, user);
-            return RedirectToAction("Index", "Home");
+            RequestViewModel rvm = new();
+            rvm.Initialize(_masterDL.ItemDataLayer.Get(itemId));
+            return View(rvm);
         }
 
         [HttpPost]
-        public async Task<ActionResult> RequestItem(RequestViewModel brvm)
+        public async Task<ActionResult> RequestItem(RequestViewModel rvm)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(brvm.ItemId, user);
+            RBL.CreateRequest(rvm.ItemId, rvm.RequestType, rvm.RequestRate, rvm.ReturnDate, user);
             return RedirectToAction("Index", "Home");
         }
 

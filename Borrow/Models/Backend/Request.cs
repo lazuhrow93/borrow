@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.Identity.Client;
-
-namespace Borrow.Models.Backend
+﻿namespace Borrow.Models.Backend
 {
 
-    public class Request
+    public class Request : Data
     {
         public enum RequestStatus
         {
@@ -26,9 +23,8 @@ namespace Borrow.Models.Backend
         public int ItemId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
         public RequestType? Type { get; set; } = RequestType.Daily;
+        public Decimal Rate { get; set; } = 0.0M;
         public DateTime ReturnDate { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get;set; }
 
         public void UpdateStatus (RequestStatus newStatus)
         {

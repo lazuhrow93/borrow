@@ -5,6 +5,7 @@ using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views.TableViews;
+using Borrow.Models.Backend;
 
 namespace Borrow.Models
 {
@@ -23,33 +24,25 @@ namespace Borrow.Models
             Mapper = mapper;
         }
 
-        public void CreateRequest(Guid itemIdentifier, User user)
-        {
-            var item = ItemDataLayer.Get(itemIdentifier);
-            var requester = AppProfileDataLayer.Get(user.ProfileId);
-            var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
-
-            var newborrowRequest = new Request();
-            newborrowRequest.LenderKey = owner.RequestKey;
-            newborrowRequest.RequesterKey = requester.RequestKey;
-            newborrowRequest.ItemId = item.Id;
-            newborrowRequest.CreatedAt = DateTime.UtcNow;
-            newborrowRequest.UpdatedAt = DateTime.UtcNow;
-            RequestDataLayer.Create(newborrowRequest);
-        }
-
-        public void CreateRequest(int itemId, User user)
+        public void CreateRequest(int itemId, Request.RequestType Type, Decimal Rate, DateTime ReturnDate, User user)
         {
             var item = ItemDataLayer.Get(itemId);
-            var requester = AppProfileDataLayer.Get(user.ProfileId);
-            var owner = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
+            var Requester = AppProfileDataLayer.Get(user.ProfileId);
+            var Lender = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
 
             var newborrowRequest = new Request();
-            newborrowRequest.LenderKey = owner.RequestKey;
-            newborrowRequest.RequesterKey = requester.RequestKey;
+            newborrowRequest.LenderKey = Lender.RequestKey;
+            newborrowRequest.RequesterKey = Requester.RequestKey;
             newborrowRequest.ItemId = item.Id;
-            newborrowRequest.CreatedAt = DateTime.UtcNow;
-            newborrowRequest.UpdatedAt = DateTime.UtcNow;
+            newborrowRequest.Type = Type;
+            newborrowRequest.Rate = Rate;
+            newborrowRequest.ReturnDate = ReturnDate;
+
+            var now = DateTime.UtcNow;
+            newborrowRequest.TrackingId = Guid.NewGuid();
+            newborrowRequest.UpdatedBy = $"CreateRequest(int, RequestType, Decimal, User)";
+            newborrowRequest.UpdateDateUtc = now;
+            newborrowRequest.CreatedDateUtc = now;
             RequestDataLayer.Create(newborrowRequest);
         }
 
@@ -66,7 +59,7 @@ namespace Borrow.Models
                     Id = request.Id,
                     OwnerUserName = item.UserName,
                     Item = item.Name,
-                    CreatedDateUtc = request.CreatedAt,
+                    CreatedDateUtc = request.CreatedDateUtc,
                     Status = request.Status
                 });
             }
@@ -87,7 +80,9 @@ namespace Borrow.Models
                     Id = request.Id,
                     OwnerUserName = item.UserName,
                     Item = item.Name,
-                    CreatedDateUtc = request.CreatedAt,
+                    RequestRate = request.Rate,
+                    ReturnDate = request.ReturnDate,
+                    CreatedDateUtc = request.CreatedDateUtc,
                     Status = request.Status
                 });
             }
@@ -119,7 +114,7 @@ namespace Borrow.Models
                 Id = request.Id,
                 Item = item.Name,
                 OwnerUserName = item.UserName,
-                CreatedDateUtc = request.CreatedAt,
+                CreatedDateUtc = request.CreatedDateUtc,
                 Status = request.Status
             };
         }
