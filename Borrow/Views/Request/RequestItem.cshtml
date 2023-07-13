@@ -3,7 +3,7 @@
     ViewBag.Title = "CreateOffer";
 }
 
-<h1>Create Your Offer for @Model.Item! </h1>
+<h1>Create Your Offer for @Model.ItemName! </h1>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form method="post" asp-action="RequestItem">
     <div class="form-group row">
@@ -45,5 +45,5 @@
         </div>
     </div>
     @Html.HiddenFor(m=>m.ItemId);
-    @Html.HiddenFor(m=>m.Item);
+    @Html.HiddenFor(m=>m.ItemName);
 </form>

@@ -6,6 +6,7 @@ using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views.TableViews;
 using Borrow.Models.Backend;
+using Borrow.Models.Listings;
 
 namespace Borrow.Models
 {
@@ -49,19 +50,14 @@ namespace Borrow.Models
         public IEnumerable<RequestViewModel> GetIncoming(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var rawRequest = RequestDataLayer.Incoming(appProfile);
+            var rawRequests = RequestDataLayer.Incoming(appProfile);
             var listOfRequestsViews = new List<RequestViewModel>();
-            foreach(var request in rawRequest)
+            foreach(var rawRequest in rawRequests)
             {
-                var item = ItemDataLayer.Get(request.ItemId);
-                listOfRequestsViews.Add(new RequestViewModel()
-                {
-                    Id = request.Id,
-                    OwnerUserName = item.UserName,
-                    Item = item.Name,
-                    CreatedDateUtc = request.CreatedDateUtc,
-                    Status = request.Status
-                });
+                var item = ItemDataLayer.Get(rawRequest.ItemId);
+
+                var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
+                Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
             }
 
             return listOfRequestsViews;
@@ -70,21 +66,16 @@ namespace Borrow.Models
         public IEnumerable<RequestViewModel> GetOutGoing(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var rawRequest = RequestDataLayer.Outgoing(appProfile);
+            var rawRequests = RequestDataLayer.Outgoing(appProfile);
             var listOfRequestsViews = new List<RequestViewModel>();
-            foreach (var request in rawRequest)
+            foreach (var rawRequest in rawRequests)
             {
-                var item = ItemDataLayer.Get(request.ItemId);
-                listOfRequestsViews.Add(new RequestViewModel()
-                {
-                    Id = request.Id,
-                    OwnerUserName = item.UserName,
-                    Item = item.Name,
-                    RequestRate = request.Rate,
-                    ReturnDate = request.ReturnDate,
-                    CreatedDateUtc = request.CreatedDateUtc,
-                    Status = request.Status
-                });
+                var item = ItemDataLayer.Get(rawRequest.ItemId);
+
+                var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
+                Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
+
+                listOfRequestsViews.Add(manual);
             }
 
             return listOfRequestsViews;
@@ -111,8 +102,8 @@ namespace Borrow.Models
             var item = ItemDataLayer.Get(request.ItemId);
             return new RequestViewModel()
             {
-                Id = request.Id,
-                Item = item.Name,
+                RequestId = request.Id,
+                ItemName = item.Name,
                 OwnerUserName = item.UserName,
                 CreatedDateUtc = request.CreatedDateUtc,
                 Status = request.Status

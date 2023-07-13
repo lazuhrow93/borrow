@@ -16,7 +16,7 @@
                 var item = Model.Incoming[i];
                 <tr>
                     <td>
-                        @item.Item
+                        @item.ItemName
                     </td>
                     <td>
                         @item.CreatedDateUtc
@@ -28,7 +28,7 @@
                     <td>
                         @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
                         {
-                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.Id>View Request Information</button>
+                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Request Information</button>
                         }
                     </td>
                 </tr>
