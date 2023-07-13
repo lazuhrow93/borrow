@@ -58,6 +58,7 @@ namespace Borrow.Models
 
                 var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
                 Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
+                listOfRequestsViews.Add(mapperrvm);
             }
 
             return listOfRequestsViews;
@@ -75,7 +76,7 @@ namespace Borrow.Models
                 var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
                 Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
 
-                listOfRequestsViews.Add(manual);
+                listOfRequestsViews.Add(mapperrvm);
             }
 
             return listOfRequestsViews;
