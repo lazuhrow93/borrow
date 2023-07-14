@@ -2,8 +2,6 @@
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
-using Borrow.Models.Backend;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Borrow.Models;
@@ -71,12 +69,36 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ViewRequestInfo(int requestId)
+        public IActionResult ViewRequestInfo(int requestId)
         {
-            var brvm = RBL.GetRequest(requestId);
-            if (brvm == null) throw new Exception("OOPS!");
-            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
-            return View(brvm);
+            var rvm = RBL.GetRequest(requestId);
+            if (rvm == null) throw new Exception("OOPS!");
+            RBL.UpdateStatus(requestId, Borrow.Models.Backend.Request.RequestStatus.Viewed);
+            return View(rvm);
+        }
+
+        [HttpGet]
+        public IActionResult CounterOffer(int requestId)
+        {
+            var rvm = RBL.GetRequest(requestId);
+            var covm = new CounterOfferViewModel();
+            covm.ItemName = rvm.ItemName;
+            covm.RequestId = rvm.RequestId;
+            return View(covm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CounterOffer(CounterOfferViewModel covm)
+        {
+            RBL.CounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Accepted(int requestId)
+        {
+            return View();
         }
     }
 }

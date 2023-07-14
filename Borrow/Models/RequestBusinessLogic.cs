@@ -101,14 +101,18 @@ namespace Borrow.Models
         {
             var request = RequestDataLayer.Get(requestId);
             var item = ItemDataLayer.Get(request.ItemId);
-            return new RequestViewModel()
-            {
-                RequestId = request.Id,
-                ItemName = item.Name,
-                OwnerUserName = item.UserName,
-                CreatedDateUtc = request.CreatedDateUtc,
-                Status = request.Status
-            };
+            var rvm = Mapper.Map<Request, RequestViewModel>(request);
+            Mapper.Map<Item, RequestViewModel>(item, rvm);
+            return rvm;
+        }
+
+        public void CounterOfferRequest(int requestId, Request.RequestType NewRate, decimal NewMoney)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            request.CounterRate = NewMoney;
+            request.CounterType = NewRate;
+            RequestDataLayer.Update(request);
+            request.UpdateStatus(Request.RequestStatus.Counter);
         }
     }
 }
