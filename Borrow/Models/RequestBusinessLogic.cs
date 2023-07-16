@@ -123,5 +123,10 @@ namespace Borrow.Models
             request.UpdateStatus(Request.RequestStatus.RequesterCounter);
             RequestDataLayer.Update(request);
         }
+
+        internal void DeclineRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

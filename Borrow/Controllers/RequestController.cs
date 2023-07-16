@@ -8,6 +8,7 @@ using Borrow.Models;
 using Microsoft.AspNetCore.Authorization;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Models.Views.TableViews;
+using Microsoft.Build.Framework;
 
 namespace Borrow.Controllers
 {
@@ -123,6 +124,13 @@ namespace Borrow.Controllers
         public async Task<IActionResult> RequesterCounterOffer(CounterOfferViewModel covm)
         {
             RBL.RequesterCounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeclineRequest(int requestId)
+        {
+            RBL.DeclineRequest(requestId);
             return RedirectToAction("Index", "Home");
         }
     }

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 @if (Model.Status.Equals(Request.RequestStatus.OwnerCounter))
 {
     <h1>@Model.OwnerUserName suggests a different rate:</h1>
@@ -48,7 +49,21 @@ else
     {
         <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
     }
-    @using (Html.BeginForm("RequesterCounterOffer"))
+    @if (Model.Status.Equals(Request.RequestStatus.OwnerCounter))
+    {
+        @using (Html.BeginForm("CounterOffer", "Request"))
+        {
+            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
+        }
+    }
+    else
+    {
+        @using (Html.BeginForm("RequesterCounterOffer", "Request"))
+        {
+            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
+        }
+    }
+    @using (Html.BeginForm("DeclineRequest", "Request", FormMethod.Post))
     {
         <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
     }
