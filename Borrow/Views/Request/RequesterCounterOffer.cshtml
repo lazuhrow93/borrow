@@ -1,0 +1,37 @@
+﻿@model Borrow.Models.Views.CounterOfferViewModel
+@{
+    ViewBag.Title = "CounterOffer";
+}
+
+<h1>Create Your Counter Offer for @Model.ItemName! </h1>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post" asp-action="RequesterCounterOffer">
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Select a Rate:</label></div>
+        <div class="col-sm-4">
+            <select asp-for="CounterRate" asp-items="Html.GetEnumSelectList<Request.RequestType>()"></select>
+        </div>
+        <div class="col">
+            <span asp-validation-for="CounterRate"
+                  class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2"><label>New Price:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="CounterMoney" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="CounterMoney"
+                  class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Submit Offer</button>
+        </div>
+    </div>
+    @Html.HiddenFor(m=>m.RequestId);
+</form>

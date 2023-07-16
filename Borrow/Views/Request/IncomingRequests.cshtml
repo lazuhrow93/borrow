@@ -8,6 +8,7 @@
                 <th>Item</th>
                 <th>Requested Created</th>
                 <th>Requested Rate</th>
+                <th>Counter Rate</th>
                 <th>Status</th>
                 <th>Action</th>
                 <th></th>
@@ -26,13 +27,36 @@
                         @item.RateView
                     </td>
                     <td>
+                        @item.CounterRateView
+                    </td>
+                    <td>
                         @item.Status
                     </td>
 
                     <td>
-                        @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
+                        @if (item.RequesterNeedsAction())
                         {
-                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Request Information</button>
+                            if (item.Status.Equals(Request.RequestStatus.RequesterCounter))
+                            {
+                                @using (Html.BeginForm("ViewCounterOffer", "Request", FormMethod.Get))
+                                {
+                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Requester's Counter Offer</button>
+                                }
+                            }
+                            else if (item.Status.Equals(Request.RequestStatus.Accepted))
+                            {
+                                @using (Html.BeginForm("MeetUpSpot", "MeetUp", FormMethod.Get))
+                                {
+                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meet</button>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
+                            {
+                                <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Request Information</button>
+                            }
                         }
                     </td>
                 </tr>

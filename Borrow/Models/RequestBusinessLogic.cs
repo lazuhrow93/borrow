@@ -111,8 +111,17 @@ namespace Borrow.Models
             var request = RequestDataLayer.Get(requestId);
             request.CounterRate = NewMoney;
             request.CounterType = NewRate;
+            request.UpdateStatus(Request.RequestStatus.OwnerCounter);
             RequestDataLayer.Update(request);
-            request.UpdateStatus(Request.RequestStatus.Counter);
+        }
+
+        internal void RequesterCounterOfferRequest(int requestId, Request.RequestType counterRate, decimal counterMoney)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            request.Type = counterRate;
+            request.Rate = counterMoney;
+            request.UpdateStatus(Request.RequestStatus.RequesterCounter);
+            RequestDataLayer.Update(request);
         }
     }
 }

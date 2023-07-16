@@ -7,9 +7,11 @@
         {
             Pending,
             Viewed,
-            Counter,
+            OwnerCounter,
+            RequesterCounter,
             Declined,
-            Accepted
+            Accepted,
+            Expired
         }
 
         public enum RequestType
@@ -39,7 +41,7 @@
                 case RequestStatus.Viewed:
                     if (this.Status <= RequestStatus.Viewed) this.Status = newStatus; //only pending can be marked to Seen...others cannot
                     break;
-                case RequestStatus.Counter:
+                case RequestStatus.OwnerCounter:
                     this.Status = newStatus;
                     break;
                 case RequestStatus.Declined:

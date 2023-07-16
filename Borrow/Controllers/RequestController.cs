@@ -96,9 +96,34 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Accepted(int requestId)
+        public async Task<IActionResult> AcceptOffer(int requestId)
         {
-            return View();
+            return RedirectToAction("MeetUpSpot", "MeetUp");
+        }
+
+        [HttpGet] 
+        public async Task<IActionResult> ViewCounterOffer(int requestId)
+        {
+            var request = RBL.GetRequest(requestId);
+            if (request is null) throw new Exception($"OOPS");
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RequesterCounterOffer(int requestId)
+        {
+            var rvm = RBL.GetRequest(requestId);
+            var covm = new CounterOfferViewModel();
+            covm.ItemName = rvm.ItemName;
+            covm.RequestId = rvm.RequestId;
+            return View(covm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RequesterCounterOffer(CounterOfferViewModel covm)
+        {
+            RBL.RequesterCounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

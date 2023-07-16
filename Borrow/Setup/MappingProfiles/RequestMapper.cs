@@ -17,6 +17,8 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.ItemId, o => o.MapFrom(src => src.ItemId))
                 .ForMember(dest => dest.RequestRate, o => o.MapFrom(src => src.Rate))
                 .ForMember(dest => dest.RequestType, o => o.MapFrom(src => src.Type))
+                .ForMember(dest => dest.CounterRate, o => o.MapFrom(src => src.CounterRate))
+                .ForMember(dest => dest.CounterType, o => o.MapFrom(src => src.CounterType))
                 .ForMember(dest => dest.ReturnDate, o => o.MapFrom(src => src.ReturnDate))
                 .ForMember(dest => dest.CreatedDateUtc, o => o.MapFrom(src => src.CreatedDateUtc))
                 .ForMember(dest => dest.Status, o => o.MapFrom(src => src.Status));
