@@ -106,6 +106,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> RequesterConfirmed(int requestId)
         {
+            RBL.RequesterConfirmed(requestId);
             return RedirectToAction("MeetUpSpot", "MeetUp");
         }
 
