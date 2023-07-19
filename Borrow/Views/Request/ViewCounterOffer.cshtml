@@ -1,7 +1,7 @@
 ﻿@model Borrow.Models.Views.TableViews.RequestViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Index";
 }
 
 @if (Model.Status.Equals(Request.RequestStatus.OwnerCounter))
@@ -51,21 +51,21 @@ else
     }
     @if (Model.Status.Equals(Request.RequestStatus.OwnerCounter))
     {
-        @using (Html.BeginForm("CounterOffer", "Request"))
+        @using (Html.BeginForm("RequesterCounterOffer", "Request", FormMethod.Get))
         {
             <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
         }
     }
     else
     {
-        @using (Html.BeginForm("RequesterCounterOffer", "Request"))
+        @using (Html.BeginForm("CounterOffer", "Request", FormMethod.Get))
         {
             <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
         }
     }
     @using (Html.BeginForm("DeclineRequest", "Request", FormMethod.Post))
     {
-        <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Counter?</button>
+        <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
     }
 </div>
 <hr />

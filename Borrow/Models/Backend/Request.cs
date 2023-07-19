@@ -9,8 +9,10 @@
             Viewed,
             OwnerCounter,
             RequesterCounter,
-            Declined,
+            RequesterConfirmed,
+            OwnerConfirmed,
             Accepted,
+            Declined,
             Expired
         }
 
@@ -40,6 +42,9 @@
                     break;
                 case RequestStatus.Viewed:
                     if (this.Status <= RequestStatus.Viewed) this.Status = newStatus; //only pending can be marked to Seen...others cannot
+                    break;
+                case RequestStatus.RequesterCounter:
+                    this.Status = newStatus;
                     break;
                 case RequestStatus.OwnerCounter:
                     this.Status = newStatus;

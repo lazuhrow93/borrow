@@ -115,12 +115,26 @@ namespace Borrow.Models
             RequestDataLayer.Update(request);
         }
 
-        internal void RequesterCounterOfferRequest(int requestId, Request.RequestType counterRate, decimal counterMoney)
+        public void RequesterCounterOfferRequest(int requestId, Request.RequestType counterRate, decimal counterMoney)
         {
             var request = RequestDataLayer.Get(requestId);
             request.Type = counterRate;
             request.Rate = counterMoney;
             request.UpdateStatus(Request.RequestStatus.RequesterCounter);
+            RequestDataLayer.Update(request);
+        }
+
+        public void RequesterConfirmed(int requestId)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            request.UpdateStatus(Request.RequestStatus.RequesterConfirmed);
+            RequestDataLayer.Update(request);
+        }
+
+        public void OwnerConfirmed(int requestId)
+        {
+            var request = RequestDataLayer.Get(requestId);
+            request.UpdateStatus(Request.RequestStatus.OwnerConfirmed);
             RequestDataLayer.Update(request);
         }
 

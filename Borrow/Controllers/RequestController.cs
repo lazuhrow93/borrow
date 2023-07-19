@@ -96,8 +96,15 @@ namespace Borrow.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> OwnerAccept(int requestId)
+        {
+            RBL.OwnerConfirmed(requestId);
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
-        public async Task<IActionResult> AcceptOffer(int requestId)
+        public async Task<IActionResult> RequesterConfirmed(int requestId)
         {
             return RedirectToAction("MeetUpSpot", "MeetUp");
         }
@@ -110,6 +117,8 @@ namespace Borrow.Controllers
             return View(request);
         }
 
+        #region Requester Counter
+
         [HttpGet]
         public async Task<IActionResult> RequesterCounterOffer(int requestId)
         {
@@ -120,13 +129,16 @@ namespace Borrow.Controllers
             return View(covm);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> RequesterCounterOffer(CounterOfferViewModel covm)
         {
             RBL.RequesterCounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
             return RedirectToAction("Index", "Home");
         }
 
+
+        #endregion
+        
         [HttpPost]
         public async Task<IActionResult> DeclineRequest(int requestId)
         {

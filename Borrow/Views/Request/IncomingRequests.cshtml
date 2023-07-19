@@ -34,7 +34,7 @@
                     </td>
 
                     <td>
-                        @if (item.RequesterNeedsAction())
+                        @if (item.OwnerNeedsAction())
                         {
                             if (item.Status.Equals(Request.RequestStatus.RequesterCounter))
                             {
