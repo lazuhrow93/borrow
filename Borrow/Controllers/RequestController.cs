@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Models.Views.TableViews;
 using Microsoft.Build.Framework;
+using Borrow.Models.Views.TableViews.Create;
 
 namespace Borrow.Controllers
 {
@@ -35,17 +36,17 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> RequestItem(int itemId)
         {
-            RequestViewModel rvm = new();
-            rvm.Initialize(_masterDL.ItemDataLayer.Get(itemId));
-            return View(rvm);
+            CreateRequestViewModel crvm = new();
+            crvm.Init(_masterDL.ItemDataLayer.Get(itemId));
+            return View(crvm);
         }
 
         [HttpPost]
-        public async Task<ActionResult> RequestItem(RequestViewModel rvm)
+        public async Task<ActionResult> RequestItem(CreateRequestViewModel crvm)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(rvm.ItemId, rvm.RequestType, rvm.RequestRate, rvm.ReturnDate, user);
-            return RedirectToAction("Index", "Home");
+            RBL.CreateRequest(crvm.ItemId, crvm.RequestType, crvm.RequestRate, crvm.ReturnDateUtc, user);
+            return RedirectToAction("Index", "Home"); //TODO: Redirect to the current outgoing requests
         }
 
         [HttpGet]
@@ -78,67 +79,12 @@ namespace Borrow.Controllers
             return View(rvm);
         }
 
-        [HttpGet]
-        public IActionResult CounterOffer(int requestId)
-        {
-            var rvm = RBL.GetRequest(requestId);
-            var covm = new CounterOfferViewModel();
-            covm.ItemName = rvm.ItemName;
-            covm.RequestId = rvm.RequestId;
-            return View(covm);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CounterOffer(CounterOfferViewModel covm)
-        {
-            RBL.CounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
-
-            return RedirectToAction("Index", "Home");
-        }
-
         [HttpPost]
         public async Task<IActionResult> OwnerAccept(int requestId)
         {
             RBL.OwnerConfirmed(requestId);
             return RedirectToAction("Index", "Home");
         }
-
-        [HttpGet]
-        public async Task<IActionResult> RequesterConfirmed(int requestId)
-        {
-            RBL.RequesterConfirmed(requestId);
-            return RedirectToAction("MeetUpSpot", "MeetUp");
-        }
-
-        [HttpGet] 
-        public async Task<IActionResult> ViewCounterOffer(int requestId)
-        {
-            var request = RBL.GetRequest(requestId);
-            if (request is null) throw new Exception($"OOPS");
-            return View(request);
-        }
-
-        #region Requester Counter
-
-        [HttpGet]
-        public async Task<IActionResult> RequesterCounterOffer(int requestId)
-        {
-            var rvm = RBL.GetRequest(requestId);
-            var covm = new CounterOfferViewModel();
-            covm.ItemName = rvm.ItemName;
-            covm.RequestId = rvm.RequestId;
-            return View(covm);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RequesterCounterOffer(CounterOfferViewModel covm)
-        {
-            RBL.RequesterCounterOfferRequest(covm.RequestId, covm.CounterRate, covm.CounterMoney);
-            return RedirectToAction("Index", "Home");
-        }
-
-
-        #endregion
         
         [HttpPost]
         public async Task<IActionResult> DeclineRequest(int requestId)
