@@ -1,0 +1,28 @@
+﻿@model Borrow.Models.Views.TableViews.RequestViewModel
+
+@{
+    ViewData["Title"] = "Meet up Spot Page";
+}
+
+
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager
+@if (signInManager.IsSignedIn(User))
+{
+
+    <div class="text-center">
+        <h1 class="display-4">You're about to lend the item @Model.ItemName</h1>
+        @using (Html.BeginForm("ConfirmRequest", "Request", FormMethod.Post))
+        {
+            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Confirm</button>
+        }
+    </div>
+}
+else{
+
+    <div class="text-center">
+        <h1 class="display-4">Uh oh! Something went wrong. Please sign in again.</h1>
+    </div>
+}
+

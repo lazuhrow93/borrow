@@ -106,41 +106,22 @@ namespace Borrow.Models
             return rvm;
         }
 
-        public void CounterOfferRequest(int requestId, Request.RequestType NewRate, decimal NewMoney)
+        public void OwnerAcceptRequest(int requestId)
         {
             var request = RequestDataLayer.Get(requestId);
-            request.CounterRate = NewMoney;
-            request.CounterType = NewRate;
-            request.UpdateStatus(Request.RequestStatus.OwnerCounter);
-            RequestDataLayer.Update(request);
-        }
-
-        public void RequesterCounterOfferRequest(int requestId, Request.RequestType counterRate, decimal counterMoney)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            request.Type = counterRate;
-            request.Rate = counterMoney;
-            request.UpdateStatus(Request.RequestStatus.RequesterCounter);
-            RequestDataLayer.Update(request);
-        }
-
-        public void RequesterConfirmed(int requestId)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            request.UpdateStatus(Request.RequestStatus.RequesterConfirmed);
-            RequestDataLayer.Update(request);
-        }
-
-        public void OwnerConfirmed(int requestId)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            request.UpdateStatus(Request.RequestStatus.OwnerConfirmed);
+            var item = ItemDataLayer.Get(request.ItemId);
+            item.Available = false;
+            ItemDataLayer.Update(item);
+            request.UpdateStatus(Request.RequestStatus.Accepted);
             RequestDataLayer.Update(request);
         }
 
         internal void DeclineRequest(int requestId)
         {
-            throw new NotImplementedException();
+            var request = RequestDataLayer.Get(requestId);
+            request.UpdateStatus(Request.RequestStatus.Declined);
+            RequestDataLayer.Update(request);
         }
+
     }
 }

@@ -22,5 +22,14 @@ namespace Borrow.Data.DataAccessLayer
         {
             return BorrowContext.Item.Where(i=>i.Id == id).FirstOrDefault();
         }
+
+        public bool Update(Item newItem)
+        {
+            var currentItem = BorrowContext.Item.Where(i=>i.Id == newItem.Id).FirstOrDefault();
+            if (currentItem == null) return false;
+            currentItem = newItem;
+            BorrowContext.SaveChanges();
+            return true;
+        }
     }
 }

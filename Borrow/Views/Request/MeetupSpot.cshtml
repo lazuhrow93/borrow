@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Borrow.Models.Views.TableViews.RequestViewModel
+@{
     ViewData["Title"] = "Meet up Spot Page";
 }
 
@@ -10,7 +11,7 @@
 {
     
     <div class="text-center">
-        <h1 class="display-4">Lets meet up! </h1>
+        <h1 class="display-4">Lets meet up to exchange @Model.ItemName!</h1>
     </div>
 }
 else{

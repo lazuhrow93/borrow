@@ -79,18 +79,34 @@ namespace Borrow.Controllers
             return View(rvm);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OwnerAccept(int requestId)
+        [HttpGet]
+        public IActionResult AcceptRequest(int requestId)
         {
-            RBL.OwnerConfirmed(requestId);
-            return RedirectToAction("Index", "Home");
+            var rvm = RBL.GetRequest(requestId);
+            return View(rvm);
         }
-        
+
         [HttpPost]
-        public async Task<IActionResult> DeclineRequest(int requestId)
+        public IActionResult ConfirmRequest(int requestId)
+        {
+            RBL.OwnerAcceptRequest(requestId);
+            var rvm = RBL.GetRequest(requestId);
+            return View("MeetupSpot", rvm);
+        }
+
+        [HttpPost]
+        public IActionResult DeclineRequest(int requestId)
         {
             RBL.DeclineRequest(requestId);
-            return RedirectToAction("Index", "Home");
+            return View(requestId);
+        }
+
+        [HttpGet]
+        public IActionResult MeetupSpot(int requestId)
+        {
+            RBL.OwnerAcceptRequest(requestId);
+            var rvm = RBL.GetRequest(requestId);
+            return View(rvm);
         }
     }
 }

@@ -27,27 +27,24 @@
                         @item.RateView
                     </td>
                     <td>
-                        @item.CounterRateView
-                    </td>
-                    <td>
                         @item.Status
                     </td>
 
                     <td>
                         @if (item.OwnerNeedsAction())
                         {
-                            if (item.Status.Equals(Request.RequestStatus.RequesterCounter))
+                            if (!item.Status.Equals(Request.RequestStatus.Accepted))
                             {
-                                @using (Html.BeginForm("ViewCounterOffer", "Request", FormMethod.Get))
+                                @using (Html.BeginForm("AcceptRequest", "Request", FormMethod.Get))
                                 {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Requester's Counter Offer</button>
+                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Accept Offer?</button>
                                 }
                             }
                             else if (item.Status.Equals(Request.RequestStatus.Accepted))
                             {
-                                @using (Html.BeginForm("MeetUpSpot", "MeetUp", FormMethod.Get))
+                                @using (Html.BeginForm("MeetUpSpot", "Request", FormMethod.Get))
                                 {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meet</button>
+                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meeting Spot!</button>
                                 }
                             }
                         }

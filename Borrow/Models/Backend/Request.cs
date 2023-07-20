@@ -7,10 +7,6 @@
         {
             Pending,
             Viewed,
-            OwnerCounter,
-            RequesterCounter,
-            RequesterConfirmed,
-            OwnerConfirmed,
             Accepted,
             Declined,
             Expired
@@ -19,8 +15,8 @@
         public enum RequestType
         {
             Daily,
-            Weekly
-        }
+                    Weekly
+}
 
         public int Id { get; set; }
         public Guid LenderKey { get; set; }
@@ -42,12 +38,6 @@
                     break;
                 case RequestStatus.Viewed:
                     if (this.Status <= RequestStatus.Viewed) this.Status = newStatus; //only pending can be marked to Seen...others cannot
-                    break;
-                case RequestStatus.RequesterCounter:
-                    this.Status = newStatus;
-                    break;
-                case RequestStatus.OwnerCounter:
-                    this.Status = newStatus;
                     break;
                 case RequestStatus.Declined:
                     this.Status = newStatus;

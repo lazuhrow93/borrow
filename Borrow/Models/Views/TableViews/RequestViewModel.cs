@@ -10,11 +10,8 @@ namespace Borrow.Models.Views.TableViews
         public string ItemName { get; set; }
         public Request.RequestType RequestType { get; set; }
         public decimal RequestRate { get; set; }
-        public Request.RequestType CounterType { get; set; }
-        public decimal CounterRate { get; set; }
         public DateTime ReturnDate { get; set; }
         public string RateView { get => $"{RequestRate}/{RequestType}"; set => RateView = value; }
-        public string CounterRateView { get => $"{CounterRate}/{CounterType}"; set => CounterRateView = value; }
         public string OwnerUserName { get; set; }
         public DateTime CreatedDateUtc { get; set; }
         public Request.RequestStatus Status { get; set; }
@@ -27,14 +24,15 @@ namespace Borrow.Models.Views.TableViews
 
         public bool RequesterNeedsAction()
         {
-            if (Status.Equals(Request.RequestStatus.OwnerCounter) || Status.Equals(Request.RequestStatus.Accepted))
+            if (Status.Equals(Request.RequestStatus.Accepted))
                 return true;
             return false;
         }
 
         public bool OwnerNeedsAction()
         {
-            if (Status.Equals(Request.RequestStatus.RequesterCounter) || Status.Equals(Request.RequestStatus.Accepted))
+            if (Status.Equals(Request.RequestStatus.Pending) || Status.Equals(Request.RequestStatus.Viewed) || 
+                Status.Equals(Request.RequestStatus.Accepted))
                 return true;
             return false;
         }
