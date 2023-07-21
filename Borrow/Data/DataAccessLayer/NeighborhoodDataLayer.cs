@@ -1,4 +1,5 @@
 ﻿using Borrow.Models.Backend;
+using Borrow.Models.Identity;
 
 namespace Borrow.Data.DataAccessLayer
 {
@@ -26,6 +27,11 @@ namespace Borrow.Data.DataAccessLayer
         public Neighborhood? Get(Neighborhood neighborhood)
         {
             return BorrowContext.Neighborhood.Where(n => n.Id.Equals(neighborhood.Id)).FirstOrDefault();
+        }
+
+        public Neighborhood? Get(AppProfile profile)
+        {
+            return BorrowContext.Neighborhood.Where(n=>n.Id.Equals(profile.NeighborhoodId)).FirstOrDefault();
         }
     }
 }

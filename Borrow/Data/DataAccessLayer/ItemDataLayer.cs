@@ -1,4 +1,6 @@
 ﻿using Borrow.Migrations;
+using Borrow.Models.Backend;
+using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using System;
 
@@ -21,6 +23,11 @@ namespace Borrow.Data.DataAccessLayer
         public Item? Get(int id)
         {
             return BorrowContext.Item.Where(i=>i.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<Item>? Get(Neighborhood neighborhood)
+        {
+            return BorrowContext.Item.Where(i => i.NeighborhoodId.Equals(neighborhood.Id));
         }
 
         public bool Update(Item newItem)

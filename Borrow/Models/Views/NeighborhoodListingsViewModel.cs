@@ -17,7 +17,7 @@ namespace Borrow.Models.Views
             _mapper = mapper;
         }
 
-        internal void OrganizeItems(List<Item> neighborhoodItems)
+        internal void OrganizeItems(IEnumerable<Item> neighborhoodItems)
         {
             var listed = neighborhoodItems.Where(i => i.IsListed == true);
             var unlisted = neighborhoodItems.Where(i => i.IsListed == false);

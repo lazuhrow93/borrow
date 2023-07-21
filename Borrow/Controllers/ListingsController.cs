@@ -20,6 +20,8 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
         private readonly RequestBusinessLogic RBL;
+        private readonly ListingsBusinessLogic LBL;
+        private readonly NeighborhoodBusinessLogic NBL;
 
         public ListingsController(UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
@@ -27,6 +29,8 @@ namespace Borrow.Controllers
             _mapper = mapper;
             _userDataAccess = ia;
             RBL = new(masterDL, _mapper);
+            LBL = new(masterDL, _mapper);
+            NBL = new(masterDL, _mapper);
         }
 
         [HttpGet]
@@ -43,12 +47,12 @@ namespace Borrow.Controllers
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var profile = _userDataAccess.GetAppProfile(user);
-            var neighborhood = _userDataAccess.GetNeighborhood(profile);
-            var neighborhoodItems = _userDataAccess.GetNeighborhoodItems(profile);
+            var items = LBL.GetNeighborhoodListings(user);
+            var neighborhood = NBL.Get(user);
+
             var nlvm = new NeighborhoodListingsViewModel(_mapper);
             nlvm.Name = neighborhood.Name;
-            nlvm.OrganizeItems(neighborhoodItems);
+            nlvm.OrganizeItems(items);
 
             return View(nlvm);
         }
