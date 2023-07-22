@@ -23,9 +23,11 @@ namespace Borrow.Models
             Mapper = mapper;
         }
 
-        public Item? GetItemById(int id)
+        public Item GetItemById(int id)
         {
-            return ItemDataLayer.Get(id);
+            var item = ItemDataLayer.Get(id);
+            if (item is not null) return item;
+            else throw new Exception($"Unable to find the item with id {id}");
         }
 
         public IEnumerable<Item> GetNeighborhoodListings(User user)

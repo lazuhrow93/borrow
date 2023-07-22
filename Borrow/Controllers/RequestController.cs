@@ -22,6 +22,7 @@ namespace Borrow.Controllers
         private readonly IUserDataAccess _userDataAccess;
         private readonly IMasterDL _masterDL;
         private readonly RequestBusinessLogic RBL;
+        private readonly ListingsBusinessLogic LBL;
 
         public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
@@ -31,14 +32,13 @@ namespace Borrow.Controllers
             _userDataAccess = ia;
             _masterDL  = masterDL;
             RBL = new(masterDL, _mapper);
+            LBL = new(masterDL, _mapper);
         }
 
         [HttpGet]
         public async Task<ActionResult> RequestItem(int itemId)
         {
-            CreateRequestViewModel crvm = new();
-            crvm.Init(_masterDL.ItemDataLayer.Get(itemId));
-            return View(crvm);
+            return View(new CreateRequestViewModel(LBL.GetItemById(itemId)));
         }
 
         [HttpPost]
@@ -46,16 +46,14 @@ namespace Borrow.Controllers
         {
             var user = await _userManager.GetUserAsync(this.User);
             RBL.CreateRequest(crvm.ItemId, crvm.RequestType, crvm.RequestRate, crvm.ReturnDateUtc, user);
-            return RedirectToAction("Index", "Home"); //TODO: Redirect to the current outgoing requests
+            return RedirectToAction("OutgoingRequests", "Request");
         }
 
         [HttpGet]
         public async Task<IActionResult> IncomingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var ubrvm = new UserBorrowRequestsViewModel();
-            ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
-            ubrvm.Incoming = RBL.GetIncoming(user).ToList();
+            var ubrvm = new UserBorrowRequestsViewModel(_mapper, RBL.GetOutgoing(user), RBL.GetIncoming(user));
             
             return View(ubrvm);
         }
@@ -64,9 +62,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> OutgoingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var ubrvm = new UserBorrowRequestsViewModel();
-            ubrvm.Outgoing = RBL.GetOutGoing(user).ToList();
-            ubrvm.Incoming = RBL.GetIncoming(user).ToList();
+            var ubrvm = new UserBorrowRequestsViewModel(_mapper, RBL.GetOutgoing(user), RBL.GetIncoming(user));
             return View(ubrvm);
         }
 

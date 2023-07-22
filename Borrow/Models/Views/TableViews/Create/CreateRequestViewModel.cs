@@ -11,7 +11,12 @@ namespace Borrow.Models.Views.TableViews.Create
         public RequestType RequestType { get; set; }
         public decimal RequestRate { get; set; }
 
-        public void Init(Item item)
+        public CreateRequestViewModel()
+        {
+            
+        }
+
+        public CreateRequestViewModel(Item item)
         {
             ItemId = item.Id;
             ItemName = item.Name;

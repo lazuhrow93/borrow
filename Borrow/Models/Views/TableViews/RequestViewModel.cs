@@ -1,10 +1,13 @@
-﻿using Borrow.Models.Backend;
+﻿using AutoMapper;
+using AutoMapper.Internal;
+using Borrow.Models.Backend;
 using Borrow.Models.Listings;
 
 namespace Borrow.Models.Views.TableViews
 {
     public class RequestViewModel
     {
+        private IMapper Mapper { get; set; }
         public int RequestId { get; set; }
         public int ItemId { get; set; }
         public string ItemName { get; set; }
@@ -15,12 +18,6 @@ namespace Borrow.Models.Views.TableViews
         public string OwnerUserName { get; set; }
         public DateTime CreatedDateUtc { get; set; }
         public Request.RequestStatus Status { get; set; }
-
-        public void Initialize(Item item)
-        {
-            this.ItemId = item.Id;
-            this.ItemName = item.Name;
-        }
 
         public bool RequesterNeedsAction()
         {

@@ -10,6 +10,11 @@ namespace Borrow.Models.Views
         private Item? item;
         public ItemViewModel ItemViewModel { get; set; }
 
+        public ViewListingViewModel()
+        {
+            
+        }
+
         public ViewListingViewModel(IMapper mapper, Item? item)
         {
             this._mapper = mapper;

@@ -47,39 +47,38 @@ namespace Borrow.Models
             RequestDataLayer.Create(newborrowRequest);
         }
 
-        public IEnumerable<RequestViewModel> GetIncoming(User user)
+        public IEnumerable<(Request, Item)> GetIncoming(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
+            var requestItem = new List<(Request request, Item item)>();
             var rawRequests = RequestDataLayer.Incoming(appProfile);
-            var listOfRequestsViews = new List<RequestViewModel>();
-            foreach(var rawRequest in rawRequests)
-            {
-                var item = ItemDataLayer.Get(rawRequest.ItemId);
 
-                var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
-                Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
-                listOfRequestsViews.Add(mapperrvm);
-            }
 
-            return listOfRequestsViews;
-        }
 
-        public IEnumerable<RequestViewModel> GetOutGoing(User user)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var rawRequests = RequestDataLayer.Outgoing(appProfile);
-            var listOfRequestsViews = new List<RequestViewModel>();
             foreach (var rawRequest in rawRequests)
             {
                 var item = ItemDataLayer.Get(rawRequest.ItemId);
-
-                var mapperrvm = Mapper.Map<Request, RequestViewModel>(rawRequest);
-                Mapper.Map<Item, RequestViewModel>(item, mapperrvm);
-
-                listOfRequestsViews.Add(mapperrvm);
+                requestItem.Add((rawRequest, item));
             }
 
-            return listOfRequestsViews;
+            return requestItem;
+        }
+
+        public IEnumerable<(Request, Item)> GetOutgoing(User user)
+        {
+            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
+            var requestItem = new List<(Request request, Item item)>();
+            var rawRequests = RequestDataLayer.Outgoing(appProfile);
+
+
+
+            foreach (var rawRequest in rawRequests)
+            {
+                var item = ItemDataLayer.Get(rawRequest.ItemId);
+                requestItem.Add((rawRequest, item));
+            }
+
+            return requestItem;
         }
 
         public void UpdateStatus(int requestId, Request.RequestStatus newStatus)
