@@ -12,18 +12,19 @@ namespace Borrow.Models.Views
         public List<ItemViewModel> NeighborhoodListings { get; set; }
         public List<ItemViewModel> NeighborhoodUnlisted { get; set; }
 
-        public NeighborhoodListingsViewModel(IMapper mapper)
+        public NeighborhoodListingsViewModel(IMapper mapper, IEnumerable<Item> neighborhoodItems, string name)
         {
             _mapper = mapper;
-        }
-
-        internal void OrganizeItems(IEnumerable<Item> neighborhoodItems)
-        {
             var listed = neighborhoodItems.Where(i => i.IsListed == true);
             var unlisted = neighborhoodItems.Where(i => i.IsListed == false);
 
             NeighborhoodListings = _mapper.Map<List<ItemViewModel>>(listed);
             NeighborhoodUnlisted = _mapper.Map<List<ItemViewModel>>(unlisted);
+            Name = name;
+        }
+
+        internal void OrganizeItems(IEnumerable<Item> neighborhoodItems)
+        {
         }
     }
 }

@@ -23,6 +23,11 @@ namespace Borrow.Models
             Mapper = mapper;
         }
 
+        public Item? GetItemById(int id)
+        {
+            return ItemDataLayer.Get(id);
+        }
+
         public IEnumerable<Item> GetNeighborhoodListings(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
@@ -30,6 +35,12 @@ namespace Borrow.Models
             var items = ItemDataLayer.Get(neighborhood);
 
             return items.Where(i => i.OwnerId.Equals(appProfile.OwnerId) == false);
+        }
+
+        public IEnumerable<Item> GetUserListings(User user)
+        {
+            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
+            return ItemDataLayer.GetOwnerItems(appProfile.OwnerId);
         }
     }
 }

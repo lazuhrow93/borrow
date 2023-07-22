@@ -36,11 +36,9 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> UserListings()
         {
-            var ulvm = new UserListingsViewModel(_mapper);
             var user = await _userManager.GetUserAsync(this.User);
-            var profile = _userDataAccess.GetAppProfile(user);
-            ulvm.MapItems(_userDataAccess.GetItems(profile));
-            return View(ulvm);
+            var items = LBL.GetUserListings(user);
+            return View(new UserListingsViewModel(_mapper, items));
         }
 
         [HttpGet]
@@ -50,20 +48,14 @@ namespace Borrow.Controllers
             var items = LBL.GetNeighborhoodListings(user);
             var neighborhood = NBL.Get(user);
 
-            var nlvm = new NeighborhoodListingsViewModel(_mapper);
-            nlvm.Name = neighborhood.Name;
-            nlvm.OrganizeItems(items);
-
-            return View(nlvm);
+            return View(new NeighborhoodListingsViewModel(_mapper, items, neighborhood.Name));
         }
 
         [HttpPost]
-        public async Task<ActionResult> ViewListing(Guid Identifier)
+        public async Task<ActionResult> ViewListing(int id)
         {
-            var item = _userDataAccess.GetItem(Identifier);
-            var vlvm = new ViewListingViewModel();
-            vlvm.ItemViewModel = _mapper.Map<ItemViewModel>(item);
-            return View(vlvm);
+            var item = LBL.GetItemById(id);
+            return View(new ViewListingViewModel(_mapper, item));
         }
     }
 }

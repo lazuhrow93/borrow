@@ -25,6 +25,11 @@ namespace Borrow.Data.DataAccessLayer
             return BorrowContext.Item.Where(i=>i.Id == id).FirstOrDefault();
         }
 
+        public IEnumerable<Item> GetOwnerItems(int ownerId)
+        {
+            return BorrowContext.Item.Where(i => i.OwnerId.Equals(ownerId));
+        }
+
         public IEnumerable<Item>? Get(Neighborhood neighborhood)
         {
             return BorrowContext.Item.Where(i => i.NeighborhoodId.Equals(neighborhood.Id));
