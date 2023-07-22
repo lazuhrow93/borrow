@@ -19,6 +19,13 @@ namespace Borrow.Models.Views.TableViews
         public DateTime CreatedDateUtc { get; set; }
         public Request.RequestStatus Status { get; set; }
 
+        public RequestViewModel() { }
+
+        public RequestViewModel()
+        {
+            
+        }
+
         public bool RequesterNeedsAction()
         {
             if (Status.Equals(Request.RequestStatus.Accepted))
