@@ -96,7 +96,7 @@ namespace Borrow.Models
             RequestDataLayer.Update(requests);
         }
 
-        public RequestViewModel GetRequest(int requestId)
+        public (Request Request, Item Item) GetRequest(int requestId)
         {
             var request = RequestDataLayer.Get(requestId);
             var item = ItemDataLayer.Get(request.ItemId);

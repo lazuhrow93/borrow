@@ -69,10 +69,11 @@ namespace Borrow.Controllers
         [HttpGet]
         public IActionResult ViewRequestInfo(int requestId)
         {
-            var rvm = RBL.GetRequest(requestId);
-            if (rvm == null) throw new Exception("OOPS!");
+            var requestItem = RBL.GetRequest(requestId);
+            if (requestItem == null) throw new Exception("OOPS!");
+
             RBL.UpdateStatus(requestId, Borrow.Models.Backend.Request.RequestStatus.Viewed);
-            return View(rvm);
+            return View(new RequestViewModel(requestItem.Request, requestItem.Item));
         }
 
         [HttpGet]
