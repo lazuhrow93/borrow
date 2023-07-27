@@ -36,11 +36,11 @@
     </dl>
 </div>
 <div>
-    @using (Html.BeginForm("Decline", "Request", FormMethod.Get))
+    @using (Html.BeginForm("DeclineRequest", "Request", FormMethod.Get))
     {
         <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
     }
-    @using (Html.BeginForm("Accept", "Request", FormMethod.Get))
+    @using (Html.BeginForm("AcceptRequest", "Request", FormMethod.Get))
     {
         <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
     }
