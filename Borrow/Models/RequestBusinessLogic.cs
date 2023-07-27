@@ -100,9 +100,9 @@ namespace Borrow.Models
         {
             var request = RequestDataLayer.Get(requestId);
             var item = ItemDataLayer.Get(request.ItemId);
-            var rvm = Mapper.Map<Request, RequestViewModel>(request);
-            Mapper.Map<Item, RequestViewModel>(item, rvm);
-            return rvm;
+            //var rvm = Mapper.Map<Request, RequestViewModel>(request);
+            //Mapper.Map<Item, RequestViewModel>(item, rvm);
+            return (request, item);
         }
 
         public void OwnerAcceptRequest(int requestId)

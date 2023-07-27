@@ -70,7 +70,6 @@ namespace Borrow.Controllers
         public IActionResult ViewRequestInfo(int requestId)
         {
             var requestItem = RBL.GetRequest(requestId);
-            if (requestItem == null) throw new Exception("OOPS!");
 
             RBL.UpdateStatus(requestId, Borrow.Models.Backend.Request.RequestStatus.Viewed);
             return View(new RequestViewModel(requestItem.Request, requestItem.Item));

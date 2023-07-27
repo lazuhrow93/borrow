@@ -7,7 +7,6 @@ namespace Borrow.Models.Views.TableViews
 {
     public class RequestViewModel
     {
-        private IMapper Mapper { get; set; }
         public int RequestId { get; set; }
         public int ItemId { get; set; }
         public string ItemName { get; set; }
@@ -21,9 +20,17 @@ namespace Borrow.Models.Views.TableViews
 
         public RequestViewModel() { }
 
-        public RequestViewModel()
+        public RequestViewModel(Request request, Item item)
         {
-            
+            RequestId = request.Id;
+            ItemId = request.ItemId;
+            ItemName = item.Name;
+            RequestType = (Request.RequestType)request.Type;
+            RequestRate = request.Rate;
+            ReturnDate = request.ReturnDate;
+            OwnerUserName = item.UserName;
+            CreatedDateUtc = request.CreatedDateUtc;
+            Status = request.Status;
         }
 
         public bool RequesterNeedsAction()
