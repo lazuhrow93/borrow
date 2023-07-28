@@ -35,6 +35,19 @@ namespace Borrow.Data.DataAccessLayer
             return BorrowContext.Item.Where(i => i.NeighborhoodId.Equals(neighborhood.Id));
         }
 
+        public void Insert(IEnumerable<Item> items)
+        {
+            foreach(var item in items)
+                BorrowContext.Add(item);
+            BorrowContext.SaveChanges();
+        }
+
+        public void Insert(Item item)
+        {
+            BorrowContext.Add(item);
+            BorrowContext.SaveChanges();
+        }
+
         public bool Update(Item newItem)
         {
             var currentItem = BorrowContext.Item.Where(i=>i.Id == newItem.Id).FirstOrDefault();

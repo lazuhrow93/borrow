@@ -16,5 +16,18 @@ namespace Borrow.Models.Views.TableViews
         public decimal WeeklyRate { get; set; }
         public bool Available { get; set; }
         public Guid Identifier { get; set; }
+
+        public ItemViewModel(Item item)
+        {
+            ItemId = item.Id;
+            OwnerUserName = item.UserName;
+            Name = item.Name;
+            Description = item.Description;
+            OwnedSince = item.OwnedSince.ToString("MM/dd/yyyy");
+            DailyRate = item.DailyRate;
+            WeeklyRate = item.WeeklyRate;
+            Available = item.Available;
+            Identifier = item.Identifier;
+        }
     }
 }

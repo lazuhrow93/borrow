@@ -45,7 +45,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> RequestItem(CreateRequestViewModel crvm)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(crvm.ItemId, crvm.RequestType, crvm.RequestRate, crvm.ReturnDateUtc, user);
+            RBL.CreateRequest(crvm.ItemInformation.ItemId, crvm.RequestType, crvm.RequestRate, crvm.ReturnDateUtc, user);
             return RedirectToAction("OutgoingRequests", "Request");
         }
 
@@ -53,17 +53,14 @@ namespace Borrow.Controllers
         public async Task<IActionResult> IncomingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var ubrvm = new UserBorrowRequestsViewModel(_mapper, RBL.GetOutgoing(user), RBL.GetIncoming(user));
-            
-            return View(ubrvm);
+            return View(new UserBorrowRequestsViewModel(RBL.GetOutgoing(user), RBL.GetIncoming(user)));
         }
 
         [HttpGet]
         public async Task<IActionResult> OutgoingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var ubrvm = new UserBorrowRequestsViewModel(_mapper, RBL.GetOutgoing(user), RBL.GetIncoming(user));
-            return View(ubrvm);
+            return View(new UserBorrowRequestsViewModel(RBL.GetOutgoing(user), RBL.GetIncoming(user)));
         }
 
         [HttpGet]

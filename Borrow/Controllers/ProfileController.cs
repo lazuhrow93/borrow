@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Models;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Borrow.Models.Views;
@@ -18,24 +19,24 @@ namespace Borrow.Controllers
         private UserManager<User> _UserManager;
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
+        private readonly IMasterDL _masterDL;
+        private readonly ListingsBusinessLogic LBL;
 
-        public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
+        public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
             _SignInManager = sm;
             _UserManager = um;
             _mapper = mapper;
             _userDataAccess = ia;
+            LBL = new(masterDL, _mapper);
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var pvm = _mapper.Map<ProfileViewModel>(user);
-            var p = _userDataAccess.GetAppProfile(user);
-
-            List<Item> ownedItems = _userDataAccess.GetItems(p);
-            pvm.OwnerItems = _mapper.Map<List<ItemViewModel>>(ownedItems);
+            var items = LBL.GetUserListings(user);
+            var pvm = new ProfileViewModel(user, items);
 
             return View(pvm);
         }
@@ -65,9 +66,7 @@ namespace Borrow.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _UserManager.GetUserAsync(this.User);
-                var p = _userDataAccess.GetAppProfile(user);
-                var items = _mapper.Map<List<Item>>(viewModel.ItemsToSave);
-                _userDataAccess.InsertItem(p, items);
+                LBL.InsertItem(user, viewModel.ItemsToSave.Select(ni => ni.Parse()).ToList());
             }
 
             return View(viewModel);

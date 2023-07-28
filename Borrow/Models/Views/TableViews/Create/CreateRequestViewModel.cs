@@ -5,8 +5,9 @@ namespace Borrow.Models.Views.TableViews.Create
 {
     public class CreateRequestViewModel
     {
-        public int ItemId { get; set; }
-        public string ItemName { get; set; }
+        public ItemViewModel ItemInformation { get; set; }
+        //public int ItemId { get; set; }
+        //public string ItemName { get; set; }
         public DateTime ReturnDateUtc { get; set; }
         public RequestType RequestType { get; set; }
         public decimal RequestRate { get; set; }
@@ -18,8 +19,7 @@ namespace Borrow.Models.Views.TableViews.Create
 
         public CreateRequestViewModel(Item item)
         {
-            ItemId = item.Id;
-            ItemName = item.Name;
+            ItemInformation = new(item);
         }
     }
 }

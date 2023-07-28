@@ -6,8 +6,6 @@ namespace Borrow.Models.Views
 {
     public class NeighborhoodListingsViewModel
     {
-        private IMapper _mapper;
-
         public string Name { get; set; }
         public List<ItemViewModel> NeighborhoodListings { get; set; }
         public List<ItemViewModel> NeighborhoodUnlisted { get; set; }
@@ -19,12 +17,21 @@ namespace Borrow.Models.Views
 
         public NeighborhoodListingsViewModel(IMapper mapper, IEnumerable<Item> neighborhoodItems, string name)
         {
-            _mapper = mapper;
             var listed = neighborhoodItems.Where(i => i.IsListed == true);
             var unlisted = neighborhoodItems.Where(i => i.IsListed == false);
 
-            NeighborhoodListings = _mapper.Map<List<ItemViewModel>>(listed);
-            NeighborhoodUnlisted = _mapper.Map<List<ItemViewModel>>(unlisted);
+            NeighborhoodListings = new();
+            NeighborhoodUnlisted = new();
+
+            foreach(var item in listed)
+            {
+                NeighborhoodListings.Add(new ItemViewModel(item));
+            }
+
+            foreach (var item in unlisted)
+            {
+                NeighborhoodUnlisted.Add(new ItemViewModel(item));
+            }
             Name = name;
         }
     }
