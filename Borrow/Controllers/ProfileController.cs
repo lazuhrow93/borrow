@@ -36,17 +36,13 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var items = LBL.GetUserListings(user);
-            var pvm = new ProfileViewModel(user, items);
-
-            return View(pvm);
+            return View(new ProfileViewModel(user, items));
         }
 
         [HttpGet]
         public async Task<ActionResult> AddItem()
         {
-            AddItemViewModel setup = new();
-            setup.ItemsToSave = new List<NewItemViewModel>();
-            return View(setup);
+            return View(new AddItemViewModel());
 
         }
 
