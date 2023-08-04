@@ -17,6 +17,11 @@ namespace Borrow.Models.Views.TableViews
         public bool Available { get; set; }
         public Guid Identifier { get; set; }
 
+        public ItemViewModel()
+        {
+            
+        }
+
         public ItemViewModel(Item item)
         {
             ItemId = item.Id;

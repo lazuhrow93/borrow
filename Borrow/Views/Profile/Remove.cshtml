@@ -25,7 +25,7 @@
                 {
                     var item = Model.Items[i];
                     
-                    @Html.HiddenFor(m=>m.Items[i].Identifier)
+                    @Html.HiddenFor(m=>m.Items[i].ItemId)
                     <tr>
                         <td>
                             @Html.CheckBoxFor(m=>m.Items[i].IsSelected)

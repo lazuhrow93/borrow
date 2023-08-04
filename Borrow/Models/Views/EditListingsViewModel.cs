@@ -11,20 +11,9 @@ namespace Borrow.Models.Views
         public Guid Unlist { get; set; }
         public Guid List { get; set; }
 
-        public EditListingsViewModel()
+        public EditListingsViewModel(IEnumerable<Item> items)
         {
-
-        }
-
-        public EditListingsViewModel(IMapper mapper)
-        {
-            _mapper = mapper;
-            Items = new();
-        }
-
-        public void MapItems(List<Item> items)
-        {
-            this.Items = _mapper.Map<List<ItemViewModel>>(items);
+            this.Items = items.Select(i => { return new ItemViewModel(i); }).ToList();
         }
     }
 }
