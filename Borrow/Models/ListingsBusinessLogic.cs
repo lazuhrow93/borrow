@@ -70,5 +70,42 @@ namespace Borrow.Models
 
             ItemDataLayer.Insert(item);
         }
+
+        public bool EditItem(User user, Item New)
+        {
+            var profile = AppProfileDataLayer.Get(user.ProfileId);
+            var currentItem = ItemDataLayer.Get(New.Id);
+            if (currentItem is null) return false;
+            currentItem.WeeklyRate = New.WeeklyRate;
+            currentItem.DailyRate = New.DailyRate;
+            currentItem.Available = New.Available;
+            currentItem.Description = New.Description;
+            currentItem.Name = New.Name;
+            currentItem.IsListed = New.IsListed;
+            ItemDataLayer.Update(currentItem);
+            return true;
+        }
+
+        public bool ChangeListingStatus(User user, int listingId, bool isListed)
+        {
+            var profile = AppProfileDataLayer.Get(user.ProfileId);
+            var currentItem = ItemDataLayer.Get(listingId);
+            if(currentItem is null) return false;
+            currentItem.IsListed = isListed;
+            ItemDataLayer.Update(currentItem);
+            return true;
+        }
+
+        public bool RemoveListing(User user, IEnumerable<int> itemIds)
+        {
+            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
+            foreach(var id in itemIds)
+            {
+                var item = ItemDataLayer.Get(id);
+                if (item.OwnerId.Equals(appProfile.OwnerId) == false) return false;
+                ItemDataLayer.Delete(id);
+            }
+            return true;
+        }
     }
 }

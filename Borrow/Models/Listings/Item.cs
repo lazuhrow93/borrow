@@ -25,6 +25,21 @@ namespace Borrow.Models.Listings
             Available = true;
         }
 
+        public Item(int id, string name, string description, DateTime ownedSince, bool available, 
+            decimal dailyRate, decimal weeklyRate, Guid identifier, bool isListed, string userName)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            OwnedSince = ownedSince;
+            Available = available;
+            DailyRate = dailyRate;
+            WeeklyRate = weeklyRate;
+            Identifier = identifier;
+            IsListed = isListed;
+            UserName = userName;
+        }
+
         internal void Unlist()
         {
             this.IsListed = false;

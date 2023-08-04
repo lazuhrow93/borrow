@@ -70,13 +70,11 @@ namespace Borrow.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult> EditItem(ProfileViewModel pvm)
+        public async Task<ActionResult> EditItem(int ItemId)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var p = _userDataAccess.GetAppProfile(user);
-            var itemToEdit = _userDataAccess.GetItem(pvm.EditItem);
-            var itemView = _mapper.Map<ItemViewModel>(itemToEdit);
-            return View(itemView);
+            var item = LBL.GetItemById(ItemId);
+            return View(new ItemViewModel(item));
         }
 
         [Authorize]
@@ -84,9 +82,9 @@ namespace Borrow.Controllers
         public async Task<ActionResult> EditItem(ItemViewModel ivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var item = _mapper.Map<Item>(ivm);
-            var p = _userDataAccess.GetAppProfile(user);
-            var itemToEdit = _userDataAccess.EditItem(p, item);
+            var newItem = new Item(ivm.ItemId, ivm.Name, ivm.Description, DateTime.Parse(ivm.OwnedSince),
+                ivm.Available, ivm.DailyRate, ivm.WeeklyRate, ivm.Identifier, ivm.IsListed, ivm.OwnerUserName);
+            var itemToEdit = LBL.EditItem(user, newItem);
             return RedirectToAction("Index");
         }
 
@@ -101,26 +99,18 @@ namespace Borrow.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Unlist(Guid unlistItem)
+        public async Task<ActionResult> Unlist(int ItemId)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var p = _userDataAccess.GetAppProfile(user);
-            var oldItem = _userDataAccess.GetItem(unlistItem);
-            oldItem.Unlist();
-            var newItem = oldItem;
-            _userDataAccess.EditItem(p, newItem);
+            LBL.ChangeListingStatus(user, ItemId, false);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<ActionResult> List(Guid listItem)
+        public async Task<ActionResult> List(int ItemId)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var p = _userDataAccess.GetAppProfile(user);
-            var oldItem = _userDataAccess.GetItem(listItem);
-            oldItem.List();
-            var newItem = oldItem;
-            _userDataAccess.EditItem(p, newItem);
+            LBL.ChangeListingStatus(user, ItemId, true);
             return RedirectToAction("Index");
         }
 
@@ -128,11 +118,10 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Remove()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var p = _userDataAccess.GetAppProfile(user);
+            var userItems = LBL.GetUserListings(user);
+            var ivms = userItems.Select(i=> { return new ItemViewModel(i); });
             var rivm = new RemoveItemsViewModel();
-            var userItems = _userDataAccess.GetItems(p);
-            var mappedItems = _mapper.Map<List<ItemViewModel>>(userItems);
-            rivm.Items = mappedItems.Select(i => { i.IsSelected = false; return i; }).ToList();
+            rivm.Items = ivms.Select(i => { i.IsSelected = false; return i; }).ToList();
             return View(rivm);
 
         }
@@ -141,9 +130,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Remove(RemoveItemsViewModel rivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var p = _userDataAccess.GetAppProfile(user);
-            var itemsToDelete = _mapper.Map<List<Item>>(rivm.Items.Where(i => i.IsSelected));
-            _userDataAccess.DeleteItem(p, itemsToDelete.Select(i => i.Identifier).ToList());
+            LBL.RemoveListing(user, rivm.Items.Where(i => i.IsSelected).Select(i=>i.ItemId));
             return RedirectToAction("Index");
 
         }

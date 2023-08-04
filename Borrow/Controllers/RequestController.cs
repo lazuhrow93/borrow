@@ -19,18 +19,14 @@ namespace Borrow.Controllers
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
-        private readonly IUserDataAccess _userDataAccess;
-        private readonly IMasterDL _masterDL;
         private readonly RequestBusinessLogic RBL;
         private readonly ListingsBusinessLogic LBL;
 
-        public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
+        public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL)
         {
             _userManager = um;
             _signInManager = sm;
             _mapper = mapper;
-            _userDataAccess = ia;
-            _masterDL  = masterDL;
             RBL = new(masterDL, _mapper);
             LBL = new(masterDL, _mapper);
         }
@@ -68,7 +64,7 @@ namespace Borrow.Controllers
         {
             var requestItem = RBL.GetRequest(requestId);
 
-            RBL.UpdateStatus(requestId, Borrow.Models.Backend.Request.RequestStatus.Viewed);
+            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
             return View(new RequestViewModel(requestItem.Request, requestItem.Item));
         }
 

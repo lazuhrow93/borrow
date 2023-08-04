@@ -40,7 +40,7 @@
                         <td>
                             @using (Html.BeginForm("Unlist", "Profile", FormMethod.Post))
                             {
-                                <button class="btn btn-primary" type="submit" name="unlistItem" value=@item.Identifier>Unlist</button>
+                                <button class="btn btn-primary" type="submit" name="ItemId" value=@item.ItemId>Unlist</button>
                             }
                         </td>
                     }
@@ -49,7 +49,7 @@
                         <td>
                             @using (Html.BeginForm("List", "Profile", FormMethod.Post))
                             {
-                                <button class="btn btn-primary" type="submit" name="listItem" value=@item.Identifier>List</button>
+                                <button class="btn btn-primary" type="submit" name="ItemId" value=@item.ItemId>List</button>
                             }
                         </td>
                     }

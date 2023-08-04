@@ -56,5 +56,12 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext.SaveChanges();
             return true;
         }
+
+        public void Delete(int itemId)
+        {
+            var ToDelete = Get(itemId);
+            BorrowContext.Remove((Item)ToDelete);
+            BorrowContext.SaveChanges();
+        }
     }
 }
