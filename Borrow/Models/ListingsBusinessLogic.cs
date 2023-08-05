@@ -71,17 +71,14 @@ namespace Borrow.Models
             ItemDataLayer.Insert(item);
         }
 
-        public bool EditItem(User user, Item New)
+        public bool EditItem(User user, int id, string newName, string newDesc, decimal newDailyRate, decimal newWeeklyRate)
         {
             var profile = AppProfileDataLayer.Get(user.ProfileId);
-            var currentItem = ItemDataLayer.Get(New.Id);
-            if (currentItem is null) return false;
-            currentItem.WeeklyRate = New.WeeklyRate;
-            currentItem.DailyRate = New.DailyRate;
-            currentItem.Available = New.Available;
-            currentItem.Description = New.Description;
-            currentItem.Name = New.Name;
-            currentItem.IsListed = New.IsListed;
+            var currentItem = ItemDataLayer.Get(id);
+            currentItem.WeeklyRate = newWeeklyRate;
+            currentItem.DailyRate = newDailyRate;
+            currentItem.Description = newDesc;
+            currentItem.Name = newName;
             ItemDataLayer.Update(currentItem);
             return true;
         }

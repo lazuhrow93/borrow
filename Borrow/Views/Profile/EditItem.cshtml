@@ -1,4 +1,4 @@
-﻿@model Borrow.Models.Views.TableViews.ItemViewModel
+﻿@model Borrow.Models.Views.Profile.EditItemViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -9,38 +9,47 @@
 <h4>Item</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="EditItem" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="DailyRate" class="control-label"></label>
-                <input asp-for="DailyRate" class="form-control" />
-                <span asp-validation-for="DailyRate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WeeklyRate" class="control-label"></label>
-                <input asp-for="WeeklyRate" class="form-control" />
-                <span asp-validation-for="WeeklyRate" class="text-danger"></span>
-            </div>
+
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NewName)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="NewName" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NewDescription)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="NewDescription" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NewDailyRate)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="NewDailyRate" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NewWeeklyRate)
+                </dt>
+                <dd class="col-sm-10">
+                    <input asp-for="NewWeeklyRate" class="form-control" />
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OwnedSince)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OwnedSince)
+                </dd>
+            </dl>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-            @Html.HiddenFor(m=>m.Identifier);
+
+            @Html.HiddenFor(m=>m.ItemId);
         </form>
     </div>
 </div>

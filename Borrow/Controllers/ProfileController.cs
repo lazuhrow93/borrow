@@ -4,6 +4,7 @@ using Borrow.Models;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Borrow.Models.Views;
+using Borrow.Models.Views.Profile;
 using Borrow.Models.Views.TableViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -74,17 +75,15 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var item = LBL.GetItemById(ItemId);
-            return View(new ItemViewModel(item));
+            return View(new EditItemViewModel(item));
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> EditItem(ItemViewModel ivm)
+        public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var newItem = new Item(ivm.ItemId, ivm.Name, ivm.Description, DateTime.Parse(ivm.OwnedSince),
-                ivm.Available, ivm.DailyRate, ivm.WeeklyRate, ivm.Identifier, ivm.IsListed, ivm.OwnerUserName);
-            var itemToEdit = LBL.EditItem(user, newItem);
+            LBL.EditItem(user, ivm.ItemId, ivm.NewName, ivm.NewDescription, ivm.NewDailyRate, ivm.NewWeeklyRate);
             return RedirectToAction("Index");
         }
 
