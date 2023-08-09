@@ -15,7 +15,7 @@ namespace Borrow.Models.Views
             
         }
 
-        public NeighborhoodListingsViewModel(IMapper mapper, IEnumerable<Item> neighborhoodItems, string name)
+        public NeighborhoodListingsViewModel(IEnumerable<Item> neighborhoodItems, string neighborhoodName)
         {
             var listed = neighborhoodItems.Where(i => i.IsListed == true);
             var unlisted = neighborhoodItems.Where(i => i.IsListed == false);
@@ -32,7 +32,7 @@ namespace Borrow.Models.Views
             {
                 NeighborhoodUnlisted.Add(new ItemViewModel(item));
             }
-            Name = name;
+            Name = neighborhoodName;
         }
     }
 }

@@ -58,8 +58,6 @@
                     <th>Description</th>
                     <th>Owned Since</th>
                     <th>Available</th>
-                    <th>Daily Rate</th>
-                    <th>Weekly Rate</th>
                     <th></th>
                 </tr>
                 @for (int i = 0; i < Model.OwnerItems.Count(); ++i)
@@ -77,12 +75,6 @@
                         </td>
                         <td>
                             @item.Available
-                        </td>
-                        <td>
-                            @item.DailyRate
-                        </td>
-                        <td>
-                            @item.WeeklyRate
                         </td>
                         <td>
                             <button type="submit" name="ItemId" value=@item.ItemId class="btn btn-primary">

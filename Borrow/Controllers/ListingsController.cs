@@ -5,6 +5,7 @@ using Borrow.Models;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
+using Borrow.Models.Views.Listing;
 using Borrow.Models.Views.TableViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +49,7 @@ namespace Borrow.Controllers
             var items = LBL.GetNeighborhoodListings(user);
             var neighborhood = NBL.Get(user);
 
-            return View(new NeighborhoodListingsViewModel(_mapper, items, neighborhood.Name));
+            return View(new NeighborhoodListingsViewModel(items, neighborhood.Name));
         }
 
         [HttpPost]
@@ -56,6 +57,20 @@ namespace Borrow.Controllers
         {
             var item = LBL.GetItemById(id);
             return View(new ViewListingViewModel(_mapper, item));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> CreateListing(int itemId)
+        {
+            var item = LBL.GetItemById(itemId);
+            return View(new CreateListingViewModel(item, 0.0M, 0.0M));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateListing(CreateListingViewModel clvm)
+        {
+            var item = LBL.GetItemById(clvm.ItemInfo.ItemId);
+            return View(new CreateListingViewModel(item, 0.0M, 0.0M));
         }
     }
 }

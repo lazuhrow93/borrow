@@ -18,6 +18,7 @@ namespace Borrow.Data
 
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Item>? Item { get; set; }
+        public DbSet<Listing> Listing { get; set; }
         public DbSet<Neighborhood> Neighborhood { get; set; }
         public DbSet<AppProfile> AppProfile { get; set; }
         public DbSet<Request> Request { get; set; }

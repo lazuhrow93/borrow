@@ -115,7 +115,6 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var userItems = LBL.GetUserListings(user);
-            var rvm = new RemoveItemsViewModel(userItems);
             return View(new RemoveItemsViewModel(userItems));
 
         }
