@@ -14,7 +14,6 @@ namespace Borrow.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
-        private readonly ILogger<HomeController> _logger;
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
 

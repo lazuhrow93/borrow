@@ -30,7 +30,7 @@ public class Program
         builder.Services.AddSession();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddTransient<IMasterDL, MasterDL>();
-        builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
+        //builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();

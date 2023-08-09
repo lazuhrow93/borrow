@@ -10,18 +10,11 @@ namespace Borrow.Models.Listings
         public DateTime OwnedSince { get; set; }
         public int OwnerId { get; set; }
         public bool Available { get; set; }
-        [Precision(18, 2)]
-        public decimal DailyRate { get; set; }
-        [Precision(18, 2)]
-        public decimal WeeklyRate { get; set;}
-        public Guid Identifier { get; set; }
         public bool IsListed { get; set; } = false;
         public int NeighborhoodId { get; set; }
-        public string UserName { get; set; }
 
         public Item()
         {
-            Identifier = Guid.NewGuid();
             Available = true;
         }
 
@@ -33,11 +26,7 @@ namespace Borrow.Models.Listings
             Description = description;
             OwnedSince = ownedSince;
             Available = available;
-            DailyRate = dailyRate;
-            WeeklyRate = weeklyRate;
-            Identifier = identifier;
             IsListed = isListed;
-            UserName = userName;
         }
 
         internal void Unlist()

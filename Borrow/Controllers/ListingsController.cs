@@ -19,7 +19,6 @@ namespace Borrow.Controllers
     {
         private UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        private readonly IUserDataAccess _userDataAccess;
         private readonly RequestBusinessLogic RBL;
         private readonly ListingsBusinessLogic LBL;
         private readonly NeighborhoodBusinessLogic NBL;
@@ -28,7 +27,6 @@ namespace Borrow.Controllers
         {
             _userManager = um;
             _mapper = mapper;
-            _userDataAccess = ia;
             RBL = new(masterDL, _mapper);
             LBL = new(masterDL, _mapper);
             NBL = new(masterDL, _mapper);

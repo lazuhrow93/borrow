@@ -22,8 +22,6 @@ namespace Borrow.Models.Views.Profile
             ItemId = item.Id;
             NewName = item.Name;
             NewDescription = item.Description;
-            NewDailyRate = item.DailyRate;
-            NewWeeklyRate = item.WeeklyRate;
             OwnedSince = item.OwnedSince;
         }
     }

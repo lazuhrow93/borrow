@@ -51,10 +51,8 @@ namespace Borrow.Models
             var userProfile = AppProfileDataLayer.Get(user.ProfileId);
             for(int index = 0; index < items.Count; ++index) 
             {
-                items[index].UserName = user.UserName;
                 items[index].OwnerId = userProfile.OwnerId;
                 items[index].NeighborhoodId = userProfile.NeighborhoodId;
-                items[index].Identifier = Guid.NewGuid();
                 
             }
             ItemDataLayer.Insert(items);
@@ -63,10 +61,8 @@ namespace Borrow.Models
         public void InsertItem(User user, Item item)
         {
             var userProfile = AppProfileDataLayer.Get(user.ProfileId);
-            item.UserName = user.UserName;
             item.OwnerId = userProfile.OwnerId;
             item.NeighborhoodId = userProfile.NeighborhoodId;
-            item.Identifier = Guid.NewGuid();
 
             ItemDataLayer.Insert(item);
         }
@@ -75,8 +71,6 @@ namespace Borrow.Models
         {
             var profile = AppProfileDataLayer.Get(user.ProfileId);
             var currentItem = ItemDataLayer.Get(id);
-            currentItem.WeeklyRate = newWeeklyRate;
-            currentItem.DailyRate = newDailyRate;
             currentItem.Description = newDesc;
             currentItem.Name = newName;
             ItemDataLayer.Update(currentItem);

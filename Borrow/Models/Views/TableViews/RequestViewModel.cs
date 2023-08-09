@@ -28,7 +28,6 @@ namespace Borrow.Models.Views.TableViews
             RequestType = (Request.RequestType)request.Type;
             RequestRate = request.Rate;
             ReturnDate = request.ReturnDate;
-            OwnerUserName = item.UserName;
             CreatedDateUtc = request.CreatedDateUtc;
             Status = request.Status;
         }

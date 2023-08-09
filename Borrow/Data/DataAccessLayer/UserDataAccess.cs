@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 using System;
 namespace Borrow.Data.DataAccessLayer
 {
-    public class UserDataAccess : IUserDataAccess
+    public class UserDataAccess
     {
         private BorrowContext _dbAccess;
 
@@ -56,18 +56,11 @@ namespace Borrow.Data.DataAccessLayer
             return query.ToList();
         }
 
-        public Item? GetItem(Guid itemIdentifer)
-        {
-            return _dbAccess.Item.SingleOrDefault(i => i.Identifier.Equals(itemIdentifer));
-        }
-
         public void InsertItem(AppProfile userProfile, Item item)
         {
             var user = _dbAccess.User.Where(u => u.ProfileId.Equals(userProfile.Id)).First(); //should always exist at this point?
-            item.UserName = user.UserName;
             item.OwnerId = userProfile.OwnerId;
             item.NeighborhoodId = userProfile.NeighborhoodId;
-            item.Identifier = Guid.NewGuid();
             _dbAccess.Add(item);
             _dbAccess.SaveChanges();
         }
@@ -77,44 +70,12 @@ namespace Borrow.Data.DataAccessLayer
             var user = _dbAccess.User.Where(u => u.ProfileId.Equals(userProfile.Id)).First(); //should always exist at this point?
             foreach (var item in items)
             {
-                item.UserName = user.UserName;
                 item.OwnerId = userProfile.OwnerId;
                 item.NeighborhoodId = userProfile.NeighborhoodId;
-                item.Identifier = Guid.NewGuid();
                 _dbAccess.Add(item);
             }  
 
             _dbAccess.SaveChanges();
-        }
-
-        public bool DeleteItem(AppProfile userProfile, Guid itemIdentifer)
-        {
-            var toDelete = GetItem(itemIdentifer);
-            if (toDelete is null) return false;
-            _dbAccess.Remove((Item)toDelete);
-            _dbAccess.SaveChanges();
-            return true;
-        }
-
-        public bool DeleteItem(AppProfile userProfile, List<Guid> identifier)
-        {
-            var toDelete = _dbAccess.Item.Where(i => identifier.Contains(i.Identifier)).ToList();
-            if (toDelete is null) return false;
-            _dbAccess.RemoveRange(toDelete);
-            _dbAccess.SaveChanges();
-            return true;
-        }
-
-        public bool EditItem(AppProfile userProfile, Item newItem) {
-            var currentItem = GetItem(newItem.Identifier);
-            if (currentItem is null) return false;
-            currentItem.WeeklyRate = newItem.WeeklyRate;
-            currentItem.DailyRate = newItem.DailyRate;
-            currentItem.Available = newItem.Available;
-            currentItem.Description = newItem.Description;
-            currentItem.Name = newItem.Name;
-            _dbAccess.SaveChanges();
-            return true;
         }
 
         public Neighborhood? GetNeighborhood(AppProfile appProfile)

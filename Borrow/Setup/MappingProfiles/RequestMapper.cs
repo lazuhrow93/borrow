@@ -22,7 +22,6 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.Status, o => o.MapFrom(src => src.Status));
 
             CreateMap<Item, RequestViewModel>()
-                .ForMember(dest => dest.OwnerUserName, o => o.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.ItemName, o => o.MapFrom(src => src.Name));
         }
     }

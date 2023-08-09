@@ -16,7 +16,6 @@ namespace Borrow.Models.Views
                 Name = Name,
                 Description = Description,
                 OwnedSince = DateAcquired,
-                UserName = UserName
             };
         }
     }

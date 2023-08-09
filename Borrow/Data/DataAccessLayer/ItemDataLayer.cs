@@ -15,11 +15,6 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext = borrowContext;
         }
 
-        public Item? Get(Guid identifier)
-        {
-            return BorrowContext.Item.Where(i => i.Identifier.Equals(identifier)).FirstOrDefault();
-        }
-
         public Item? Get(int id)
         {
             return BorrowContext.Item.Where(i=>i.Id == id).FirstOrDefault();

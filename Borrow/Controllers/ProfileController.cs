@@ -19,7 +19,6 @@ namespace Borrow.Controllers
         private SignInManager<User> _SignInManager;
         private UserManager<User> _UserManager;
         private readonly IMapper _mapper;
-        private readonly IUserDataAccess _userDataAccess;
         private readonly IMasterDL _masterDL;
         private readonly ListingsBusinessLogic LBL;
 
@@ -28,7 +27,6 @@ namespace Borrow.Controllers
             _SignInManager = sm;
             _UserManager = um;
             _mapper = mapper;
-            _userDataAccess = ia;
             LBL = new(masterDL, _mapper);
         }
 
