@@ -6,7 +6,7 @@ using Borrow.Models.Backend;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Borrow.Models;
+using Borrow.Data.BusinessLayer;
 
 namespace Borrow.Controllers
 {

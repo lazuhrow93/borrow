@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 using System;
 namespace Borrow.Data.DataAccessLayer
 {
-    public class UserDataAccess
+    public class UserDataAccess : IUserDataAccess
     {
         private BorrowContext _dbAccess;
 
@@ -81,6 +81,16 @@ namespace Borrow.Data.DataAccessLayer
         public Neighborhood? GetNeighborhood(AppProfile appProfile)
         {
             return _dbAccess.Neighborhood.Where(n => n.Id.Equals(appProfile.NeighborhoodId)).FirstOrDefault();
+        }
+
+        bool IUserDataAccess.DeleteItem(AppProfile userProfile, Guid itemIdentifer)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IUserDataAccess.DeleteItem(AppProfile userProfile, List<Guid> itemIdentifers)
+        {
+            throw new NotImplementedException();
         }
     }
 }

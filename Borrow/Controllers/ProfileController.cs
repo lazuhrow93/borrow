@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Borrow.Data.BusinessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models;
 using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using Borrow.Models.Views;
@@ -21,6 +21,7 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly IMasterDL _masterDL;
         private readonly ListingsBusinessLogic LBL;
+        private readonly ItemBusinessLogic IBL;
 
         public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
@@ -28,6 +29,7 @@ namespace Borrow.Controllers
             _UserManager = um;
             _mapper = mapper;
             LBL = new(masterDL, _mapper);
+            IBL = new(masterDL, _mapper);
         }
 
         [Authorize]
@@ -72,7 +74,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> EditItem(int ItemId)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var item = LBL.GetItemById(ItemId);
+            var item = IBL.GetItem(ItemId);
             return View(new EditItemViewModel(item));
         }
 

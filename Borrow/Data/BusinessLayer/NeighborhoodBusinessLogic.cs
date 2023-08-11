@@ -5,7 +5,7 @@ using Borrow.Models.Identity;
 using Borrow.Models.Backend;
 using Borrow.Data;
 
-namespace Borrow.Models
+namespace Borrow.Data.BusinessLayer
 {
     public class NeighborhoodBusinessLogic
     {

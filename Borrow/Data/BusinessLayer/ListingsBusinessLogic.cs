@@ -5,11 +5,12 @@ using Borrow.Models.Identity;
 using Borrow.Models.Listings;
 using System;
 
-namespace Borrow.Models
+namespace Borrow.Data.BusinessLayer
 {
     public class ListingsBusinessLogic
     {
         public RequestDataLayer RequestDataLayer { get; set; }
+        public ListingsDataLayer ListingsDataLayer { get; set; }
         public NeighborhoodDataLayer NeighborhoodDataLayer { get; set; }
         public ItemDataLayer ItemDataLayer { get; set; }
         public AppProfileDataLayer AppProfileDataLayer { get; set; }
@@ -21,14 +22,15 @@ namespace Borrow.Models
             NeighborhoodDataLayer = masterDL.NeighborhoodDataLayer;
             ItemDataLayer = masterDL.ItemDataLayer;
             AppProfileDataLayer = masterDL.AppProfileDataLayer;
+            ListingsDataLayer = masterDL.ListingsDataLayer;
             Mapper = mapper;
         }
 
-        public Item GetItemById(int id)
+        public bool Create(int itemId, decimal dailyRate, decimal weeklyRate)
         {
-            var item = ItemDataLayer.Get(id);
-            if (item is not null) return item;
-            else throw new Exception($"Unable to find the item with id {id}");
+            var item = ItemDataLayer.Get(itemId);
+            ListingsDataLayer.Insert(itemId, item.OwnerId, dailyRate, weeklyRate);
+            return true;
         }
 
         public IEnumerable<Item> GetNeighborhoodListings(User user)
@@ -49,11 +51,11 @@ namespace Borrow.Models
         public void InsertItem(User user, List<Item> items)
         {
             var userProfile = AppProfileDataLayer.Get(user.ProfileId);
-            for(int index = 0; index < items.Count; ++index) 
+            for (int index = 0; index < items.Count; ++index)
             {
                 items[index].OwnerId = userProfile.OwnerId;
                 items[index].NeighborhoodId = userProfile.NeighborhoodId;
-                
+
             }
             ItemDataLayer.Insert(items);
         }
@@ -81,7 +83,7 @@ namespace Borrow.Models
         {
             var profile = AppProfileDataLayer.Get(user.ProfileId);
             var currentItem = ItemDataLayer.Get(listingId);
-            if(currentItem is null) return false;
+            if (currentItem is null) return false;
             currentItem.IsListed = isListed;
             ItemDataLayer.Update(currentItem);
             return true;
@@ -90,7 +92,7 @@ namespace Borrow.Models
         public bool RemoveListing(User user, IEnumerable<int> itemIds)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            foreach(var id in itemIds)
+            foreach (var id in itemIds)
             {
                 var item = ItemDataLayer.Get(id);
                 if (item.OwnerId.Equals(appProfile.OwnerId) == false) return false;

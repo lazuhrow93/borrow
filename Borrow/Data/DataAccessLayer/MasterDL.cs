@@ -8,6 +8,7 @@ namespace Borrow.Data.DataAccessLayer
         public RequestDataLayer RequestDataLayer { get; set; }
         public ItemDataLayer ItemDataLayer { get; set; }
         public AppProfileDataLayer AppProfileDataLayer { get; set; }
+        public ListingsDataLayer ListingsDataLayer { get; set; }
 
 
         public MasterDL(BorrowContext borrowContext)
@@ -16,6 +17,7 @@ namespace Borrow.Data.DataAccessLayer
             RequestDataLayer = new RequestDataLayer(borrowContext);
             ItemDataLayer = new ItemDataLayer(borrowContext);
             AppProfileDataLayer = new AppProfileDataLayer(borrowContext);
+            ListingsDataLayer = new ListingsDataLayer(borrowContext);
         }
     }
 }

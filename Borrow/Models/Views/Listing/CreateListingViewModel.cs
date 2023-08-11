@@ -1,21 +1,22 @@
-﻿using Borrow.Models.Listings;
+﻿using AutoMapper;
+using Borrow.Data.DataAccessLayer;
+using Borrow.Models.Listings;
 using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Models.Views.Listing
 {
     public class CreateListingViewModel
     {
-        public ItemViewModel ItemInfo { get; set; }
-        public decimal DailyRate { get; set; }
-        public decimal WeeklyRate { get; set; }
+        public List<ItemViewModel> AvailableItems { get; set; }
 
         public CreateListingViewModel() { }
 
-        public CreateListingViewModel(Item item, decimal dailyRate, decimal weeklyRate)
+        public CreateListingViewModel(IEnumerable<Item> item)
         {
-            ItemInfo = new(item);
-            DailyRate = dailyRate;
-            WeeklyRate = weeklyRate;
+            AvailableItems = item.Select(i =>
+            {
+                return new ItemViewModel(i);
+            }).ToList();
         }
     }
 }

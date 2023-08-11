@@ -8,14 +8,14 @@ using Borrow.Models.Views.TableViews;
 using Borrow.Models.Backend;
 using Borrow.Models.Listings;
 
-namespace Borrow.Models
+namespace Borrow.Data.BusinessLayer
 {
     public class RequestBusinessLogic
     {
         public RequestDataLayer RequestDataLayer { get; set; }
         public ItemDataLayer ItemDataLayer { get; set; }
-        public AppProfileDataLayer AppProfileDataLayer { get;set; }
-        private IMapper Mapper { get; set; }   
+        public AppProfileDataLayer AppProfileDataLayer { get; set; }
+        private IMapper Mapper { get; set; }
 
         public RequestBusinessLogic(IMasterDL masterDL, IMapper mapper)
         {
@@ -25,7 +25,7 @@ namespace Borrow.Models
             Mapper = mapper;
         }
 
-        public void CreateRequest(int itemId, Request.RequestType Type, Decimal Rate, DateTime ReturnDate, User user)
+        public void CreateRequest(int itemId, Request.RequestType Type, decimal Rate, DateTime ReturnDate, User user)
         {
             var item = ItemDataLayer.Get(itemId);
             var Requester = AppProfileDataLayer.Get(user.ProfileId);
@@ -91,7 +91,7 @@ namespace Borrow.Models
         public void UpdateStatus(IEnumerable<int> ids, Request.RequestStatus newStatus)
         {
             var requests = RequestDataLayer.Get(ids).ToList();
-            for(int i = 0; i< requests.Count; i++)
+            for (int i = 0; i < requests.Count; i++)
                 requests[i].UpdateStatus(newStatus);
             RequestDataLayer.Update(requests);
         }

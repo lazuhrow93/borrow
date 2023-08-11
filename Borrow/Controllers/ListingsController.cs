@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Borrow.Data.BusinessLayer;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
@@ -22,14 +22,40 @@ namespace Borrow.Controllers
         private readonly RequestBusinessLogic RBL;
         private readonly ListingsBusinessLogic LBL;
         private readonly NeighborhoodBusinessLogic NBL;
+        private readonly ItemBusinessLogic IBL;
 
         public ListingsController(UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
             _userManager = um;
             _mapper = mapper;
+            IBL = new(masterDL, _mapper);
             RBL = new(masterDL, _mapper);
             LBL = new(masterDL, _mapper);
             NBL = new(masterDL, _mapper);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> CreateListing()
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            var items = IBL.GetAvailableItems(user);
+            var clvm = new CreateListingViewModel(items);
+            return View(clvm);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> PublishListing(int itemId)
+        {
+            var item = IBL.GetItem(itemId);
+            var plvm = new PublishListingViewModel(item, 0.0M, 0.0M);
+            return View(plvm);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
+        {
+            LBL.Create(plvm.ItemInfo.ItemId, plvm.DailyRate, plvm.WeeklyRate);
+            return RedirectToAction("Index", "Profile");
         }
 
         [HttpGet]
@@ -53,22 +79,8 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> ViewListing(int id)
         {
-            var item = LBL.GetItemById(id);
+            var item = IBL.GetItem(id);
             return View(new ViewListingViewModel(_mapper, item));
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> CreateListing(int itemId)
-        {
-            var item = LBL.GetItemById(itemId);
-            return View(new CreateListingViewModel(item, 0.0M, 0.0M));
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreateListing(CreateListingViewModel clvm)
-        {
-            var item = LBL.GetItemById(clvm.ItemInfo.ItemId);
-            return View(new CreateListingViewModel(item, 0.0M, 0.0M));
         }
     }
 }

@@ -4,12 +4,13 @@ using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Borrow.Models;
 using Microsoft.AspNetCore.Authorization;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Models.Views.TableViews;
 using Microsoft.Build.Framework;
 using Borrow.Models.Views.TableViews.Create;
+using Borrow.Data.BusinessLayer;
+using System.ComponentModel;
 
 namespace Borrow.Controllers
 {
@@ -21,6 +22,7 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly RequestBusinessLogic RBL;
         private readonly ListingsBusinessLogic LBL;
+        private readonly ItemBusinessLogic IBL;
 
         public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL)
         {
@@ -29,12 +31,13 @@ namespace Borrow.Controllers
             _mapper = mapper;
             RBL = new(masterDL, _mapper);
             LBL = new(masterDL, _mapper);
+            IBL = new(masterDL, _mapper);
         }
 
         [HttpGet]
         public async Task<ActionResult> RequestItem(int itemId)
         {
-            return View(new CreateRequestViewModel(LBL.GetItemById(itemId)));
+            return View(new CreateRequestViewModel(IBL.GetItem(itemId)));
         }
 
         [HttpPost]

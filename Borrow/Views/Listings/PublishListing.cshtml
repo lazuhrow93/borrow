@@ -1,0 +1,36 @@
+﻿@model Borrow.Models.Views.Listing.PublishListingViewModel
+@{
+    ViewBag.Title = "Publish Listing";
+}
+
+<h1>Create your listing for @Model.ItemInfo.Name</h1>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post" asp-action="PublishListing">
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Daily Rate:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="DailyRate" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="DailyRate"
+                  class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2"><label>Weekly Rate:</label></div>
+        <div class="col-sm-4">
+            <input asp-for="WeeklyRate" class="form-control" />
+        </div>
+        <div class="col">
+            <span asp-validation-for="WeeklyRate"
+                  class="text-danger"></span>
+        </div>
+    </div>
+    @Html.HiddenFor(m=>m.ItemInfo)
+    <div class="row">
+        <div class="offset-2 col-sm-4">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+    </div>
+</form>
