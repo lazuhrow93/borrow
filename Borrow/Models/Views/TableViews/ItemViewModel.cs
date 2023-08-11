@@ -1,4 +1,4 @@
-﻿using Borrow.Models.Listings;
+﻿using Borrow.Models.Backend;
 using System;
 
 namespace Borrow.Models.Views.TableViews

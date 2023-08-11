@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Models.Backend;
 using Borrow.Models.Identity;
-using Borrow.Models.Listings;
 using System.Security.Claims;
 
 namespace Borrow.Data.BusinessLayer

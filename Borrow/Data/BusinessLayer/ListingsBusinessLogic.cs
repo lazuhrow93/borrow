@@ -2,8 +2,8 @@
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Models.Identity;
-using Borrow.Models.Listings;
 using System;
+using Borrow.Models.Backend;
 
 namespace Borrow.Data.BusinessLayer
 {

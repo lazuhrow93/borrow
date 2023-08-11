@@ -1,5 +1,5 @@
-﻿using Borrow.Models.Identity;
-using Borrow.Models.Listings;
+﻿using Borrow.Models.Backend;
+using Borrow.Models.Identity;
 using Borrow.Models.Views.TableViews;
 using Microsoft.EntityFrameworkCore;
 using System;

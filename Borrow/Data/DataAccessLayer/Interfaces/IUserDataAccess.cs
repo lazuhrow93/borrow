@@ -1,6 +1,5 @@
 ﻿using Borrow.Models.Backend;
 using Borrow.Models.Identity;
-using Borrow.Models.Listings;
 using System;
 namespace Borrow.Data.DataAccessLayer.Interfaces
 {

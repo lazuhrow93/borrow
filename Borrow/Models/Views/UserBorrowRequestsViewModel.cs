@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Borrow.Models.Backend;
-using Borrow.Models.Listings;
 using Borrow.Models.Views.TableViews;
 using System.Net.NetworkInformation;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Borrow.Models.Listings
+namespace Borrow.Models.Backend
 {
     public class Item
     {
@@ -18,7 +18,7 @@ namespace Borrow.Models.Listings
             Available = true;
         }
 
-        public Item(int id, string name, string description, DateTime ownedSince, bool available, 
+        public Item(int id, string name, string description, DateTime ownedSince, bool available,
             decimal dailyRate, decimal weeklyRate, Guid identifier, bool isListed, string userName)
         {
             Id = id;
@@ -31,12 +31,12 @@ namespace Borrow.Models.Listings
 
         internal void Unlist()
         {
-            this.IsListed = false;
+            IsListed = false;
         }
 
         internal void List()
         {
-            this.IsListed = true;
+            IsListed = true;
         }
     }
 }

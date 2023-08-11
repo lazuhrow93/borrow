@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
-using Borrow.Models.Listings;
 using Borrow.Models.Backend;
 
 namespace Borrow.Data

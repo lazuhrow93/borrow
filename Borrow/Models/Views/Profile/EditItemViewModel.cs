@@ -1,4 +1,4 @@
-﻿using Borrow.Models.Listings;
+﻿using Borrow.Models.Backend;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Borrow.Models.Views.Profile

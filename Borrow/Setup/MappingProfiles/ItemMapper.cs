@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Borrow.Models.Listings;
+using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.TableViews;
 

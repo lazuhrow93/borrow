@@ -2,15 +2,11 @@
 using Borrow.Data.BusinessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Identity;
-using Borrow.Models.Listings;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
-using Borrow.Models.Views.TableViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.EntityFrameworkCore;
 
 namespace Borrow.Controllers
 {

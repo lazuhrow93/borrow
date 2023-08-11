@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer;
-using Borrow.Models.Listings;
+using Borrow.Models.Backend;
 using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Models.Views.Listing
