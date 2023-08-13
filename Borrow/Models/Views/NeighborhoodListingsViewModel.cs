@@ -12,13 +12,10 @@ namespace Borrow.Models.Views
             
         }
 
-        public NeighborhoodListingsViewModel(IEnumerable<Backend.Listing> rawlistings, string neighborhoodName)
+        public NeighborhoodListingsViewModel(IEnumerable<ListingViewModel> lvm, string name)
         {
-            NeighborhoodListings = rawlistings.Select(l =>
-            {
-                return new ListingViewModel(l);
-            }).ToList();
-            Name = neighborhoodName;
+            Name = name;
+            NeighborhoodListings = lvm.ToList();
         }
     }
 }

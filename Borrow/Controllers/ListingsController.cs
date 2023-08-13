@@ -70,8 +70,8 @@ namespace Borrow.Controllers
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetNeighborhoodListings(user);
             var neighborhood = NBL.Get(user);
+            var listings = LBL.GetNeighborhoodListings(neighborhood);
 
             return View(new NeighborhoodListingsViewModel(listings, neighborhood.Name));
         }
@@ -79,8 +79,8 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> ViewListing(int id)
         {
-            var item = IBL.GetItem(id);
-            return View(new ViewListingViewModel(_mapper, item));
+            var listing = LBL.GetListing(id);
+            return View(new ViewListingViewModel(listing));
         }
     }
 }

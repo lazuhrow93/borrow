@@ -2,6 +2,6 @@
 {
     public class Datalayer
     {
-        public BorrowContext BorrowContext { get; private set; }
+        public BorrowContext BorrowContext { get; protected set; }
     }
 }

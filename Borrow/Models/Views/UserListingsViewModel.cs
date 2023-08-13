@@ -13,12 +13,9 @@ namespace Borrow.Models.Views
             
         }
 
-        public UserListingsViewModel(IEnumerable<Backend.Listing> listings)
+        public UserListingsViewModel(IEnumerable<ListingViewModel> listings)
         {
-            ListedItems = listings.Select(l =>
-            {
-                return new ListingViewModel(l);
-            }).ToList();
+            ListedItems = listings.ToList();
         }
     }
 }

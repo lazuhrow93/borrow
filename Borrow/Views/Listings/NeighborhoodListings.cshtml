@@ -20,13 +20,10 @@
                         @item.OwnerUsername
                     </td>
                     <td>
-                        @item.Name
+                        @item.ItemName
                     </td>
                     <td>
                         @item.Description
-                    </td>
-                    <td>
-                        @item.Available
                     </td>
                     <td>
                         @item.DailyRate
@@ -37,7 +34,7 @@
                     <td>
                         @using (Html.BeginForm("ViewListing", "Listings", FormMethod.Post))
                         {
-                            <button class="btn btn-primary" type="submit" name="id" value=@item.ItemId>View Info</button>
+                            <button class="btn btn-primary" type="submit" name="listingId" value=@item.ListingId>View Info</button>
                         }
                     </td>
                     

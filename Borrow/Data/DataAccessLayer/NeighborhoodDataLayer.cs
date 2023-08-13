@@ -5,8 +5,6 @@ namespace Borrow.Data.DataAccessLayer
 {
     public class NeighborhoodDataLayer : Datalayer
     {
-        private BorrowContext BorrowContext { get; set; }
-
         public NeighborhoodDataLayer(BorrowContext borrowContext)
         {
             BorrowContext = borrowContext;
