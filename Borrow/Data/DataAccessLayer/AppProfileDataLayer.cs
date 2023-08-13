@@ -2,7 +2,7 @@
 
 namespace Borrow.Data.DataAccessLayer
 {
-    public class AppProfileDataLayer
+    public class AppProfileDataLayer : Datalayer
     {
         private BorrowContext BorrowContext { get; set; }
 
