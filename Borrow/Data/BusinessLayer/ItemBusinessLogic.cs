@@ -35,5 +35,33 @@ namespace Borrow.Data.BusinessLayer
             var items = ItemDataLayer.GetOwnerItems(appProfile.OwnerId);
             return items.Where(i => i.Available);
         }
+
+        public IEnumerable<Item> CreateItemForUser(User user, List<Item> items)
+        {
+            var userProfile = AppProfileDataLayer.Get(user.ProfileId);
+            for (int index = 0; index < items.Count; ++index)
+            {
+                items[index].OwnerId = userProfile.OwnerId;
+                items[index].NeighborhoodId = userProfile.NeighborhoodId;
+
+            }
+            ItemDataLayer.Insert(items);
+            return items;
+        }
+
+        public Item EditItem(int id, string newName, string newDesc, decimal newDailyRate, decimal newWeeklyRate)
+        {
+            var currentItem = ItemDataLayer.Get(id);
+            currentItem.Description = newDesc;
+            currentItem.Name = newName;
+            ItemDataLayer.Update(currentItem);
+            return currentItem;
+        }
+
+        public IEnumerable<Item> GetUserItems(User user)
+        {
+            var ap = AppProfileDataLayer.Get(user.ProfileId);
+            return ItemDataLayer.GetOwnerItems(ap.OwnerId);
+        }
     }
 }

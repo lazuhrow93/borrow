@@ -6,18 +6,19 @@ namespace Borrow.Models.Views
 {
     public class UserListingsViewModel
     {
-        public List<ItemViewModel> ListedItems { get; set; }
-        public List<ItemViewModel> NonListedItems { get; set; }
+        public List<ListingViewModel> ListedItems { get; set; }
 
-        public UserListingsViewModel(IMapper mapper, IEnumerable<Item> items)
+        public UserListingsViewModel()
         {
-            ListedItems = new();
-            NonListedItems = new();
-            foreach (var item in items)
+            
+        }
+
+        public UserListingsViewModel(IEnumerable<Backend.Listing> listings)
+        {
+            ListedItems = listings.Select(l =>
             {
-                if (item.IsListed) ListedItems.Add(new ItemViewModel(item));
-                else NonListedItems.Add(new ItemViewModel(item));
-            }
+                return new ListingViewModel(l);
+            }).ToList();
         }
     }
 }

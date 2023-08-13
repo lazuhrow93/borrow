@@ -33,61 +33,19 @@ namespace Borrow.Data.BusinessLayer
             return true;
         }
 
-        public IEnumerable<Item> GetNeighborhoodListings(User user)
+        public IEnumerable<Listing> GetNeighborhoodListings(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
             var neighborhood = NeighborhoodDataLayer.Get(appProfile);
-            var items = ItemDataLayer.Get(neighborhood);
 
-            return items.Where(i => i.OwnerId.Equals(appProfile.OwnerId) == false);
+            return ListingsDataLayer.GetNeighborhoodListings(neighborhood.Id);
         }
 
-        public IEnumerable<Item> GetUserListings(User user)
+        public IEnumerable<Listing> GetUserListings(User user)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            return ItemDataLayer.GetOwnerItems(appProfile.OwnerId);
-        }
-
-        public void InsertItem(User user, List<Item> items)
-        {
-            var userProfile = AppProfileDataLayer.Get(user.ProfileId);
-            for (int index = 0; index < items.Count; ++index)
-            {
-                items[index].OwnerId = userProfile.OwnerId;
-                items[index].NeighborhoodId = userProfile.NeighborhoodId;
-
-            }
-            ItemDataLayer.Insert(items);
-        }
-
-        public void InsertItem(User user, Item item)
-        {
-            var userProfile = AppProfileDataLayer.Get(user.ProfileId);
-            item.OwnerId = userProfile.OwnerId;
-            item.NeighborhoodId = userProfile.NeighborhoodId;
-
-            ItemDataLayer.Insert(item);
-        }
-
-        public bool EditItem(User user, int id, string newName, string newDesc, decimal newDailyRate, decimal newWeeklyRate)
-        {
-            var profile = AppProfileDataLayer.Get(user.ProfileId);
-            var currentItem = ItemDataLayer.Get(id);
-            currentItem.Description = newDesc;
-            currentItem.Name = newName;
-            ItemDataLayer.Update(currentItem);
-            return true;
-        }
-
-        public bool ChangeListingStatus(User user, int listingId, bool isListed)
-        {
-            var profile = AppProfileDataLayer.Get(user.ProfileId);
-            var currentItem = ItemDataLayer.Get(listingId);
-            if (currentItem is null) return false;
-            currentItem.IsListed = isListed;
-            ItemDataLayer.Update(currentItem);
-            return true;
-        }
+            return ListingsDataLayer.GetOwnerListings(appProfile.OwnerId);
+        }`
 
         public bool RemoveListing(User user, IEnumerable<int> itemIds)
         {

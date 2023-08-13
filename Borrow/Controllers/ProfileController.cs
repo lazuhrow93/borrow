@@ -32,7 +32,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var items = LBL.GetUserListings(user);
+            var items = IBL.GetUserItems(user);
             return View(new ProfileViewModel(user, items));
         }
 
@@ -59,7 +59,7 @@ namespace Borrow.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _UserManager.GetUserAsync(this.User);
-                LBL.InsertItem(user, viewModel.ItemsToSave.Select(ni => ni.Parse()).ToList());
+                IBL.CreateItemForUser(user, viewModel.ItemsToSave.Select(ni => ni.Parse()).ToList());
             }
 
             return View(viewModel);
@@ -78,31 +78,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
-            var user = await _UserManager.GetUserAsync(this.User);
-            LBL.EditItem(user, ivm.ItemId, ivm.NewName, ivm.NewDescription, ivm.NewDailyRate, ivm.NewWeeklyRate);
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> ListUnlist()
-        {
-            var user = await _UserManager.GetUserAsync(this.User);
-            return View(new EditListingsViewModel(LBL.GetUserListings(user)));
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Unlist(int ItemId)
-        {
-            var user = await _UserManager.GetUserAsync(this.User);
-            LBL.ChangeListingStatus(user, ItemId, false);
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> List(int ItemId)
-        {
-            var user = await _UserManager.GetUserAsync(this.User);
-            LBL.ChangeListingStatus(user, ItemId, true);
+            IBL.EditItem(ivm.ItemId, ivm.NewName, ivm.NewDescription, ivm.NewDailyRate, ivm.NewWeeklyRate);
             return RedirectToAction("Index");
         }
 
@@ -110,13 +86,13 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Remove()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var userItems = LBL.GetUserListings(user);
-            return View(new RemoveItemsViewModel(userItems));
+            var userItems = IBL.GetUserItems(user);
+            return View(new ReviewListingsViewModel(userItems));
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> Remove(RemoveItemsViewModel rivm)
+        public async Task<ActionResult> Remove(ReviewListingsViewModel rivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);

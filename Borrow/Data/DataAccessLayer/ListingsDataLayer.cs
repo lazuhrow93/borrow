@@ -2,7 +2,7 @@
 
 namespace Borrow.Data.DataAccessLayer
 {
-    public class ListingsDataLayer
+    public class ListingsDataLayer : Datalayer
     {
         public BorrowContext Context { get; set; }
 
@@ -11,18 +11,29 @@ namespace Borrow.Data.DataAccessLayer
             Context = borrowContext;
         }
 
-        public bool Insert(int itemId, int ownerId, decimal dailyrate, decimal weeklyrate)
+        public Listing Insert(int itemId, int ownerId, decimal dailyrate, decimal weeklyrate)
         {
-            Context.Add(new Listing()
+            var newItem = new Listing()
             {
                 ItemId = itemId,
                 DailyRate = dailyrate,
                 WeeklyRate = weeklyrate,
                 OwnerId = ownerId
-            });
+            };
+
+            Context.Add(newItem);
             Context.SaveChanges();
-            return true;
+            return newItem;
         }
 
+        public IEnumerable<Listing> GetNeighborhoodListings(int neighborhood)
+        {
+            return Context.Listing.Where(l => l.NeighborhoodId == neighborhood);
+        }
+
+        public IEnumerable<Listing> GetOwnerListings(int owner)
+        {
+            return Context.Listing.Where(l => l.OwnerId.Equals(owner));
+        }
     }
 }

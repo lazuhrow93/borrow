@@ -62,18 +62,18 @@ namespace Borrow.Controllers
         public async Task<ActionResult> UserListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var items = LBL.GetUserListings(user);
-            return View(new UserListingsViewModel(_mapper, items));
+            var listings = LBL.GetUserListings(user);
+            return View(new UserListingsViewModel(listings));
         }
 
         [HttpGet]
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var items = LBL.GetNeighborhoodListings(user);
+            var listings = LBL.GetNeighborhoodListings(user);
             var neighborhood = NBL.Get(user);
 
-            return View(new NeighborhoodListingsViewModel(items, neighborhood.Name));
+            return View(new NeighborhoodListingsViewModel(listings, neighborhood.Name));
         }
 
         [HttpPost]

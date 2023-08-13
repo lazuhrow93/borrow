@@ -11,5 +11,6 @@ namespace Borrow.Models.Backend
         [Precision(18, 2)]
         public decimal WeeklyRate { get; set; }
         public int OwnerId { get; set; }
+        public int NeighborhoodId { get; set; }
     }
 }

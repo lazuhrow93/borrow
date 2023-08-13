@@ -3,16 +3,16 @@ using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Models.Views
 {
-    public class RemoveItemsViewModel
+    public class ReviewListingsViewModel
     {
         public List<ItemViewModel> Items { get; set; }
 
-        public RemoveItemsViewModel()
+        public ReviewListingsViewModel()
         {
             
         }
 
-        public RemoveItemsViewModel(IEnumerable<Item> items)
+        public ReviewListingsViewModel(IEnumerable<Item> items)
         {
             var ivms = items.Select(i => { return new ItemViewModel(i); });
             this.Items = ivms.Select(i => { i.IsSelected = false; return i; }).ToList();

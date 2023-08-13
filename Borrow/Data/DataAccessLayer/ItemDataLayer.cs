@@ -1,13 +1,14 @@
 ﻿using Borrow.Migrations;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
+using Borrow.Models.Views.TableViews;
 using System;
 
 namespace Borrow.Data.DataAccessLayer
 {
-    public class ItemDataLayer
+    public class ItemDataLayer : Datalayer
     {
-        public BorrowContext BorrowContext { get; set; }
+        public BorrowContext BorrowContext { get; private set; }
 
         public ItemDataLayer(BorrowContext borrowContext)
         {

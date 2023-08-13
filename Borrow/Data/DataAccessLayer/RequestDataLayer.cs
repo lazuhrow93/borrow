@@ -3,7 +3,7 @@ using Borrow.Models.Identity;
 
 namespace Borrow.Data.DataAccessLayer
 {
-    public class RequestDataLayer
+    public class RequestDataLayer : Datalayer
     {
         private BorrowContext BorrowContext { get; set; }
 
