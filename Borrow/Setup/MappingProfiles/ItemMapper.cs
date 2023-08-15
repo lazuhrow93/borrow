@@ -13,6 +13,7 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.ItemId, o => o.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.Description))
+                .ForMember(dest => dest.IsListed, o => o.MapFrom(src => src.IsListed))
                 .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.OwnedSince.ToString("MM/dd/yyyy")));
 
             CreateMap<ItemViewModel, Item>()

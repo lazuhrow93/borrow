@@ -23,9 +23,10 @@ namespace Borrow.Data.DataAccessLayer
             return BorrowContext.Item.Where(i => i.OwnerId.Equals(ownerId));
         }
 
-        public IEnumerable<Item>? Get(Neighborhood neighborhood)
+        public IEnumerable<Item> GetUnlisted(int ownerId)
         {
-            return BorrowContext.Item.Where(i => i.NeighborhoodId.Equals(neighborhood.Id));
+            var items = GetOwnerItems(ownerId);
+            return items.Where(i => i.IsListed == false);
         }
 
         public void Insert(IEnumerable<Item> items)

@@ -26,7 +26,8 @@
                   class="text-danger"></span>
         </div>
     </div>
-    @Html.HiddenFor(m=>m.ItemInfo)
+    @Html.HiddenFor(m=>m.ItemInfo.ItemId)
+    @Html.HiddenFor(m=>m.NeighborhoodId)
     <div class="row">
         <div class="offset-2 col-sm-4">
             <button type="submit" class="btn btn-primary">Create</button>

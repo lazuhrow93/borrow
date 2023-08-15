@@ -8,6 +8,7 @@ using Borrow.Models.Views.TableViews;
 using Azure.Identity;
 using NuGet.Packaging;
 using MessagePack;
+using Borrow.Models.Views.Listing;
 
 namespace Borrow.Data.BusinessLayer
 {
@@ -30,10 +31,37 @@ namespace Borrow.Data.BusinessLayer
             Mapper = mapper;
         }
 
-        public bool Create(int itemId, decimal dailyRate, decimal weeklyRate)
+        public CreateListingViewModel GetCreateListingViewModel(User user)
         {
+            //need to get all ITems that are not listed
+            var approfile = AppProfileDataLayer.Get(user.ProfileId);
+            var unlistedItems = ItemDataLayer.GetUnlisted(approfile.OwnerId);
+            var setOfItems = Mapper.Map<List<ItemViewModel>>(unlistedItems);
+            return new CreateListingViewModel()
+            {
+                AvailableItems = setOfItems
+            };
+        }
+
+        public PublishListingViewModel GetPublishListingViewModel(int itemId, int profileId)
+        {
+            var appProfile = AppProfileDataLayer.Get(profileId);
             var item = ItemDataLayer.Get(itemId);
-            ListingsDataLayer.Insert(itemId, item.OwnerId, dailyRate, weeklyRate);
+            return new PublishListingViewModel()
+            {
+                ItemInfo = Mapper.Map<ItemViewModel>(item),
+                DailyRate = 0.0M,
+                WeeklyRate = 0.0M,
+                NeighborhoodId = appProfile.NeighborhoodId
+            };
+        }
+
+        public bool Create(PublishListingViewModel p)
+        {
+            var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
+            item.IsListed = true;
+            ItemDataLayer.Update(item);
+            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId);
             return true;
         }
 

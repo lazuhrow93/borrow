@@ -10,14 +10,15 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext = borrowContext;
         }
 
-        public Listing Insert(int itemId, int ownerId, decimal dailyrate, decimal weeklyrate)
+        public Listing Insert(int itemId, int ownerId, decimal dailyrate, decimal weeklyrate, int neighborhoodId)
         {
             var newItem = new Listing()
             {
                 ItemId = itemId,
                 DailyRate = dailyrate,
                 WeeklyRate = weeklyrate,
-                OwnerId = ownerId
+                OwnerId = ownerId,
+                NeighborhoodId = neighborhoodId
             };
 
             BorrowContext.Add(newItem);

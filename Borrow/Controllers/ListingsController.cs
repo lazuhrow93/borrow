@@ -38,23 +38,22 @@ namespace Borrow.Controllers
         public async Task<ActionResult> CreateListing()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var items = IBL.GetAvailableItems(user);
-            var clvm = new CreateListingViewModel(items);
+            var clvm = LBL.GetCreateListingViewModel(user);
             return View(clvm);
         }
 
         [HttpGet]
         public async Task<ActionResult> PublishListing(int itemId)
         {
-            var item = IBL.GetItem(itemId);
-            var plvm = new PublishListingViewModel(item, 0.0M, 0.0M);
-            return View(plvm);
+            var user = await _userManager.GetUserAsync(this.User);
+            PublishListingViewModel p = LBL.GetPublishListingViewModel(itemId, user.ProfileId);
+            return View(p);
         }
 
         [HttpPost]
         public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
         {
-            LBL.Create(plvm.ItemInfo.ItemId, plvm.DailyRate, plvm.WeeklyRate);
+            LBL.Create(plvm);
             return RedirectToAction("Index", "Profile");
         }
 
