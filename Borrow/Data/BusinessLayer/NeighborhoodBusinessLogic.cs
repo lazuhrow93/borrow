@@ -4,6 +4,7 @@ using Borrow.Data.DataAccessLayer;
 using Borrow.Models.Identity;
 using Borrow.Models.Backend;
 using Borrow.Data;
+using Borrow.Models.Views.Home;
 
 namespace Borrow.Data.BusinessLayer
 {
@@ -18,6 +19,15 @@ namespace Borrow.Data.BusinessLayer
             AppProfileDataLayer = masterDL.AppProfileDataLayer;
             NeighborhoodDataLayer = masterDL.NeighborhoodDataLayer;
             Mapper = mapper;
+        }
+        
+        public HomeViewModel GetHomeViewModel(User user)
+        {
+            var profile = AppProfileDataLayer.Get(user.ProfileId);
+            var neighborhood = NeighborhoodDataLayer.Get(profile);
+            var homeviewmodel = Mapper.Map<HomeViewModel>(user);
+            Mapper.Map<Neighborhood, HomeViewModel>(neighborhood, homeviewmodel);
+            return homeviewmodel;
         }
 
         public Neighborhood Get(User user)

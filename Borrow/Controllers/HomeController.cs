@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Borrow.Data.BusinessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models;
 using Borrow.Models.Backend;
@@ -15,14 +16,16 @@ namespace Borrow.Controllers
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
         private readonly IMapper _mapper;
-        private readonly IUserDataAccess _userDataAccess;
+        private readonly IMasterDL _masterDl;
+        private readonly NeighborhoodBusinessLogic NBL;
 
-        public HomeController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia)
+        public HomeController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL)
         {
             userManager = um;
             signInManager = sm;
             _mapper = mapper;
-            _userDataAccess = ia;
+            _masterDl = masterDL;
+            NBL = new(_masterDl, _mapper);
         }
 
         [HttpGet]
@@ -32,10 +35,7 @@ namespace Borrow.Controllers
             if (signInManager.IsSignedIn(this.User))
             {
                 var user = await userManager.GetUserAsync(this.User);
-                var profile = _userDataAccess.GetAppProfile(user);
-                var neighborhood = _userDataAccess.GetNeighborhood(profile);
-                hvm = _mapper.Map<HomeViewModel>(user);
-                _mapper.Map<Neighborhood, HomeViewModel>(neighborhood, hvm);
+                hvm = NBL.GetHomeViewModel(user);
             }
             return View(hvm);
         }

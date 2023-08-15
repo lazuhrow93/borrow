@@ -12,16 +12,13 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private SignInManager<User> _SignInManager;
         private UserManager<User> _UserManager;
         private readonly IMapper _mapper;
-        private readonly IMasterDL _masterDL;
         private readonly ListingsBusinessLogic LBL;
         private readonly ItemBusinessLogic IBL;
 
         public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
-            _SignInManager = sm;
             _UserManager = um;
             _mapper = mapper;
             LBL = new(masterDL, _mapper);

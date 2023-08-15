@@ -8,8 +8,6 @@ namespace Borrow.Data.DataAccessLayer
 {
     public class ItemDataLayer : Datalayer
     {
-        public BorrowContext BorrowContext { get; private set; }
-
         public ItemDataLayer(BorrowContext borrowContext)
         {
             BorrowContext = borrowContext;

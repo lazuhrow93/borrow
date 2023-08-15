@@ -32,6 +32,7 @@ namespace Borrow.Data
                     Id = 1,
                     OwnerId = 1,
                     NeighborhoodId = 1,
+                    UserName = "dummy93"
                 });
 
             modelBuilder.Entity<Neighborhood>().HasData(
