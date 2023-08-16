@@ -14,24 +14,5 @@ namespace Borrow.Models.Views
         public int Exchanges { get; set; }
         public List<ItemViewModel> OwnerItems { get; set; }
         public int? RemoveAtIndex { get; set; }
-        public Guid EditItem { get; set; }
-
-        public ProfileViewModel(User user, IEnumerable<Item> items)
-        {
-            Username = user.UserName;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-
-            OwnerItems = new();
-            foreach(var item in items)
-            {
-                OwnerItems.Add(new ItemViewModel(item));
-            }
-        }
-
-        public void RemoveFromProfile(int index)
-        {
-            this.OwnerItems.RemoveAt(index);
-        }
     }
 }

@@ -15,7 +15,6 @@ namespace Borrow.Models.Views.TableViews
         public decimal DailyRate { get; set; }
         public decimal WeeklyRate { get; set; }
         public bool Available { get; set; }
-        public Guid Identifier { get; set; }
 
         public ItemViewModel()
         {

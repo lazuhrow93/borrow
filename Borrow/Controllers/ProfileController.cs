@@ -16,6 +16,7 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly ListingsBusinessLogic LBL;
         private readonly ItemBusinessLogic IBL;
+        private readonly AppProfileBusinessLogic ABL;
 
         public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {
@@ -23,14 +24,24 @@ namespace Borrow.Controllers
             _mapper = mapper;
             LBL = new(masterDL, _mapper);
             IBL = new(masterDL, _mapper);
+            ABL = new(masterDL, _mapper);
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
             var user = await _UserManager.GetUserAsync(this.User);
+            var profile = ABL.Get(user.ProfileId);
+
             var items = IBL.GetUserItems(user);
-            return View(new ProfileViewModel(user, items));
+            return View(new ProfileViewModel()
+            {
+                Username = profile.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Exchanges = 0,
+                OwnerItems = items.ToList()
+            });
         }
 
         [HttpGet]
@@ -56,7 +67,7 @@ namespace Borrow.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _UserManager.GetUserAsync(this.User);
-                IBL.CreateItemForUser(user, viewModel.ItemsToSave.Select(ni => ni.Parse()).ToList());
+                IBL.CreateItemsForUser(user, viewModel);
             }
 
             return View(viewModel);
@@ -67,15 +78,14 @@ namespace Borrow.Controllers
         public async Task<ActionResult> EditItem(int ItemId)
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var item = IBL.GetItem(ItemId);
-            return View(new EditItemViewModel(item));
+            return View(new EditItemViewModel(IBL.GetItem(ItemId)));
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
-            IBL.EditItem(ivm.ItemId, ivm.NewName, ivm.NewDescription, ivm.NewDailyRate, ivm.NewWeeklyRate);
+            IBL.EditItem(ivm);
             return RedirectToAction("Index");
         }
 
@@ -84,7 +94,10 @@ namespace Borrow.Controllers
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var userItems = IBL.GetUserItems(user);
-            return View(new ReviewListingsViewModel(userItems));
+            return View(new ReviewListingsViewModel()
+            {
+                Items = userItems.ToList()
+            });
 
         }
 

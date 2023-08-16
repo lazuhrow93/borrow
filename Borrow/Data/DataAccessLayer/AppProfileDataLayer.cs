@@ -4,7 +4,6 @@ namespace Borrow.Data.DataAccessLayer
 {
     public class AppProfileDataLayer : Datalayer
     {
-
         public AppProfileDataLayer(BorrowContext borrowContext)
         {
             BorrowContext = borrowContext;

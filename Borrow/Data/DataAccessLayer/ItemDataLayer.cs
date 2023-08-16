@@ -46,7 +46,8 @@ namespace Borrow.Data.DataAccessLayer
         {
             var currentItem = BorrowContext.Item.Where(i=>i.Id == newItem.Id).FirstOrDefault();
             if (currentItem == null) return false;
-            currentItem = newItem;
+            currentItem.Name = newItem.Name;
+            currentItem.Description = newItem.Description;
             BorrowContext.SaveChanges();
             return true;
         }

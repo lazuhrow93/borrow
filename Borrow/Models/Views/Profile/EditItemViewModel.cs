@@ -1,4 +1,5 @@
 ﻿using Borrow.Models.Backend;
+using Borrow.Models.Views.TableViews;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Borrow.Models.Views.Profile
@@ -17,12 +18,12 @@ namespace Borrow.Models.Views.Profile
             
         }
 
-        public EditItemViewModel(Item item)
+        public EditItemViewModel(ItemViewModel currentItemInfo)
         {
-            ItemId = item.Id;
-            NewName = item.Name;
-            NewDescription = item.Description;
-            OwnedSince = item.OwnedSince;
+            ItemId = currentItemInfo.ItemId;
+            NewName = currentItemInfo.Name;
+            NewDescription = currentItemInfo.Description;
+            OwnedSince = DateTime.Parse(currentItemInfo.OwnedSince);
         }
     }
 }

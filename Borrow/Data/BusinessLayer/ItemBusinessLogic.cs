@@ -3,6 +3,9 @@ using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
+using Borrow.Models.Views;
+using Borrow.Models.Views.Profile;
+using Borrow.Models.Views.TableViews;
 using System.Security.Claims;
 
 namespace Borrow.Data.BusinessLayer
@@ -24,9 +27,46 @@ namespace Borrow.Data.BusinessLayer
             Mapper = mapper;
         }
 
-        public Item? GetItem(int id)
+        public IEnumerable<ItemViewModel> GetUserItems(User user)
         {
-            return ItemDataLayer.Get(id);
+            var setofItems = Enumerable.Empty<ItemViewModel>();
+            var ap = AppProfileDataLayer.Get(user.ProfileId);
+            var items = ItemDataLayer.GetOwnerItems(ap.OwnerId);
+            setofItems = Mapper.Map<IEnumerable<ItemViewModel>>(items);
+
+            return setofItems;
+
+        }
+
+        public ItemViewModel GetItem(int id)
+        {
+            var item = ItemDataLayer.Get(id);
+            var parsedItem = Mapper.Map<ItemViewModel>(item);
+            return parsedItem;
+        }
+
+        public bool EditItem(EditItemViewModel NewDetails)
+        {
+            var updatedItem = Mapper.Map<Item>(NewDetails);
+            ItemDataLayer.Update(updatedItem);
+            return true;
+        }
+
+        public bool CreateItemsForUser(User user, AddItemViewModel newItemInfo)
+        {
+            var profile = AppProfileDataLayer.Get(user.ProfileId);
+            var itemsToAdd = new List<Item>();
+            foreach(var newItemViewModel in newItemInfo.ItemsToSave)
+            {
+                var newItem = Mapper.Map<Item>(newItemViewModel);
+                newItem.Available = false;
+                newItem.OwnerId = profile.OwnerId;
+                newItem.IsListed = false;
+                newItem.NeighborhoodId = profile.NeighborhoodId;
+                itemsToAdd.Add(newItem);
+            }
+            ItemDataLayer.Insert(itemsToAdd);
+            return true;
         }
 
         public IEnumerable<Item> GetAvailableItems(User user)
@@ -47,21 +87,6 @@ namespace Borrow.Data.BusinessLayer
             }
             ItemDataLayer.Insert(items);
             return items;
-        }
-
-        public Item EditItem(int id, string newName, string newDesc, decimal newDailyRate, decimal newWeeklyRate)
-        {
-            var currentItem = ItemDataLayer.Get(id);
-            currentItem.Description = newDesc;
-            currentItem.Name = newName;
-            ItemDataLayer.Update(currentItem);
-            return currentItem;
-        }
-
-        public IEnumerable<Item> GetUserItems(User user)
-        {
-            var ap = AppProfileDataLayer.Get(user.ProfileId);
-            return ItemDataLayer.GetOwnerItems(ap.OwnerId);
         }
     }
 }

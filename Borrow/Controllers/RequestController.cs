@@ -37,7 +37,10 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> RequestItem(int itemId)
         {
-            return View(new CreateRequestViewModel(IBL.GetItem(itemId)));
+            return View(new CreateRequestViewModel()
+            {
+                ItemInformation = IBL.GetItem(itemId)
+            });
         }
 
         [HttpPost]

@@ -111,7 +111,7 @@ namespace Borrow.Data.BusinessLayer
             var queryResult = query.Where(q => q.OwnerId.Equals(appProfile.OwnerId));
             var results = new List<ListingViewModel>();
 
-            foreach(var join in query)
+            foreach(var join in queryResult)
             {
                 results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, appProfile.UserName, join.OwnerId));
             }
@@ -159,7 +159,7 @@ namespace Borrow.Data.BusinessLayer
             var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id));
             var results = new List<ListingViewModel>();
 
-            foreach (var join in query)
+            foreach (var join in queryResult)
             {
                 results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, join.UserName, join.OwnerId));
             }
