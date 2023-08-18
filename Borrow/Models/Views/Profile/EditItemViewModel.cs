@@ -9,8 +9,6 @@ namespace Borrow.Models.Views.Profile
         public int ItemId { get; set; }
         public string NewName { get; set; }
         public string NewDescription { get; set; }
-        public decimal NewDailyRate { get; set; }
-        public decimal NewWeeklyRate { get; set; }
         public DateTime OwnedSince { get; set; }
 
         public EditItemViewModel()

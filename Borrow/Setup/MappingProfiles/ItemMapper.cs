@@ -30,6 +30,7 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.OwnedSince, o => o.MapFrom(src => src.DateAcquired.ToString("MM/dd/yyyy")));
 
             CreateMap<EditItemViewModel, Item>()
+                .ForMember(dest => dest.Id, o => o.MapFrom(src => src.ItemId))
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.NewName))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.NewDescription));
         }

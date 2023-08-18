@@ -77,7 +77,6 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditItem(int ItemId)
         {
-            var user = await _UserManager.GetUserAsync(this.User);
             return View(new EditItemViewModel(IBL.GetItem(ItemId)));
         }
 
