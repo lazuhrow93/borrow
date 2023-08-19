@@ -18,6 +18,11 @@ namespace Borrow.Data.DataAccessLayer
             return BorrowContext.Item.Where(i=>i.Id == id).FirstOrDefault();
         }
 
+        public IEnumerable<Item> Get(IEnumerable<int> ids)
+        {
+            return BorrowContext.Item.Where(i => ids.Contains(i.Id));
+        }
+
         public IEnumerable<Item> GetOwnerItems(int ownerId)
         {
             return BorrowContext.Item.Where(i => i.OwnerId.Equals(ownerId));
@@ -51,6 +56,17 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext.SaveChanges();
             return true;
         }
+        
+        public bool Update(IEnumerable<Item> items)
+        {
+            foreach (var item in items)
+            {
+                var currentItem = BorrowContext.Item.Where(i => i.Id.Equals(item.Id)).FirstOrDefault();
+                currentItem = item;
+                BorrowContext.SaveChanges();
+            }
+            return true;
+        }
 
         public void Delete(int itemId)
         {
@@ -58,5 +74,6 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext.Remove((Item)ToDelete);
             BorrowContext.SaveChanges();
         }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Borrow.Models.Backend;
 using Borrow.Models.Views.TableViews;
 
-namespace Borrow.Models.Views.Listing
+namespace Borrow.Models.Views.Listings
 {
     public class PublishListingViewModel
     {

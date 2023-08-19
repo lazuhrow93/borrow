@@ -1,7 +1,4 @@
-﻿using Borrow.Models.Backend;
-using Microsoft.AspNetCore.Http.Features;
-
-namespace Borrow.Models.Views.TableViews
+﻿namespace Borrow.Models.Views.TableViews
 {
     public class ListingViewModel
     {

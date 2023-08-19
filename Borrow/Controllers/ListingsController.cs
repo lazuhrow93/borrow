@@ -5,7 +5,7 @@ using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
-using Borrow.Models.Views.Listing;
+using Borrow.Models.Views.Listings;
 using Borrow.Models.Views.TableViews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -54,6 +54,33 @@ namespace Borrow.Controllers
         public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
         {
             LBL.Create(plvm);
+            return RedirectToAction("Index", "Profile");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> RemoveListing()
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            var listings = LBL.GetUserListings(user);
+            return View(new RemoveListingViewModel()
+            {
+                Listings = listings.Select(l =>
+                {
+                    return new SelectorViewModel<ListingViewModel>()
+                    {
+                        IsSelected = false,
+                        Entity = l
+                    };
+                }).ToList()
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RemoveListing(RemoveListingViewModel rlvm)
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            var listingsToDeactive = rlvm.Listings.Where(l => l.IsSelected).ToList();
+            var listings = LBL.DeactiveListing(listingsToDeactive.Select(l => l.Entity.ListingId));
             return RedirectToAction("Index", "Profile");
         }
 

@@ -8,7 +8,7 @@ using Borrow.Models.Views.TableViews;
 using Azure.Identity;
 using NuGet.Packaging;
 using MessagePack;
-using Borrow.Models.Views.Listing;
+using Borrow.Models.Views.Listings;
 
 namespace Borrow.Data.BusinessLayer
 {
@@ -61,7 +61,7 @@ namespace Borrow.Data.BusinessLayer
             var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
             item.IsListed = true;
             ItemDataLayer.Update(item);
-            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId);
+            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId, true);
             return true;
         }
 
@@ -86,10 +86,11 @@ namespace Borrow.Data.BusinessLayer
             return new ListingViewModel(listing.Id, listing.ItemId, item.Name, item.Description, listing.DailyRate, listing.WeeklyRate, appProfile.UserName, listing.OwnerId);
         }
 
-        public IEnumerable<ListingViewModel> GetUserListings(User user)
+        public IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
         {
             var appProfile = AppProfileDataLayer.Get(user.ProfileId);
             var username = appProfile.UserName;
+            var ownerId = appProfile.OwnerId;
             var bc = ListingsDataLayer.BorrowContext;
             var items = bc.Item;
             var listings = bc.Listing;
@@ -105,10 +106,10 @@ namespace Borrow.Data.BusinessLayer
                     l.WeeklyRate,
                     l.OwnerId,
                     i.Name,
-                    i.Description
+                    i.Description,
+                    l.Active
                 });
-
-            var queryResult = query.Where(q => q.OwnerId.Equals(appProfile.OwnerId));
+            var queryResult = (all) ? query.Where(q => q.OwnerId.Equals(ownerId)) : query.Where(q => q.OwnerId.Equals(ownerId) && q.Active);
             var results = new List<ListingViewModel>();
 
             foreach(var join in queryResult)
@@ -138,7 +139,8 @@ namespace Borrow.Data.BusinessLayer
                     l.OwnerId,
                     i.Name,
                     i.Description,
-                    l.NeighborhoodId
+                    l.NeighborhoodId,
+                    l.Active
                 }).Join(appProfiles,
                 li => li.OwnerId,
                 p => p.OwnerId,
@@ -153,10 +155,11 @@ namespace Borrow.Data.BusinessLayer
                     li.Description,
                     li.NeighborhoodId,
                     p.UserName,
+                    li.Active
                 });
 
 
-            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id));
+            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active);
             var results = new List<ListingViewModel>();
 
             foreach (var join in queryResult)
@@ -166,6 +169,23 @@ namespace Borrow.Data.BusinessLayer
 
             return results;
 
+        }
+
+        public bool DeactiveListing(IEnumerable<int> listingIds)
+        {
+            var listings = ListingsDataLayer.Get(listingIds).ToList();
+            var items = ItemDataLayer.Get(listings.Select(l => l.ItemId)).ToList();
+
+            for(int i = 0; i <listings.Count; ++i)
+            {
+                listings[i].Active = false;
+                
+            }
+            for (int i = 0; i < items.Count(); ++i)
+            {
+                items[i].IsListed = false;
+            }
+            return (ListingsDataLayer.Update(listings) && ItemDataLayer.Update(items));
         }
     }
 }

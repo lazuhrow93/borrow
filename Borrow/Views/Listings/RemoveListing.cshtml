@@ -1,0 +1,46 @@
+﻿@model Borrow.Models.Views.Listings.RemoveListingViewModel
+
+@{
+    ViewData["Title"] = "RemoveListing";
+}
+<h1>Remove Your Listings</h1>
+
+<h4>Please select the Listings you would like to remove and then click on submit</h4>
+<hr />
+<div class="row">
+    <form method="post" asp-action="RemoveListing" asp-controller="Listings">
+        <div>
+            <table style="width:100%">
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Daily Rate</th>
+                    <th>Weekly Rate</th>
+                </tr>
+                @for (int i = 0; i < Model.Listings.Count(); ++i)
+                {
+                    @Html.HiddenFor(m=>m.Listings[i].Entity.ListingId)
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(m=>m.Listings[i].IsSelected)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m=>m.Listings[i].Entity.ItemName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m=>m.Listings[i].Entity.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m=>m.Listings[i].Entity.DailyRate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m=>m.Listings[i].Entity.WeeklyRate)
+                        </td>
+                    </tr>
+                }
+            </table>
+            <button class="btn btn-primary" type="submit" disabled="@(Model.Listings.Count() == 0)">Submit</button>
+        </div>
+    </form>
+</div>

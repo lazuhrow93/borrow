@@ -41,16 +41,16 @@
     <div>
         <h1>Your Items</h1>
         <a asp-action ="AddItem" asp-controller="Profile">
-            <button class="btn btn-primary">Add Item To Inventory</button>
+            <button class="btn btn-primary">Add Items</button>
         </a>
-        <a asp-action="Remove" asp-controller="Profile">
-            <button class="btn btn-primary">Remove Item from Inventory</button>
-        </a>
-        <a asp-action="ListUnlist" asp-controller="Profile">
-            <button class="btn btn-primary">Unlist and List</button>
+        <a asp-action="RemoveItem" asp-controller="Profile">
+            <button class="btn btn-primary">Delete Items</button>
         </a>
         <a asp-action="CreateListing" asp-controller="Listings">
-            <button class="btn btn-primary">Create a Listing</button>
+            <button class="btn btn-primary">Create a Listings</button>
+        </a>
+        <a asp-action="RemoveListing" asp-controller="Listings">
+            <button class="btn btn-primary">Remove Listings</button>
         </a>
     </div>
     <form asp-action="EditItem" method="Get">
@@ -84,7 +84,7 @@
                             @item.IsListed
                         </td>
                         <td>
-                            <button type="submit" name="ItemId" value=@item.ItemId class="btn btn-primary">
+                            <button type="submit" name="ItemId" value=@item.ItemId class="btn btn-primary" disabled ="@(item.IsListed)">
                                 Edit
                             </button>
                         </td>

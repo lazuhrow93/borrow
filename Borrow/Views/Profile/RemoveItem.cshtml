@@ -9,7 +9,7 @@
 <h4>Item</h4>
 <hr />
 <div class="row">
-    <form method="post" asp-action="Remove" asp-controller="Profile">
+    <form method="post" asp-action="RemoveItem" asp-controller="Profile">
         <div>
             <table style="width:100%">
                 <tr>
@@ -51,7 +51,7 @@
                     </tr>
                 }
             </table>
-            <button class="btn btn-primary" type="submit">Delete Selected</button>
+            <button class="btn btn-primary" type="submit" disabled="@(Model.Items.Count() == 0)">Delete Selected</button>
         </div>
     </form>
 </div>

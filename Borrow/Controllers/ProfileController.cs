@@ -89,19 +89,19 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Remove()
+        public async Task<ActionResult> RemoveItem()
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var userItems = IBL.GetUserItems(user);
             return View(new ReviewListingsViewModel()
             {
-                Items = userItems.ToList()
+                Items = userItems.Where(i=>!i.IsListed).ToList()
             });
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> Remove(ReviewListingsViewModel rivm)
+        public async Task<ActionResult> RemoveItem(ReviewListingsViewModel rivm)
         {
             var user = await _UserManager.GetUserAsync(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);
