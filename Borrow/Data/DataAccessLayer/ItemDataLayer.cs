@@ -1,8 +1,4 @@
-﻿using Borrow.Migrations;
-using Borrow.Models.Backend;
-using Borrow.Models.Identity;
-using Borrow.Models.Views.TableViews;
-using System;
+﻿using Borrow.Models.Backend;
 
 namespace Borrow.Data.DataAccessLayer
 {
