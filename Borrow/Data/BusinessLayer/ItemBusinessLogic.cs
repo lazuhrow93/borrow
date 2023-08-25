@@ -35,7 +35,6 @@ namespace Borrow.Data.BusinessLayer
             setofItems = Mapper.Map<IEnumerable<ItemViewModel>>(items);
 
             return setofItems;
-
         }
 
         public ItemViewModel GetItem(int id)
@@ -67,26 +66,6 @@ namespace Borrow.Data.BusinessLayer
             }
             ItemDataLayer.Insert(itemsToAdd);
             return true;
-        }
-
-        public IEnumerable<Item> GetAvailableItems(User user)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var items = ItemDataLayer.GetOwnerItems(appProfile.OwnerId);
-            return items.Where(i => i.Available);
-        }
-
-        public IEnumerable<Item> CreateItemForUser(User user, List<Item> items)
-        {
-            var userProfile = AppProfileDataLayer.Get(user.ProfileId);
-            for (int index = 0; index < items.Count; ++index)
-            {
-                items[index].OwnerId = userProfile.OwnerId;
-                items[index].NeighborhoodId = userProfile.NeighborhoodId;
-
-            }
-            ItemDataLayer.Insert(items);
-            return items;
         }
     }
 }

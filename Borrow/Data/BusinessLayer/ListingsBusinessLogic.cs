@@ -56,7 +56,7 @@ namespace Borrow.Data.BusinessLayer
             };
         }
 
-        public bool Create(PublishListingViewModel p)
+        public bool CreateListing(PublishListingViewModel p)
         {
             var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
             item.IsListed = true;

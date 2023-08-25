@@ -53,7 +53,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
         {
-            LBL.Create(plvm);
+            LBL.CreateListing(plvm);
             return RedirectToAction("Index", "Profile");
         }
 

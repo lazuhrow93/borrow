@@ -48,7 +48,6 @@ namespace Borrow.Controllers
         public async Task<ActionResult> AddItem()
         {
             return View(new AddItemViewModel());
-
         }
 
         [HttpPost]
