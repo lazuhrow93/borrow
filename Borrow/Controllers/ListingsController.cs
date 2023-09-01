@@ -103,10 +103,10 @@ namespace Borrow.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ViewListing(int id)
+        public async Task<ActionResult> ViewListing(int listingId)
         {
-            var listing = LBL.GetListing(id);
-            return View(new ViewListingViewModel(listing));
+            var vlvm = LBL.GetViewListingViewModel(listingId);
+            return View(vlvm);
         }
     }
 }

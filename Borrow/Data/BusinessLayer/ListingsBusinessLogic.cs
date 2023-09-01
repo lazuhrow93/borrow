@@ -9,6 +9,8 @@ using Azure.Identity;
 using NuGet.Packaging;
 using MessagePack;
 using Borrow.Models.Views.Listings;
+using Borrow.Models.Views;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Borrow.Data.BusinessLayer
 {
@@ -77,13 +79,20 @@ namespace Borrow.Data.BusinessLayer
             return true;
         }
 
-        public ListingViewModel GetListing(int id)
+        public ViewListingViewModel GetViewListingViewModel(int id)
         {
             var listing = ListingsDataLayer.Get(id);
             var appProfile = AppProfileDataLayer.GetByOwnerId(listing.OwnerId);
             var item = ItemDataLayer.Get(listing.ItemId);
 
-            return new ListingViewModel(listing.Id, listing.ItemId, item.Name, item.Description, listing.DailyRate, listing.WeeklyRate, appProfile.UserName, listing.OwnerId);
+            var lvm = Mapper.Map<ListingViewModel>(item);
+            Mapper.Map<AppProfile, ListingViewModel>(appProfile, lvm);
+            Mapper.Map<Listing, ListingViewModel>(listing, lvm);
+
+            return new ViewListingViewModel()
+            {
+                ListingViewModel = lvm
+            };
         }
 
         public IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)

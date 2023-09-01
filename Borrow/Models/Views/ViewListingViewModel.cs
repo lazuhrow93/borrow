@@ -8,9 +8,14 @@ namespace Borrow.Models.Views
     {
         public ListingViewModel ListingViewModel { get; set; }
 
-        public ViewListingViewModel(ListingViewModel lvm)
+        public ViewListingViewModel()
         {
-            ListingViewModel = lvm;
+
+        }
+
+        public ViewListingViewModel(ListingViewModel listingViewModel)
+        {
+            ListingViewModel = listingViewModel;
         }
     }
 }
