@@ -33,6 +33,14 @@ namespace Borrow.Data.BusinessLayer
             Mapper = mapper;
         }
 
+        public UserListingsViewModel GetUserListingsViewModel(User user)
+        {
+            return new UserListingsViewModel()
+            {
+                ListedItems = GetUserListings(user, all:false).ToList()
+            };
+        }
+
         public CreateListingViewModel GetCreateListingViewModel(User user)
         {
             //need to get all ITems that are not listed
@@ -57,26 +65,21 @@ namespace Borrow.Data.BusinessLayer
                 NeighborhoodId = appProfile.NeighborhoodId
             };
         }
-
-        public bool CreateListing(PublishListingViewModel p)
+        
+        public RemoveListingViewModel GetRemoveListingViewModel(User user)
         {
-            var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
-            item.IsListed = true;
-            ItemDataLayer.Update(item);
-            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId, true);
-            return true;
-        }
-
-        public bool RemoveListing(User user, IEnumerable<int> itemIds)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            foreach (var id in itemIds)
+            var userListings = GetUserListings(user, all: false);
+            return new RemoveListingViewModel()
             {
-                var item = ItemDataLayer.Get(id);
-                if (item.OwnerId.Equals(appProfile.OwnerId) == false) return false;
-                ItemDataLayer.Delete(id);
-            }
-            return true;
+                Listings = userListings.Select(l =>
+                {
+                    return new SelectorViewModel<ListingViewModel>()
+                    {
+                        IsSelected = false,
+                        Entity = l
+                    };
+                }).ToList()
+            };
         }
 
         public ViewListingViewModel GetViewListingViewModel(int id)
@@ -95,42 +98,10 @@ namespace Borrow.Data.BusinessLayer
             };
         }
 
-        public IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
+        public NeighborhoodListingsViewModel GetNeighborhoodListingsViewModel(User user)
         {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var username = appProfile.UserName;
-            var ownerId = appProfile.OwnerId;
-            var bc = ListingsDataLayer.BorrowContext;
-            var items = bc.Item;
-            var listings = bc.Listing;
-
-            var query = listings.Join(items,
-                l => l.ItemId,
-                i => i.Id,
-                (l, i) => new
-                {
-                    l.Id,
-                    l.ItemId,
-                    l.DailyRate,
-                    l.WeeklyRate,
-                    l.OwnerId,
-                    i.Name,
-                    i.Description,
-                    l.Active
-                });
-            var queryResult = (all) ? query.Where(q => q.OwnerId.Equals(ownerId)) : query.Where(q => q.OwnerId.Equals(ownerId) && q.Active);
-            var results = new List<ListingViewModel>();
-
-            foreach(var join in queryResult)
-            {
-                results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, appProfile.UserName, join.OwnerId));
-            }
-
-            return results;
-        }
-
-        public IEnumerable<ListingViewModel> GetNeighborhoodListings(Neighborhood neighborhood)
-        {
+            var ap = AppProfileDataLayer.Get(user.ProfileId);
+            var neighborhood = NeighborhoodDataLayer.Get(ap);
             var bc = ListingsDataLayer.BorrowContext;
             var items = bc.Item;
             var listings = bc.Listing;
@@ -168,7 +139,7 @@ namespace Borrow.Data.BusinessLayer
                 });
 
 
-            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active);
+            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active && q.OwnerId != ap.OwnerId);
             var results = new List<ListingViewModel>();
 
             foreach (var join in queryResult)
@@ -176,8 +147,20 @@ namespace Borrow.Data.BusinessLayer
                 results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, join.UserName, join.OwnerId));
             }
 
-            return results;
+            return new NeighborhoodListingsViewModel()
+            {
+                Name = neighborhood.Name,
+                NeighborhoodListings = results
+            };
+        }
 
+        public bool CreateListing(PublishListingViewModel p)
+        {
+            var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
+            item.IsListed = true;
+            ItemDataLayer.Update(item);
+            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId, true);
+            return true;
         }
 
         public bool DeactiveListing(IEnumerable<int> listingIds)
@@ -196,5 +179,44 @@ namespace Borrow.Data.BusinessLayer
             }
             return (ListingsDataLayer.Update(listings) && ItemDataLayer.Update(items));
         }
+
+        #region Helpers
+
+        private IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
+        {
+            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
+            var username = appProfile.UserName;
+            var ownerId = appProfile.OwnerId;
+            var bc = ListingsDataLayer.BorrowContext;
+            var items = bc.Item;
+            var listings = bc.Listing;
+
+            var query = listings.Join(items,
+                l => l.ItemId,
+                i => i.Id,
+                (l, i) => new
+                {
+                    l.Id,
+                    l.ItemId,
+                    l.DailyRate,
+                    l.WeeklyRate,
+                    l.OwnerId,
+                    i.Name,
+                    i.Description,
+                    l.Active
+                });
+            var queryResult = (all) ? query.Where(q => q.OwnerId.Equals(ownerId)) : query.Where(q => q.OwnerId.Equals(ownerId) && q.Active);
+            var results = new List<ListingViewModel>();
+
+            foreach (var join in queryResult)
+            {
+                results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, appProfile.UserName, join.OwnerId));
+            }
+
+            return results;
+        }
+
+        #endregion
+
     }
 }

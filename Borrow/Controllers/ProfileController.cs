@@ -105,9 +105,8 @@ namespace Borrow.Controllers
             var user = await _UserManager.GetUserAsync(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);
             var ids = selected.Select(i => i.ItemId);
-            LBL.RemoveListing(user, selected.Select(i=>i.ItemId));
+            IBL.DeleteItem(user, selected.Select(i=>i.ItemId));
             return RedirectToAction("Index");
-
         }
     }
 }

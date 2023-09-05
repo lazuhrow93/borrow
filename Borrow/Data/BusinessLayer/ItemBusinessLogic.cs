@@ -67,5 +67,10 @@ namespace Borrow.Data.BusinessLayer
             ItemDataLayer.Insert(itemsToAdd);
             return true;
         }
+
+        internal void DeleteItem(User user, IEnumerable<int> enumerable)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

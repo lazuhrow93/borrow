@@ -61,18 +61,8 @@ namespace Borrow.Controllers
         public async Task<ActionResult> RemoveListing()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetUserListings(user);
-            return View(new RemoveListingViewModel()
-            {
-                Listings = listings.Select(l =>
-                {
-                    return new SelectorViewModel<ListingViewModel>()
-                    {
-                        IsSelected = false,
-                        Entity = l
-                    };
-                }).ToList()
-            });
+            var listings = LBL.GetRemoveListingViewModel(user);
+            return View(listings);
         }
 
         [HttpPost]
@@ -88,18 +78,17 @@ namespace Borrow.Controllers
         public async Task<ActionResult> UserListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetUserListings(user);
-            return View(new UserListingsViewModel(listings));
+            var listings = LBL.GetUserListingsViewModel(user);
+            return View(listings);
         }
 
         [HttpGet]
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var neighborhood = NBL.Get(user);
-            var listings = LBL.GetNeighborhoodListings(neighborhood);
+            var listings = LBL.GetNeighborhoodListingsViewModel(user);
 
-            return View(new NeighborhoodListingsViewModel(listings, neighborhood.Name));
+            return View(listings);
         }
 
         [HttpPost]
