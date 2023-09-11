@@ -18,5 +18,10 @@ namespace Borrow.Data.DataAccessLayer
         {
             return BorrowContext.AppProfile.Where(a=>a.OwnerId.Equals(ownerid)).FirstOrDefault(); //dont like this
         }
+
+        public AppProfile? GetByRequestKey(Guid key)
+        {
+            return BorrowContext.AppProfile.Where(a=>a.RequestKey.Equals(key)).FirstOrDefault();
+        }
     }
 }

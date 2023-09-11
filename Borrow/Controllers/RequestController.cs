@@ -5,12 +5,8 @@ using Borrow.Models.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Borrow.Data.DataAccessLayer;
-using Borrow.Models.Views.TableViews;
-using Microsoft.Build.Framework;
-using Borrow.Models.Views.TableViews.Create;
+using Borrow.Models.Views.Requests;
 using Borrow.Data.BusinessLayer;
-using System.ComponentModel;
 
 namespace Borrow.Controllers
 {
@@ -35,19 +31,17 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> RequestItem(int itemId)
+        public async Task<ActionResult> RequestItem(int listingId)
         {
-            return View(new CreateRequestViewModel()
-            {
-                ItemInformation = IBL.GetItem(itemId)
-            });
+            var rvm = RBL.GetCreateRequestViewModel(listingId);
+            return View(rvm);
         }
 
         [HttpPost]
         public async Task<ActionResult> RequestItem(CreateRequestViewModel crvm)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            RBL.CreateRequest(crvm.ItemInformation.ItemId, crvm.RequestType, crvm.RequestRate, crvm.ReturnDateUtc, user);
+            RBL.SubmitRequest(crvm, user);
             return RedirectToAction("OutgoingRequests", "Request");
         }
 
@@ -71,14 +65,14 @@ namespace Borrow.Controllers
             var requestItem = RBL.GetRequest(requestId);
 
             RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
-            return View(new RequestViewModel(requestItem.Request, requestItem.Item));
+            return View(new RequestViewModel());
         }
 
         [HttpGet]
         public IActionResult AcceptRequest(int requestId)
         {
             var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel(requestInformation.Request, requestInformation.Item));
+            return View(new RequestViewModel());
         }
 
         [HttpPost]
@@ -86,14 +80,14 @@ namespace Borrow.Controllers
         {
             RBL.OwnerAcceptRequest(requestId);
             var requestInformation = RBL.GetRequest(requestId);
-            return View("MeetupSpot", new RequestViewModel(requestInformation.Request, requestInformation.Item));
+            return View("MeetupSpot", new RequestViewModel());
         }
 
         [HttpGet]
         public IActionResult DeclineRequest(int requestId)
         {
             var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel(requestInformation.Request, requestInformation.Item));
+            return View(new RequestViewModel());
 
         }
 
@@ -108,7 +102,7 @@ namespace Borrow.Controllers
         public IActionResult MeetupSpot(int requestId)
         {
             var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel(requestInformation.Request, requestInformation.Item));
+            return View(new RequestViewModel());
         }
     }
 }

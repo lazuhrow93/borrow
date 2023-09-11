@@ -19,6 +19,7 @@
 }
 
         public int Id { get; set; }
+        public int ListingId { get; set; }
         public Guid LenderKey { get; set; }
         public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }

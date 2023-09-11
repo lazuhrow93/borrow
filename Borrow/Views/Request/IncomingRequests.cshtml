@@ -1,4 +1,4 @@
-﻿@model UserBorrowRequestsViewModel
+﻿@model Borrow.Models.Views.Requests.IncomingRequestsViewModel
 
 <h1>Here are your incoming Requests</h1>
 <div>
@@ -6,58 +6,22 @@
         <table style="width:100%">
             <tr>
                 <th>Item</th>
-                <th>Requested Created</th>
-                <th>Requested Rate</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Requester</th>
                 <th></th>
             </tr>
-            @for (int i = 0; i < Model.Incoming.Count(); ++i)
+            @for (int i = 0; i < Model.RequestViewModels.Count(); ++i)
             {
-                var item = Model.Incoming[i];
+                var item = Model.RequestViewModels[i];
                 <tr>
                     <td>
                         @item.ItemName
                     </td>
                     <td>
-                        @item.CreatedDateUtc
-                    </td>
-                    <td>
-                        @item.RateView
-                    </td>
-                    <td>
-                        @item.Status
+                        @item.Requester
                     </td>
 
                     <td>
-                        @if (item.OwnerNeedsAction())
-                        {
-                            if (!item.Status.Equals(Request.RequestStatus.Accepted))
-                            {
-                                @using (Html.BeginForm("AcceptRequest", "Request", FormMethod.Get))
-                                {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Accept Offer?</button>
-                                }
-                                @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
-                                {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View</button>
-                                }
-                            }
-                            else if (item.Status.Equals(Request.RequestStatus.Accepted))
-                            {
-                                @using (Html.BeginForm("MeetUpSpot", "Request", FormMethod.Get))
-                                {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meeting Spot!</button>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            @using (Html.BeginForm("ViewRequestInfo", "Request", FormMethod.Get))
-                            {
-                                <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Request Information</button>
-                            }
-                        }
+                        ACCCEPT OR DECLINE?
                     </td>
                 </tr>
             }

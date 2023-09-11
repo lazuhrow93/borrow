@@ -1,4 +1,4 @@
-﻿@model UserBorrowRequestsViewModel
+﻿@model Borrow.Models.Views.Requests.OutgoingRequestsViewModel
 
 <h1>Here are your outgoing Requests</h1>
 <div>
@@ -6,44 +6,21 @@
         <table style="width:100%">
             <tr>
                 <th>Item</th>
-                <th>Requested Rate</th>
                 <th>Owner</th>
-                <th>Status</th>
-                <th>Requested Created</th>
-                <th>Action</th>
                 <th></th>
             </tr>
-            @for (int i = 0; i < Model.Outgoing.Count(); ++i)
+            @for (int i = 0; i < Model.RequestViewModels.Count(); ++i)
             {
-                var item = Model.Outgoing[i];
+                var item = Model.RequestViewModels[i];
                 <tr>
                     <td>
                         @item.ItemName
                     </td>
                     <td>
-                        @item.RateView
+                        @item.Lender
                     </td>
                     <td>
-                        @item.OwnerUserName
-                    </td>
-                    <td>
-                        @item.Status
-                    </td>
-                    <td>
-                        @item.CreatedDateUtc
-                    </td>
-                    
-                    <td>
-                        @if (item.RequesterNeedsAction())
-                        {
-                            if (item.Status.Equals(Request.RequestStatus.Accepted))
-                            {
-                                @using (Html.BeginForm("MeetupSpot", "Request", FormMethod.Get))
-                                {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View Meeting Spot</button>
-                                }
-                            }
-                        }
+                       View Meeting Spot?
                     </td>
                 </tr>
             }

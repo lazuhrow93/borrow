@@ -2,7 +2,7 @@
 using Borrow.Models.Backend;
 using Borrow.Models.Identity;
 using Borrow.Models.Views;
-using Borrow.Models.Views.TableViews;
+using Borrow.Models.Views.Requests;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Borrow.Setup.MappingProfiles
@@ -13,12 +13,7 @@ namespace Borrow.Setup.MappingProfiles
         {
             CreateMap<Request, RequestViewModel>()
                 .ForMember(dest => dest.RequestId, o => o.MapFrom(src => src.Id))
-                .ForMember(dest => dest.ItemId, o => o.MapFrom(src => src.ItemId))
-                .ForMember(dest => dest.RequestRate, o => o.MapFrom(src => src.Rate))
-                .ForMember(dest => dest.RequestType, o => o.MapFrom(src => src.Type))
-                .ForMember(dest => dest.ReturnDate, o => o.MapFrom(src => src.ReturnDate))
-                .ForMember(dest => dest.CreatedDateUtc, o => o.MapFrom(src => src.CreatedDateUtc))
-                .ForMember(dest => dest.Status, o => o.MapFrom(src => src.Status));
+                .ForMember(dest => dest.ListingId, o => o.MapFrom(src => src.ListingId));
 
             CreateMap<Item, RequestViewModel>()
                 .ForMember(dest => dest.ItemName, o => o.MapFrom(src => src.Name));
