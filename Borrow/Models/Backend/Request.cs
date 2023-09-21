@@ -15,8 +15,8 @@
         public enum RequestType
         {
             Daily,
-                    Weekly
-}
+            Weekly
+        }
 
         public int Id { get; set; }
         public int ListingId { get; set; }
@@ -24,11 +24,10 @@
         public Guid RequesterKey { get; set; }
         public int ItemId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
+        public int PayPeriods { get; set; }
+
         public DateTime ReturnDate { get; set; }
         public RequestType? Type { get; set; } = RequestType.Daily;
-        public Decimal Rate { get; set; } = 0.0M;
-        public RequestType? CounterType { get; set; }
-        public Decimal CounterRate { get; set; } = 0.0M;
 
         public void UpdateStatus (RequestStatus newStatus)
         {

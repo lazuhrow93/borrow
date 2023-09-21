@@ -7,19 +7,15 @@ namespace Borrow.Models.Views.Requests
     public class CreateRequestViewModel
     {
         public ListingViewModel ListingViewModel { get; set; }
-        public DateTime ReturnDateUtc { get; set; } = DateTime.UtcNow;
-        public RequestType RequestType { get; set; }
-        public ItemViewModel ItemInformation { get; set; }
-        public decimal RequestRate { get; set; }
+        public int PayPeriods { get; set; } = 0;
+        public DateTime EstimatedReturnDateUtc { get; set; } = DateTime.UtcNow;
+        public RequestType RequestType { get; set; } = RequestType.Daily;
+        public Guid RequesterKey { get; set; }
+        public Guid LenderKey { get; set; }
 
         public CreateRequestViewModel()
         {
 
-        }
-
-        public CreateRequestViewModel(Item item)
-        {
-            ItemInformation = new(item);
         }
     }
 }

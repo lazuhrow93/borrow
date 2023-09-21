@@ -21,26 +21,30 @@ namespace Borrow.Data.BusinessLayer
             RequestDataLayer = masterDL.RequestDataLayer;
             ItemDataLayer = masterDL.ItemDataLayer;
             AppProfileDataLayer = masterDL.AppProfileDataLayer;
+            ListingsDataLayer = masterDL.ListingsDataLayer;
             Mapper = mapper;
         }
 
-        public CreateRequestViewModel GetCreateRequestViewModel(int listingId)
+        public CreateRequestViewModel GetCreateRequestViewModel(int listingId, User Requester)
         {
             var crvm = new CreateRequestViewModel();
 
             var listing = ListingsDataLayer.Get(listingId);
             var item = ItemDataLayer.Get(listing.ItemId);
             var owner = item.OwnerId;
-            var appProfile = AppProfileDataLayer.GetByOwnerId(owner);
+            var ownerAppProfile = AppProfileDataLayer.GetByOwnerId(owner);
+            var requesterAppProfile = AppProfileDataLayer.Get(Requester.ProfileId);
 
             var listingViewModel = Mapper.Map<ListingViewModel>(listing);
             Mapper.Map(item, listingViewModel);
-            Mapper.Map(appProfile, listingViewModel);
+            Mapper.Map(ownerAppProfile, listingViewModel);
 
 
             return new CreateRequestViewModel()
             {
-                ListingViewModel = listingViewModel
+                ListingViewModel = listingViewModel,
+                LenderKey = ownerAppProfile.RequestKey,
+                RequesterKey = requesterAppProfile.RequestKey
             };
         }
 
@@ -70,10 +74,12 @@ namespace Borrow.Data.BusinessLayer
             var requests = RequestDataLayer.GetAllByRequester(profile.RequestKey);
 
             OutgoingRequestsViewModel orvm = new();
+            orvm.RequestViewModels = new();
 
             foreach (var request in requests)
             {
-                var itemInfo = ItemDataLayer.Get(request.ItemId);
+                var listingInfo = ListingsDataLayer.Get(request.ListingId);
+                var itemInfo = ItemDataLayer.Get(listingInfo.ItemId);
                 var requester = AppProfileDataLayer.Get(user.ProfileId);
                 var lender = AppProfileDataLayer.GetByRequestKey(request.LenderKey);
 
@@ -87,50 +93,22 @@ namespace Borrow.Data.BusinessLayer
 
         }
 
-        public bool SubmitRequest(CreateRequestViewModel createRequestViewModel, User user)
+        public bool CreateRequest(CreateRequestViewModel crvm)
         {
-            var item = ItemDataLayer.Get(createRequestViewModel.ItemInformation.ItemId);
-            var Requester = AppProfileDataLayer.Get(user.ProfileId);
-            var Lender = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
-
-            var newborrowRequest = new Request();
-            newborrowRequest.LenderKey = Lender.RequestKey;
-            newborrowRequest.RequesterKey = Requester.RequestKey;
-            newborrowRequest.ItemId = item.Id;
-            newborrowRequest.Type = createRequestViewModel.RequestType;
-            newborrowRequest.Rate = createRequestViewModel.RequestRate;
-            newborrowRequest.ReturnDate = createRequestViewModel.ReturnDateUtc;
-
-            var now = DateTime.UtcNow;
-            newborrowRequest.TrackingId = Guid.NewGuid();
-            newborrowRequest.UpdatedBy = $"CreateRequest(int, RequestType, Decimal, User)";
-            newborrowRequest.UpdateDateUtc = now;
-            newborrowRequest.CreatedDateUtc = now;
-            RequestDataLayer.Create(newborrowRequest);
+            if (crvm.RequestType.Equals(Request.RequestType.Weekly))
+                crvm.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(7 * crvm.PayPeriods);
+            else
+                crvm.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(crvm.PayPeriods);
+            
+            Request request = Mapper.Map<Request>(crvm);
+            request.UpdatedBy = $"Request Business Logic";
+            request.CreatedDateUtc = DateTime.UtcNow;
+            request.UpdateDateUtc = DateTime.UtcNow;
+            request.TrackingId = Guid.NewGuid();
+            
+            
+            RequestDataLayer.Create(request);
             return true;
-
-        }
-
-        public void CreateRequest(int itemId, Request.RequestType Type, decimal Rate, DateTime ReturnDate, User user)
-        {
-            var item = ItemDataLayer.Get(itemId);
-            var Requester = AppProfileDataLayer.Get(user.ProfileId);
-            var Lender = AppProfileDataLayer.GetByOwnerId(item.OwnerId);
-
-            var newborrowRequest = new Request();
-            newborrowRequest.LenderKey = Lender.RequestKey;
-            newborrowRequest.RequesterKey = Requester.RequestKey;
-            newborrowRequest.ItemId = item.Id;
-            newborrowRequest.Type = Type;
-            newborrowRequest.Rate = Rate;
-            newborrowRequest.ReturnDate = ReturnDate;
-
-            var now = DateTime.UtcNow;
-            newborrowRequest.TrackingId = Guid.NewGuid();
-            newborrowRequest.UpdatedBy = $"CreateRequest(int, RequestType, Decimal, User)";
-            newborrowRequest.UpdateDateUtc = now;
-            newborrowRequest.CreatedDateUtc = now;
-            RequestDataLayer.Create(newborrowRequest);
         }
 
         public IEnumerable<(Request, Item)> GetIncoming(User user)

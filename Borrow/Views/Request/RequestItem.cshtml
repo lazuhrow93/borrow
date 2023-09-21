@@ -3,29 +3,22 @@
     ViewData["Title"] = "Requets Item";
 }
 
-<h1>Create your Request for the item @Model.ItemInformation.Name</h1>
+<h1>Create your Request for the item @Model.ListingViewModel.ItemName</h1>
 <hr/>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form method="post" asp-action="RequestItem">
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ItemInformation.DailyRate)
+            @Html.DisplayNameFor(model => model.ListingViewModel.DailyRate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ItemInformation.DailyRate)
+            @Html.DisplayFor(model => model.ListingViewModel.DailyRate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ItemInformation.WeeklyRate)
+            @Html.DisplayNameFor(model => model.ListingViewModel.WeeklyRate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ItemInformation.WeeklyRate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnDateUtc)
-        </dt>
-        <dd class="col-sm-10">
-            <input asp-for="@Model.ReturnDateUtc" class="form-control" />
-            <span asp-validation-for="@Model.ReturnDateUtc" class="text-danger"></span>
+            @Html.DisplayFor(model => model.ListingViewModel.WeeklyRate)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.RequestType)
@@ -34,12 +27,20 @@
             <select asp-for="RequestType" asp-items="Html.GetEnumSelectList<Request.RequestType>()"></select>
             <span asp-validation-for="@Model.RequestType" class="text-danger"></span>
         </dd>
+        <dt class="col-sm-2"?>
+            Number of Days/Weeks
+        </dt>
+        <dd>
+            @Html.TextBoxFor(model => model.PayPeriods)
+        </dd>
     </dl>
     <div class="row">
         <div class="offset-2 col-sm-4">
             <button type="submit" class="btn btn-primary">Submit Request</button>
         </div>
     </div>
-    @Html.HiddenFor(m=>m.ItemInformation.ItemId);
+    @Html.HiddenFor(m=>m.ListingViewModel.ListingId)
+    @Html.HiddenFor(m=>m.LenderKey)
+    @Html.HiddenFor(m=>m.RequesterKey)
 </form>
 

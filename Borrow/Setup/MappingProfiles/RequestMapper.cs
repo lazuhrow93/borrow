@@ -17,6 +17,15 @@ namespace Borrow.Setup.MappingProfiles
 
             CreateMap<Item, RequestViewModel>()
                 .ForMember(dest => dest.ItemName, o => o.MapFrom(src => src.Name));
+
+            CreateMap<CreateRequestViewModel, Request>()
+                .ForMember(dest => dest.ListingId, o => o.MapFrom(src => src.ListingViewModel.ListingId))
+                .ForMember(dest => dest.RequesterKey, o => o.MapFrom(src => src.RequesterKey))
+                .ForMember(dest => dest.LenderKey, o => o.MapFrom(src => src.LenderKey))
+                .ForMember(dest => dest.ItemId, o => o.MapFrom(src => src.ListingViewModel.ItemId))
+                .ForMember(dest => dest.ReturnDate, o => o.MapFrom(src => src.EstimatedReturnDateUtc))
+                .ForMember(dest => dest.PayPeriods, o => o.MapFrom(src => src.PayPeriods))
+                .ForMember(dest => dest.Type, o => o.MapFrom(src => src.RequestType));
         }
     }
 }

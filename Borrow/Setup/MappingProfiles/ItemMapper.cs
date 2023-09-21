@@ -2,6 +2,7 @@
 using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
+using Borrow.Models.Views.Requests;
 using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Setup.MappingProfiles
@@ -33,6 +34,9 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.Id, o => o.MapFrom(src => src.ItemId))
                 .ForMember(dest => dest.Name, o => o.MapFrom(src => src.NewName))
                 .ForMember(dest => dest.Description, o => o.MapFrom(src => src.NewDescription));
+
+            CreateMap<Item, RequestViewModel>()
+                .ForMember(dest => dest.ItemName, o => o.MapFrom(src => src.Name));
         }
     }
 }

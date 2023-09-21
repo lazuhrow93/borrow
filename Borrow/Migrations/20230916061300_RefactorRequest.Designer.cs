@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20230916061300_RefactorRequest")]
+    partial class RefactorRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,9 +138,6 @@ namespace Borrow.Migrations
                     b.Property<int>("ListingId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PayPeriods")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("RequesterKey")
                         .HasColumnType("uniqueidentifier");
 
@@ -196,7 +196,7 @@ namespace Borrow.Migrations
                             Id = 1,
                             NeighborhoodId = 1,
                             OwnerId = 1,
-                            RequestKey = new Guid("126ab8b1-7367-4d85-99ff-a5bfc7b72882"),
+                            RequestKey = new Guid("117209dd-9c87-4bb9-8e2b-c568cc8c36ad"),
                             UserName = "dummy93"
                         });
                 });
