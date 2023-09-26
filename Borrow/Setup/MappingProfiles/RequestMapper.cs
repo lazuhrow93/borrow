@@ -13,6 +13,8 @@ namespace Borrow.Setup.MappingProfiles
         {
             CreateMap<Request, RequestViewModel>()
                 .ForMember(dest => dest.RequestId, o => o.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Rate, o => o.MapFrom(src => src.Rate))
+                .ForMember(dest => dest.Periods, o => o.MapFrom(src => src.PayPeriods))
                 .ForMember(dest => dest.ListingId, o => o.MapFrom(src => src.ListingId));
 
             CreateMap<Item, RequestViewModel>()
@@ -25,6 +27,7 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.ItemId, o => o.MapFrom(src => src.ListingViewModel.ItemId))
                 .ForMember(dest => dest.ReturnDate, o => o.MapFrom(src => src.EstimatedReturnDateUtc))
                 .ForMember(dest => dest.PayPeriods, o => o.MapFrom(src => src.PayPeriods))
+                .ForMember(dest => dest.Rate, o => o.MapFrom(src => src.RequestRate))
                 .ForMember(dest => dest.Type, o => o.MapFrom(src => src.RequestType));
         }
     }

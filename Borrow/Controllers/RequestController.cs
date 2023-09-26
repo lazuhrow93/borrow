@@ -60,51 +60,5 @@ namespace Borrow.Controllers
             var outgoing = RBL.GetOutgoingRequestsViewModel(user);
             return View(outgoing);
         }
-
-        [HttpGet]
-        public IActionResult ViewRequestInfo(int requestId)
-        {
-            var requestItem = RBL.GetRequest(requestId);
-
-            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
-            return View(new RequestViewModel());
-        }
-
-        [HttpGet]
-        public IActionResult AcceptRequest(int requestId)
-        {
-            var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel());
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmRequest(int requestId)
-        {
-            RBL.OwnerAcceptRequest(requestId);
-            var requestInformation = RBL.GetRequest(requestId);
-            return View("MeetupSpot", new RequestViewModel());
-        }
-
-        [HttpGet]
-        public IActionResult DeclineRequest(int requestId)
-        {
-            var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel());
-
-        }
-
-        [HttpPost]
-        public IActionResult ConfirmDeclineRequest(int requestId)
-        {
-            RBL.DeclineRequest(requestId);
-            return RedirectToAction("IncomingRequests");
-        }
-
-        [HttpGet]
-        public IActionResult MeetupSpot(int requestId)
-        {
-            var requestInformation = RBL.GetRequest(requestId);
-            return View(new RequestViewModel());
-        }
     }
 }

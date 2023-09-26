@@ -53,19 +53,23 @@ namespace Borrow.Data.BusinessLayer
             var profile = AppProfileDataLayer.Get(user.ProfileId);
             var requests = RequestDataLayer.GetAllByLender(profile.RequestKey);
 
-            IncomingRequestsViewModel incomingRequestsViewModel = new();
+            IncomingRequestsViewModel irvm = new();
+            irvm.RequestViewModels = new();
 
             foreach(var request in requests)
             {
-                var itemInfo = ItemDataLayer.Get(request.ItemId);
-                var requester = AppProfileDataLayer.GetByRequestKey(request.RequesterKey);
+                var listingInfo = ListingsDataLayer.Get(request.ListingId);
+                var itemInfo = ItemDataLayer.Get(listingInfo.ItemId);
+                var requester = AppProfileDataLayer.Get(user.ProfileId);
+                var lender = AppProfileDataLayer.GetByRequestKey(request.LenderKey);
+
                 var rvm = Mapper.Map<RequestViewModel>(request);
                 Mapper.Map(itemInfo, rvm);
                 rvm.Requester = requester.UserName;
-                rvm.Lender = user.UserName;
-                incomingRequestsViewModel.RequestViewModels.Add(rvm);
+                rvm.Lender = lender.UserName;
+                irvm.RequestViewModels.Add(rvm);
             }
-            return incomingRequestsViewModel;
+            return irvm;
         }
 
         public OutgoingRequestsViewModel GetOutgoingRequestsViewModel(User user)
@@ -96,9 +100,15 @@ namespace Borrow.Data.BusinessLayer
         public bool CreateRequest(CreateRequestViewModel crvm)
         {
             if (crvm.RequestType.Equals(Request.RequestType.Weekly))
+            {
                 crvm.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(7 * crvm.PayPeriods);
+                crvm.RequestRate = crvm.ListingViewModel.WeeklyRate;
+            }
             else
+            {
                 crvm.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(crvm.PayPeriods);
+                crvm.RequestRate = crvm.ListingViewModel.DailyRate;
+            }
             
             Request request = Mapper.Map<Request>(crvm);
             request.UpdatedBy = $"Request Business Logic";
@@ -106,84 +116,8 @@ namespace Borrow.Data.BusinessLayer
             request.UpdateDateUtc = DateTime.UtcNow;
             request.TrackingId = Guid.NewGuid();
             
-            
             RequestDataLayer.Create(request);
             return true;
-        }
-
-        public IEnumerable<(Request, Item)> GetIncoming(User user)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var requestItem = new List<(Request request, Item item)>();
-            var rawRequests = RequestDataLayer.Incoming(appProfile);
-
-
-
-            foreach (var rawRequest in rawRequests)
-            {
-                var item = ItemDataLayer.Get(rawRequest.ItemId);
-                requestItem.Add((rawRequest, item));
-            }
-
-            return requestItem;
-        }
-
-        public IEnumerable<(Request, Item)> GetOutgoing(User user)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            var requestItem = new List<(Request request, Item item)>();
-            var rawRequests = RequestDataLayer.Outgoing(appProfile);
-
-
-
-            foreach (var rawRequest in rawRequests)
-            {
-                var item = ItemDataLayer.Get(rawRequest.ItemId);
-                requestItem.Add((rawRequest, item));
-            }
-
-            return requestItem;
-        }
-
-        public void UpdateStatus(int requestId, Request.RequestStatus newStatus)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            request.Status = newStatus;
-            RequestDataLayer.Update(request);
-        }
-
-        public void UpdateStatus(IEnumerable<int> ids, Request.RequestStatus newStatus)
-        {
-            var requests = RequestDataLayer.Get(ids).ToList();
-            for (int i = 0; i < requests.Count; i++)
-                requests[i].UpdateStatus(newStatus);
-            RequestDataLayer.Update(requests);
-        }
-
-        public (Request Request, Item Item) GetRequest(int requestId)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            var item = ItemDataLayer.Get(request.ItemId);
-            //var rvm = Mapper.Map<Request, RequestViewModel>(request);
-            //Mapper.Map<Item, RequestViewModel>(item, rvm);
-            return (request, item);
-        }
-
-        public void OwnerAcceptRequest(int requestId)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            var item = ItemDataLayer.Get(request.ItemId);
-            item.Available = false;
-            ItemDataLayer.Update(item);
-            request.UpdateStatus(Request.RequestStatus.Accepted);
-            RequestDataLayer.Update(request);
-        }
-
-        internal void DeclineRequest(int requestId)
-        {
-            var request = RequestDataLayer.Get(requestId);
-            request.UpdateStatus(Request.RequestStatus.Declined);
-            RequestDataLayer.Update(request);
         }
 
     }

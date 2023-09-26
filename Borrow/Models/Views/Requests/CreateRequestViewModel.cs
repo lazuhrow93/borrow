@@ -9,6 +9,7 @@ namespace Borrow.Models.Views.Requests
         public ListingViewModel ListingViewModel { get; set; }
         public int PayPeriods { get; set; } = 0;
         public DateTime EstimatedReturnDateUtc { get; set; } = DateTime.UtcNow;
+        public Decimal RequestRate { get; set; }
         public RequestType RequestType { get; set; } = RequestType.Daily;
         public Guid RequesterKey { get; set; }
         public Guid LenderKey { get; set; }
