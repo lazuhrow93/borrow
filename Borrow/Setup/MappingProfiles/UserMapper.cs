@@ -1,7 +1,7 @@
-﻿using Borrow.Models.Identity;
-using AutoMapper;
+﻿using AutoMapper;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Home;
+using Borrow.Models.Backend;
 
 namespace Borrow.Setup.MappingProfiles
 {

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
-using Borrow.Models.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;

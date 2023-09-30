@@ -2,7 +2,6 @@
 using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
-using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
 using Borrow.Models.Views.TableViews;

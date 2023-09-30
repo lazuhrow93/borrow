@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.BusinessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models.Identity;
+using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
 using Microsoft.AspNetCore.Authorization;

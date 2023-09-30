@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Borrow.Models.Views.Requests;
 using Borrow.Data.BusinessLayer;
+using Borrow.Models.Backend;
 
 namespace Borrow.Controllers
 {

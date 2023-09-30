@@ -1,8 +1,4 @@
-﻿using Borrow.Models.Backend;
-using Borrow.Models.Identity;
-using Borrow.Models.Views.TableViews;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Models.Views
 {

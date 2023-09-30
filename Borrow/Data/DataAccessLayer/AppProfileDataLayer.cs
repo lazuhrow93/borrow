@@ -1,4 +1,4 @@
-﻿using Borrow.Models.Identity;
+﻿using Borrow.Models.Backend;
 
 namespace Borrow.Data.DataAccessLayer
 {

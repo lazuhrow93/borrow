@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Borrow.Models.Backend;
-using Borrow.Models.Identity;
-using Borrow.Models.Views;
 using Borrow.Models.Views.Requests;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Borrow.Setup.MappingProfiles
 {

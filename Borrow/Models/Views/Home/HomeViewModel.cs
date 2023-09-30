@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Borrow.Migrations;
-using Borrow.Models.Backend;
-using Borrow.Models.Identity;
-using System;
-namespace Borrow.Models.Views.Home
+﻿namespace Borrow.Models.Views.Home
 {
     public class HomeViewModel
     {

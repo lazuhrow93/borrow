@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Borrow.Models.Backend;
 

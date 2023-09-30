@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models.Identity;
 using Borrow.Models.Views;
 using Borrow.Models.Backend;
 using Microsoft.AspNetCore.Http;

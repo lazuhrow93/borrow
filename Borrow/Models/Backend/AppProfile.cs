@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Borrow.Models.Identity
+namespace Borrow.Models.Backend
 {
     public class AppProfile
     {

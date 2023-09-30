@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.DataAccessLayer;
 using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Models.Identity;
+using Borrow.Models.Backend;
 
 namespace Borrow.Data.BusinessLayer
 {

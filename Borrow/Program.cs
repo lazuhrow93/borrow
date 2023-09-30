@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Borrow.Data;
 using Microsoft.AspNetCore.Identity;
-using Borrow.Models.Identity;
 using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Data.DataAccessLayer;
+using Borrow.Models.Backend;
 
 public class Program
 {
