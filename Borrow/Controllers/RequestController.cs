@@ -31,7 +31,7 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> RequestItem(int ListingId)
+        public async Task<ActionResult> SubmitRequestForListing(int ListingId)
         {
             var user = await _userManager.GetUserAsync(this.User);
             var rvm = RBL.GetCreateRequestViewModel(ListingId, user);
@@ -39,14 +39,14 @@ namespace Borrow.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> RequestItem(CreateRequestViewModel crvm)
+        public async Task<ActionResult> SubmitRequestForListing(CreateRequestViewModel crvm)
         {
             RBL.CreateRequest(crvm);
             return RedirectToAction("OutgoingRequests", "Request");
         }
 
         [HttpGet]
-        public async Task<IActionResult> IncomingRequests()
+        public async Task<IActionResult> GetIncomingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
             var incoming = RBL.GetIncomingRequestsViewModel(user);
@@ -54,7 +54,7 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OutgoingRequests()
+        public async Task<IActionResult> GetOutgoingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
             var outgoing = RBL.GetOutgoingRequestsViewModel(user);

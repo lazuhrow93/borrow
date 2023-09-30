@@ -16,8 +16,8 @@
         </div>
         <a asp-action="UserListings" asp-controller="Listings" asp-area="" class="nav-link">View Your Listings</a>
         <a asp-action="NeighborhoodListings" asp-controller="Listings" asp-area="" class="nav-link">View Listings at @Model.NeighborhoodName</a>
-        <a asp-action="IncomingRequests" asp-controller="Request" asp-area="" class="nav-link">View my offers!</a>
-        <a asp-action="OutgoingRequests" asp-controller="Request" asp-area="" class="nav-link">View my requests!</a>
+        <a asp-action="GetIncomingRequests" asp-controller="Request" asp-area="" class="nav-link">View my offers!</a>
+        <a asp-action="GetOutgoingRequests" asp-controller="Request" asp-area="" class="nav-link">View my requests!</a>
     </div>
 }
 else{
