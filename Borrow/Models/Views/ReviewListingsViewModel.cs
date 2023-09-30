@@ -11,11 +11,5 @@ namespace Borrow.Models.Views
         {
             
         }
-
-        public ReviewListingsViewModel(IEnumerable<Item> items)
-        {
-            var ivms = items.Select(i => { return new ItemViewModel(i); });
-            this.Items = ivms.Select(i => { i.IsSelected = false; return i; }).ToList();
-        }
     }
 }

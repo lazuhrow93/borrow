@@ -12,10 +12,5 @@ namespace Borrow.Models.Views
         {
 
         }
-
-        public ViewListingViewModel(ListingViewModel listingViewModel)
-        {
-            ListingViewModel = listingViewModel;
-        }
     }
 }

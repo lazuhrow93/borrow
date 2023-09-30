@@ -11,11 +11,5 @@ namespace Borrow.Models.Views
         {
             
         }
-
-        public NeighborhoodListingsViewModel(IEnumerable<ListingViewModel> lvm, string name)
-        {
-            Name = name;
-            NeighborhoodListings = lvm.ToList();
-        }
     }
 }

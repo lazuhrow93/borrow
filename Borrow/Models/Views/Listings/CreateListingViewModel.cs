@@ -10,13 +10,5 @@ namespace Borrow.Models.Views.Listings
         public List<ItemViewModel> AvailableItems { get; set; }
 
         public CreateListingViewModel() { }
-
-        public CreateListingViewModel(IEnumerable<Item> item)
-        {
-            AvailableItems = item.Select(i =>
-            {
-                return new ItemViewModel(i);
-            }).ToList();
-        }
     }
 }

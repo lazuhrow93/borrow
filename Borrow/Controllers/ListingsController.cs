@@ -19,19 +19,13 @@ namespace Borrow.Controllers
     {
         private UserManager<User> _userManager;
         private readonly IMapper _mapper;
-        private readonly RequestBusinessLogic RBL;
         private readonly ListingsBusinessLogic LBL;
-        private readonly NeighborhoodBusinessLogic NBL;
-        private readonly ItemBusinessLogic IBL;
 
-        public ListingsController(UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
+        public ListingsController(UserManager<User> um, IMapper mapper,IMasterDL masterDL)
         {
             _userManager = um;
             _mapper = mapper;
-            IBL = new(masterDL, _mapper);
-            RBL = new(masterDL, _mapper);
             LBL = new(masterDL, _mapper);
-            NBL = new(masterDL, _mapper);
         }
 
         [HttpGet]

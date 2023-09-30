@@ -17,7 +17,6 @@ namespace Borrow.Controllers
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
         private readonly IMasterDL _masterDL;
-        private readonly RequestBusinessLogic RBL;
 
         public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
         {

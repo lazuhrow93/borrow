@@ -12,10 +12,5 @@ namespace Borrow.Models.Views
         {
             
         }
-
-        public UserListingsViewModel(IEnumerable<ListingViewModel> listings)
-        {
-            ListedItems = listings.ToList();
-        }
     }
 }
