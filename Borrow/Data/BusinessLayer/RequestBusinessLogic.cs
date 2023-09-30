@@ -60,8 +60,8 @@ namespace Borrow.Data.BusinessLayer
             {
                 var listingInfo = ListingsDataLayer.Get(request.ListingId);
                 var itemInfo = ItemDataLayer.Get(listingInfo.ItemId);
-                var requester = AppProfileDataLayer.Get(user.ProfileId);
                 var lender = AppProfileDataLayer.GetByRequestKey(request.LenderKey);
+                var requester = AppProfileDataLayer.GetByRequestKey(request.RequesterKey);
 
                 var rvm = Mapper.Map<RequestViewModel>(request);
                 Mapper.Map(itemInfo, rvm);
@@ -84,7 +84,7 @@ namespace Borrow.Data.BusinessLayer
             {
                 var listingInfo = ListingsDataLayer.Get(request.ListingId);
                 var itemInfo = ItemDataLayer.Get(listingInfo.ItemId);
-                var requester = AppProfileDataLayer.Get(user.ProfileId);
+                var requester = AppProfileDataLayer.GetByRequestKey(request.RequesterKey);
                 var lender = AppProfileDataLayer.GetByRequestKey(request.LenderKey);
 
                 var rvm = Mapper.Map<RequestViewModel>(request);
