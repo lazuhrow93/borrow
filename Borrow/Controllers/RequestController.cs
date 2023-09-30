@@ -42,7 +42,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> SubmitRequestForListing(CreateRequestViewModel crvm)
         {
             RBL.CreateRequest(crvm);
-            return RedirectToAction("OutgoingRequests", "Request");
+            return RedirectToAction("GetOutgoingRequests", "Request");
         }
 
         [HttpGet]
