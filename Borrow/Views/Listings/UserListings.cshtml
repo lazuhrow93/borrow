@@ -12,9 +12,9 @@
                 <th>Owner</th>
                 <th></th>
             </tr>
-            @for (int i = 0; i < Model.ListedItems.Count(); ++i)
+            @for (int i = 0; i < Model.ActiveListings.Count(); ++i)
             {
-                var item = Model.ListedItems[i];
+                var item = Model.ActiveListings[i];
                 <tr>
                     <td>
                         @item.ItemName

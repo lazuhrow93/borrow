@@ -1,0 +1,76 @@
+﻿@model Borrow.Models.Views.Requests.IncomingRequestsViewModel
+
+<h1>Here are your incoming Requests</h1>
+<div>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Item</th>
+                <th>Requester</th>
+                <th>Rate</th>
+                <th>Iterations</th>
+                <th>Status</th>
+            </tr>
+            @for (int i = 0; i < Model.PendingRequestViewModels.Count(); ++i)
+            {
+                var item = Model.PendingRequestViewModels[i];
+                <tr>
+                    <td>
+                        @item.ItemName
+                    </td>
+                    <td>
+                        @item.Requester
+                    </td>
+                    <td>
+                        @item.Rate
+                    </td>
+                    <td>
+                        @item.Periods
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("ViewIncomingRequest", "Request", FormMethod.Get))
+                        {
+                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Take Action?</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<h1>Here are your Accepted Requests</h1>
+<div>
+    <div>
+        <table style="width:100%">
+            <tr>
+                <th>Item</th>
+                <th>Requester</th>
+                <th>Rate</th>
+                <th>Iterations</th>
+                <th>Status</th>
+            </tr>
+            @for (int i = 0; i < Model.AcceptedRequestViewModel.Count(); ++i)
+            {
+                var item = Model.AcceptedRequestViewModel[i];
+                <tr>
+                    <td>
+                        @item.ItemName
+                    </td>
+                    <td>
+                        @item.Requester
+                    </td>
+                    <td>
+                        @item.Rate
+                    </td>
+                    <td>
+                        @item.Periods
+                    </td>
+                    <td>
+                        - Currently lended - 
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -36,7 +36,7 @@ namespace Borrow.Data.BusinessLayer
         {
             return new UserListingsViewModel()
             {
-                ListedItems = GetUserListings(user, all:false).ToList()
+                ActiveListings = GetUserListings(user, all:false).ToList()
             };
         }
 

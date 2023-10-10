@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Borrow.Models.Views.Requests;
 using Borrow.Data.BusinessLayer;
 using Borrow.Models.Backend;
+using System.Threading.Tasks.Dataflow;
 
 namespace Borrow.Controllers
 {
@@ -46,7 +47,7 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetIncomingRequests()
+        public async Task<IActionResult> IncomingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
             var incoming = RBL.GetIncomingRequestsViewModel(user);
@@ -54,11 +55,34 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOutgoingRequests()
+        public async Task<IActionResult> OutGoingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
             var outgoing = RBL.GetOutgoingRequestsViewModel(user);
             return View(outgoing);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewIncomingRequest(int requestId)
+        {
+
+            var request = RBL.GetRequestViewModel(requestId);
+            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
+            return View(request);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptRequest(int requestId)
+        {
+            RBL.AcceptRequest(requestId);
+            return View("RequestAccepted");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeclineRequest(int requestId)
+        {
+            RBL.DeclineRequest(requestId);
+            return View("RequestDeclined");
         }
     }
 }

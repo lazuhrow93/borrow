@@ -1,5 +1,4 @@
-﻿using Borrow.Models.Backend;
-using Humanizer.Bytes;
+﻿using static Borrow.Models.Backend.Request;
 
 namespace Borrow.Models.Views.Requests
 {
@@ -10,6 +9,7 @@ namespace Borrow.Models.Views.Requests
         public string ItemName { get; set; }
         public string Requester { get; set; }
         public string Lender { get; set; }
+        public RequestType HowOften { get; set; }
         public Decimal Rate { get; set; }
         public int Periods { get; set; }
     }

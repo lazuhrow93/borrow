@@ -6,7 +6,7 @@ namespace Borrow.Models.Views
 {
     public class UserListingsViewModel
     {
-        public List<ListingViewModel> ListedItems { get; set; }
+        public List<ListingViewModel> ActiveListings { get; set; }
 
         public UserListingsViewModel()
         {

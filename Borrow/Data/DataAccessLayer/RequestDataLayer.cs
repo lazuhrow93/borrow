@@ -10,6 +10,11 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext = borrowContext;  
         }
 
+        public Request Get(int id)
+        {
+            return BorrowContext.Request.Where(r => r.Id.Equals(id)).FirstOrDefault();
+        }
+
         public IEnumerable<Request> GetAllByLender(Guid key)
         {
             var requests = BorrowContext.Request.Where(r=>r.LenderKey == key);
@@ -28,5 +33,12 @@ namespace Borrow.Data.DataAccessLayer
             BorrowContext.SaveChanges();
         }
 
+        internal void Update(Request request)
+        {
+            var tracker = BorrowContext.Request.Find(request.Id);
+            tracker = request;
+            
+            BorrowContext.SaveChanges();
+        }
     }
 }
