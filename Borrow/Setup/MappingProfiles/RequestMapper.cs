@@ -13,6 +13,7 @@ namespace Borrow.Setup.MappingProfiles
                 .ForMember(dest => dest.Rate, o => o.MapFrom(src => src.Rate))
                 .ForMember(dest => dest.Periods, o => o.MapFrom(src => src.PayPeriods))
                 .ForMember(dest => dest.HowOften, o => o.MapFrom(src => src.Type))
+                .ForMember(dest => dest.CurrentStatus, o => o.MapFrom(src => src.Status))
                 .ForMember(dest => dest.ListingId, o => o.MapFrom(src => src.ListingId));
 
             CreateMap<Item, RequestViewModel>()

@@ -12,5 +12,6 @@ namespace Borrow.Models.Views.Requests
         public RequestType HowOften { get; set; }
         public Decimal Rate { get; set; }
         public int Periods { get; set; }
+        public RequestStatus CurrentStatus { get; set; }
     }
 }

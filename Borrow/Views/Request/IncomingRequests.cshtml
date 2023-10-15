@@ -67,7 +67,10 @@
                         @item.Periods
                     </td>
                     <td>
-                        - Currently lended - 
+                        @using(Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
+                        {
+                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meetup Spot!</button>
+                        }
                     </td>
                 </tr>
             }

@@ -43,7 +43,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> SubmitRequestForListing(CreateRequestViewModel crvm)
         {
             RBL.CreateRequest(crvm);
-            return RedirectToAction("GetOutgoingRequests", "Request");
+            return RedirectToAction("OutgoingRequests", "Request");
         }
 
         [HttpGet]
@@ -75,7 +75,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
             RBL.AcceptRequest(requestId);
-            return View("RequestAccepted");
+            return RedirectToAction("ViewMeetupSpot");
         }
 
         [HttpPost]
@@ -83,6 +83,12 @@ namespace Borrow.Controllers
         {
             RBL.DeclineRequest(requestId);
             return View("RequestDeclined");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewMeetupSpot(int requestId)
+        {
+            return View();
         }
     }
 }

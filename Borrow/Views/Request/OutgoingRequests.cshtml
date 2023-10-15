@@ -28,7 +28,21 @@
                         @item.Periods
                     </td>
                     <td>
-                       View Meeting Spot?
+                        @if(item.CurrentStatus == Request.RequestStatus.Pending)
+                        {
+                                <label>Pending</label>
+                        }
+                        else if(item.CurrentStatus == Request.RequestStatus.Accepted)
+                        {
+                            using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
+                            {
+                                <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meetup Spot!</button>
+                            }
+                        }
+                        else
+                        {
+                            <label>@Html.DisplayFor(model=>model.RequestViewModels[i].CurrentStatus)</label>
+                        }
                     </td>
                 </tr>
             }
