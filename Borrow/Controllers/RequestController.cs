@@ -67,7 +67,6 @@ namespace Borrow.Controllers
         {
 
             var request = RBL.GetRequestViewModel(requestId);
-            RBL.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
             return View(request);
         }
 
@@ -75,20 +74,48 @@ namespace Borrow.Controllers
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
             RBL.AcceptRequest(requestId);
-            return RedirectToAction("ViewMeetupSpot");
+            return RedirectToAction("ViewIncomingRequest", requestId);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeclineRequest(int requestId)
         {
             RBL.DeclineRequest(requestId);
-            return View("RequestDeclined");
+            return RedirectToAction("IncomingRequests");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmMeetupSpot(int requestId)
+        {
+            return View(RBL.GetSetupMeetingViewModel(requestId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetupMeeting(SetupMeetingViewModel info)
+        {
+            RBL.SetUpMeetingSpot(info);
+            return RedirectToAction("OutGoingRequests");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmMeetupTime(int requestId)
+        {
+            RBL.ConfirmMeetup(requestId);
+            
+            return RedirectToAction("ViewMeetupSpot", requestId);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeclineMeetupSpot(int requestId)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]
         public async Task<IActionResult> ViewMeetupSpot(int requestId)
         {
-            return View();
+            var rvm = RBL.GetRequestViewModel(requestId);
+            return View(rvm);
         }
     }
 }

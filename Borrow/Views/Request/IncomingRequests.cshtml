@@ -10,6 +10,7 @@
                 <th>Rate</th>
                 <th>Iterations</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             @for (int i = 0; i < Model.PendingRequestViewModels.Count(); ++i)
             {
@@ -28,9 +29,41 @@
                         @item.Periods
                     </td>
                     <td>
+                        @switch (item.CurrentStatus)
+                        {
+                            case Request.RequestStatus.Pending:
+                                <label>Waiting For Owner</label>
+                                break;
+                            case Request.RequestStatus.Viewed:
+                                <label>Viewed</label>
+                                break;
+                            case Request.RequestStatus.Accepted:
+                                <label>Submit your meetup time!</label>
+                                break;
+                            case Request.RequestStatus.PendingMeetUp:
+                                <label>Waiting for Owner on Time</label>
+                                break;
+                            case Request.RequestStatus.ConfirmedMeetUp:
+                                <label>Meet up!</label>
+                                break;
+                            case Request.RequestStatus.Lent:
+                                <label>Currently Active</label>
+                                break;
+                            case Request.RequestStatus.Declined:
+                                <label>Declined</label>
+                                break;
+                            case Request.RequestStatus.Expired:
+                                <label>Expired</label>
+                                break;
+                            default:
+                                <label>WTF</label>
+                                break;
+                        }
+                    </td>
+                    <td>
                         @using (Html.BeginForm("ViewIncomingRequest", "Request", FormMethod.Get))
                         {
-                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Take Action?</button>
+                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View</button>
                         }
                     </td>
                 </tr>

@@ -4,6 +4,7 @@ using Borrow.Data.DataAccessLayer.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Views.Requests;
 using Borrow.Models.Views.TableViews;
+using NuGet.Protocol;
 using System.Data;
 
 namespace Borrow.Data.BusinessLayer
@@ -97,6 +98,15 @@ namespace Borrow.Data.BusinessLayer
             return ParseToView(RequestDataLayer.Get(id));
         }
 
+        public SetupMeetingViewModel GetSetupMeetingViewModel(int requestId)
+        {
+            return new SetupMeetingViewModel()
+            {
+                MeetUpTime = DateTime.UtcNow,
+                RequestId = requestId
+            };
+        }
+
         private RequestViewModel ParseToView(Request request)
         {
             var listingInfo = ListingsDataLayer.Get(request.ListingId);
@@ -161,6 +171,22 @@ namespace Borrow.Data.BusinessLayer
         {
             var request = RequestDataLayer.Get(requestId);
             request.Status = newstatus;
+            RequestDataLayer.Update(request);
+        }
+
+        public void SetUpMeetingSpot(SetupMeetingViewModel meetingInfo)
+        {
+            var request = RequestDataLayer.Get(meetingInfo.RequestId);
+            request.SuggestedMeetingTime = meetingInfo.MeetUpTime;
+            request.Status = Request.RequestStatus.PendingMeetUp;
+            RequestDataLayer.Update(request);
+        }
+
+        public void ConfirmMeetup(int requestId)
+        {
+            UpdateStatus(requestId, Models.Backend.Request.RequestStatus.ConfirmedMeetUp);
+            var request = RequestDataLayer.Get(requestId);
+            request.MeetupTime = request.SuggestedMeetingTime;
             RequestDataLayer.Update(request);
         }
 

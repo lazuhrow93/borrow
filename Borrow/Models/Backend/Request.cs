@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace Borrow.Models.Backend
 {
@@ -10,6 +11,9 @@ namespace Borrow.Models.Backend
             Pending,
             Viewed,
             Accepted,
+            PendingMeetUp,
+            ConfirmedMeetUp,
+            Lent,
             Declined,
             Expired
         }
@@ -31,5 +35,7 @@ namespace Borrow.Models.Backend
         public RequestType? Type { get; set; } = RequestType.Daily;
         public Guid LenderKey { get; set; }
         public Guid RequesterKey { get; set; }
+        public DateTime? SuggestedMeetingTime { get; set; }
+        public DateTime? MeetupTime { get; set; }
     }
 }

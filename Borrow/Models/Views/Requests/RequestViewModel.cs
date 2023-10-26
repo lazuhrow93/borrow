@@ -13,5 +13,6 @@ namespace Borrow.Models.Views.Requests
         public Decimal Rate { get; set; }
         public int Periods { get; set; }
         public RequestStatus CurrentStatus { get; set; }
+        public DateTime CurrentMeetUpTime { get; set; }
     }
 }

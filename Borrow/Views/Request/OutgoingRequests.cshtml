@@ -28,20 +28,24 @@
                         @item.Periods
                     </td>
                     <td>
-                        @if(item.CurrentStatus == Request.RequestStatus.Pending)
+                        @switch (item.CurrentStatus)
                         {
+                            case Request.RequestStatus.Pending:
                                 <label>Pending</label>
-                        }
-                        else if(item.CurrentStatus == Request.RequestStatus.Accepted)
-                        {
-                            using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
-                            {
-                                <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Meetup Spot!</button>
-                            }
-                        }
-                        else
-                        {
-                            <label>@Html.DisplayFor(model=>model.RequestViewModels[i].CurrentStatus)</label>
+                                break;
+                            case Request.RequestStatus.Accepted:
+                                using (Html.BeginForm("SetupMeeting", "Request", FormMethod.Get))
+                                {
+                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Set Up Meeting!</button>
+                                }
+                                break;
+                            case Request.RequestStatus.PendingMeetUp:
+                                <label>Awaiting Owner To Confirm Time</label>
+                                break;
+                            default:
+                                <label>@Html.DisplayFor(model=>model.RequestViewModels[i].CurrentStatus)</label>
+                                break;
+
                         }
                     </td>
                 </tr>
