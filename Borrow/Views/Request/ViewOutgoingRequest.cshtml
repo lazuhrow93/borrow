@@ -1,0 +1,65 @@
+﻿@model Borrow.Models.Views.Requests.RequestViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Youre asking for @Model.ItemName</h1>
+<div>
+    <h4>Here is your Request</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ItemName)
+        </dd>
+        <dt class="col-sm-2">
+            Requester:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Requester)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HowOften)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model=>model.HowOften)
+        </dd>
+        <dt class ="col-sm-2">
+            @Html.DisplayNameFor(model => model.Periods)
+        </dt>
+        <dd class ="col-sm-10">
+            @Html.DisplayFor(model=>model.Periods)
+        </dd>
+        <dt class ="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rate)
+        </dt>
+        <dd class ="col-sm-10">
+            @Html.DisplayFor(model=>model.Rate)
+        </dd>
+    </dl>
+</div>
+<di>
+    @if (Model.CurrentStatus.Equals(Request.RequestStatus.Pending) || Model.CurrentStatus.Equals(Request.RequestStatus.Viewed) || Model.CurrentStatus.Equals(Request.RequestStatus.PendingMeetUp))
+    {
+        <label>Currently Waiting for Lender to take action!</label>
+    }
+    else if (Model.CurrentStatus.Equals(Request.RequestStatus.Accepted))
+    {
+        @using (Html.BeginForm("RequesterSetupMeeting", "Request", FormMethod.Get))
+        {
+            <label>The lender has accepted your request! Submit your time to meet up!</label>
+            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Submit Time</button>
+        }
+    }
+    else if (Model.CurrentStatus.Equals(Request.RequestStatus.ConfirmedMeetUp))
+    {
+        @using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Post))
+        {
+            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>View Meetup Spot</button>
+        }
+    }
+</di v>
+<hr />

@@ -70,6 +70,14 @@ namespace Borrow.Controllers
             return View(request);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ViewOutgoingRequest(int requestId)
+        {
+
+            var request = RBL.GetRequestViewModel(requestId);
+            return View(request);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
@@ -85,13 +93,13 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmMeetupSpot(int requestId)
+        public async Task<IActionResult> RequesterSetupMeeting(int requestId)
         {
             return View(RBL.GetSetupMeetingViewModel(requestId));
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetupMeeting(SetupMeetingViewModel info)
+        public async Task<IActionResult> RequesterSetupMeeting(SetupMeetingViewModel info)
         {
             RBL.SetUpMeetingSpot(info);
             return RedirectToAction("OutGoingRequests");

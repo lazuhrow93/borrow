@@ -33,19 +33,34 @@
                             case Request.RequestStatus.Pending:
                                 <label>Pending</label>
                                 break;
-                            case Request.RequestStatus.Accepted:
-                                using (Html.BeginForm("SetupMeeting", "Request", FormMethod.Get))
-                                {
-                                    <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>Set Up Meeting!</button>
-                                }
+                            case Request.RequestStatus.Viewed:
+                                <label>Lender Viewed</label>
                                 break;
                             case Request.RequestStatus.PendingMeetUp:
-                                <label>Awaiting Owner To Confirm Time</label>
+                                <label>Waiting for Lender to Confirm Meetup Time</label>
+                                break;
+                            case Request.RequestStatus.Accepted:
+                                <label>Select Meetup Time</label>
+                                break;
+                            case Request.RequestStatus.ConfirmedMeetUp:
+                                <label>Time to meet! Check your meetup spot and time</label>
+                                break;
+                            case Request.RequestStatus.Lent:
+                                <label>You currently have this item</label>
+                                break;
+                            case Request.RequestStatus.Declined:
+                                <label>Declined</label>
+                                break;
+                            case Request.RequestStatus.Expired:
+                                <label>Expired</label>
                                 break;
                             default:
-                                <label>@Html.DisplayFor(model=>model.RequestViewModels[i].CurrentStatus)</label>
+                                <label>WTF</label>
                                 break;
-
+                        }
+                        @using (Html.BeginForm("ViewOutGoingRequest", "Request", FormMethod.Get))
+                        {
+                        <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View!</button>
                         }
                     </td>
                 </tr>
