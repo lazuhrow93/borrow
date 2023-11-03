@@ -10,6 +10,7 @@
                 <th>Rate</th>
                 <th>Periods</th>
                 <th>Action</th>
+                <th></th>
             </tr>
             @for (int i = 0; i < Model.RequestViewModels.Count(); ++i)
             {
@@ -58,6 +59,8 @@
                                 <label>WTF</label>
                                 break;
                         }
+                    </td>
+                    <td>
                         @using (Html.BeginForm("ViewOutGoingRequest", "Request", FormMethod.Get))
                         {
                         <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View!</button>

@@ -106,11 +106,11 @@ namespace Borrow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmMeetupTime(int requestId)
+        public async Task<IActionResult> AcceptMeetupSpot(int requestId)
         {
             RBL.ConfirmMeetup(requestId);
-            
-            return RedirectToAction("ViewMeetupSpot", requestId);
+            var rvm = RBL.GetRequestViewModel(requestId);
+            return View("ViewMeetupSpot", rvm);
         }
 
         [HttpPost]

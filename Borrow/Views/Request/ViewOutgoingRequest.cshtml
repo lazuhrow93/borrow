@@ -56,7 +56,7 @@
     }
     else if (Model.CurrentStatus.Equals(Request.RequestStatus.ConfirmedMeetUp))
     {
-        @using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Post))
+        @using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
         {
             <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>View Meetup Spot</button>
         }

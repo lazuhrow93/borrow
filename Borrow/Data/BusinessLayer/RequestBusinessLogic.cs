@@ -161,7 +161,6 @@ namespace Borrow.Data.BusinessLayer
             item.Available = false;
             ItemDataLayer.Update(item);
         }
-
         public void DeclineRequest(int requestId)
         {
             UpdateStatus(requestId, Request.RequestStatus.Declined);
