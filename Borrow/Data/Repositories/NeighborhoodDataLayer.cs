@@ -1,6 +1,6 @@
 ﻿using Borrow.Models.Backend;
 
-namespace Borrow.Data.DataAccessLayer
+namespace Borrow.Data.Repositories
 {
     public class NeighborhoodDataLayer : Datalayer
     {

@@ -1,7 +1,7 @@
 ﻿using Borrow.Models.Backend;
 using Microsoft.EntityFrameworkCore;
 
-namespace Borrow.Data.DataAccessLayer
+namespace Borrow.Data.Repositories
 {
     public class ItemDataLayer : Datalayer
     {

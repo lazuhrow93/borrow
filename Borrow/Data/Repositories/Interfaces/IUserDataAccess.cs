@@ -1,6 +1,6 @@
 ﻿using Borrow.Models.Backend;
 using System;
-namespace Borrow.Data.DataAccessLayer.Interfaces
+namespace Borrow.Data.Repositories.Interfaces
 {
     public interface IUserDataAccess
     {

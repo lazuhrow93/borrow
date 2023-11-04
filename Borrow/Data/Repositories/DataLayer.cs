@@ -1,4 +1,4 @@
-﻿namespace Borrow.Data.DataAccessLayer
+﻿namespace Borrow.Data.Repositories
 {
     public class Datalayer
     {

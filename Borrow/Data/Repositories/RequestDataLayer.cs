@@ -1,7 +1,7 @@
 ﻿using Borrow.Models.Backend;
 using System;
 
-namespace Borrow.Data.DataAccessLayer
+namespace Borrow.Data.Repositories
 {
     public class RequestDataLayer : Datalayer
     {

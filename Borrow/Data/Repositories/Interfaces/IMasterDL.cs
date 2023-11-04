@@ -1,4 +1,4 @@
-﻿namespace Borrow.Data.DataAccessLayer.Interfaces
+﻿namespace Borrow.Data.Repositories.Interfaces
 {
     public interface IMasterDL
     {

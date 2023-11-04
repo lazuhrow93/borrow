@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Borrow.Data;
 using Microsoft.AspNetCore.Identity;
-using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Data.DataAccessLayer;
+using Borrow.Data.Repositories.Interfaces;
+using Borrow.Data.Repositories;
 using Borrow.Models.Backend;
 
 public class Program

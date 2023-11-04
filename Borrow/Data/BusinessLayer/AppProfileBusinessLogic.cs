@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Borrow.Data.DataAccessLayer;
-using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Data.Repositories;
+using Borrow.Data.Repositories.Interfaces;
 using Borrow.Models.Backend;
 
 namespace Borrow.Data.BusinessLayer

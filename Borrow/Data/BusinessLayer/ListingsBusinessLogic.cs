@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Borrow.Data.DataAccessLayer.Interfaces;
-using Borrow.Data.DataAccessLayer;
+using Borrow.Data.Repositories.Interfaces;
+using Borrow.Data.Repositories;
 using System;
 using Borrow.Models.Backend;
 using Borrow.Models.Views.TableViews;

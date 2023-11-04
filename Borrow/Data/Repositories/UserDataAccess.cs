@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Borrow.Data.DataAccessLayer.Interfaces;
+using Borrow.Data.Repositories.Interfaces;
 using Borrow.Models.Backend;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
-namespace Borrow.Data.DataAccessLayer
+namespace Borrow.Data.Repositories
 {
     public class UserDataAccess : IUserDataAccess
     {

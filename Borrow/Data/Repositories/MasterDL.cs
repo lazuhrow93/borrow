@@ -1,6 +1,6 @@
-﻿using Borrow.Data.DataAccessLayer.Interfaces;
+﻿using Borrow.Data.Repositories.Interfaces;
 
-namespace Borrow.Data.DataAccessLayer
+namespace Borrow.Data.Repositories
 {
     public class MasterDL : IMasterDL
     {

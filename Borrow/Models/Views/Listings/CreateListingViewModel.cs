@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Borrow.Data.DataAccessLayer;
+using Borrow.Data.Repositories;
 using Borrow.Models.Backend;
 using Borrow.Models.Views.TableViews;
 
