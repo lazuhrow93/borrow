@@ -153,15 +153,6 @@ namespace Borrow.Data.BusinessLayer
             };
         }
 
-        public bool CreateListing(PublishListingViewModel p)
-        {
-            var item = ItemDataLayer.Get(p.ItemInfo.ItemId);
-            item.IsListed = true;
-            ItemDataLayer.Update(item);
-            ListingsDataLayer.Insert(p.ItemInfo.ItemId, item.OwnerId, p.DailyRate, p.WeeklyRate, p.NeighborhoodId, true);
-            return true;
-        }
-
         public bool DeactiveListing(IEnumerable<int> listingIds)
         {
             var listings = ListingsDataLayer.Get(listingIds).ToList();

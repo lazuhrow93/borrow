@@ -2,7 +2,7 @@
 using Borrow.Models.Views.Listings;
 using System;
 
-namespace Borrow.Data.Services.Listing
+namespace Borrow.Data.Services
 {
     public interface IListingService
     {
@@ -12,7 +12,7 @@ namespace Borrow.Data.Services.Listing
         public RemoveListingViewModel GetRemoveListingViewModel();
         public ViewListingViewModel GetListingViewModel();
         public NeighborhoodListingsViewModel GetNeighborhoodListingsViewModel();
-        public bool CreateListing();
-        public bool DeactiveListing(); 
+        public bool CreateListing(PublishListingViewModel p);
+        public bool DeactiveListing(IEnumerable<int> listingIds); 
     }
 }

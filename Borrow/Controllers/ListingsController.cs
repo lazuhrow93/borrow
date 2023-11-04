@@ -2,6 +2,7 @@
 using Borrow.Data.BusinessLayer;
 using Borrow.Data.Repositories;
 using Borrow.Data.Repositories.Interfaces;
+using Borrow.Data.Services;
 using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Listings;
@@ -18,12 +19,17 @@ namespace Borrow.Controllers
     {
         private UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly IListingService _listingService;
         private readonly ListingsBusinessLogic LBL;
 
-        public ListingsController(UserManager<User> um, IMapper mapper,IMasterDL masterDL)
+        public ListingsController(UserManager<User> um,
+            IMapper mapper,
+            IMasterDL masterDL,
+            IListingService listingService)
         {
             _userManager = um;
             _mapper = mapper;
+            _listingService = listingService;
             LBL = new(masterDL, _mapper);
         }
 
@@ -46,7 +52,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
         {
-            LBL.CreateListing(plvm);
+            _listingService.CreateListing(plvm);
             return RedirectToAction("Index", "Profile");
         }
 
