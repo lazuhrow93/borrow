@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Borrow.Data.BusinessLayer;
 using Borrow.Data.Repositories.Interfaces;
+using Borrow.Data.Services;
 using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
@@ -13,27 +14,26 @@ namespace Borrow.Controllers
     public class ProfileController : Controller
     {
         private UserManager<User> _UserManager;
-        private readonly IMapper _mapper;
-        private readonly ListingsBusinessLogic LBL;
-        private readonly ItemBusinessLogic IBL;
-        private readonly AppProfileBusinessLogic ABL;
+        private readonly IItemService _itemService;
+        private readonly IAppProfileService _appProfileService;
 
-        public ProfileController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
+        public ProfileController(
+            UserManager<User> um, 
+            IItemService itemService,
+            IAppProfileService appProfileServices)
         {
             _UserManager = um;
-            _mapper = mapper;
-            LBL = new(masterDL, _mapper);
-            IBL = new(masterDL, _mapper);
-            ABL = new(masterDL, _mapper);
+            _itemService = itemService;
+            _appProfileService = appProfileServices;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var profile = ABL.Get(user.ProfileId);
+            var profile = _appProfileService.GetByUser(user);
 
-            var items = IBL.GetUserItems(user);
+            var items = _itemService.GetUserItems(user);
             return View(new ProfileViewModel()
             {
                 Username = profile.UserName,
@@ -66,7 +66,7 @@ namespace Borrow.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _UserManager.GetUserAsync(this.User);
-                IBL.CreateItemsForUser(user, viewModel);
+                _itemService.CreateItems(user, viewModel);
             }
 
             return View(viewModel);
@@ -76,14 +76,14 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditItem(int ItemId)
         {
-            return View(new EditItemViewModel(IBL.GetItem(ItemId)));
+            return View(_itemService.GetItem(ItemId));
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
-            IBL.EditItem(ivm);
+            _itemService.EditItem(ivm);
             return RedirectToAction("Index");
         }
 
@@ -91,7 +91,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> RemoveItem()
         {
             var user = await _UserManager.GetUserAsync(this.User);
-            var userItems = IBL.GetUserItems(user);
+            var userItems = _itemService.GetUserItems(user);
             return View(new ReviewListingsViewModel()
             {
                 Items = userItems.Where(i=>!i.IsListed).ToList()
@@ -105,7 +105,7 @@ namespace Borrow.Controllers
             var user = await _UserManager.GetUserAsync(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);
             var ids = selected.Select(i => i.ItemId);
-            IBL.DeleteItem(user, selected.Select(i=>i.ItemId));
+            _itemService.DeleteItems(user, selected.Select(i=>i.ItemId));
             return RedirectToAction("Index");
         }
     }

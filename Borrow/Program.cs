@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Borrow.Data.Repositories.Interfaces;
 using Borrow.Data.Repositories;
 using Borrow.Models.Backend;
+using Borrow.Data.Services;
 
 public class Program
 {
@@ -31,6 +32,8 @@ public class Program
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         builder.Services.AddTransient<IMasterDL, MasterDL>();
         builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
+        builder.Services.AddTransient<IItemService, ItemService>();
+        builder.Services.AddTransient<IAppProfileService, AppProfileService>();
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
