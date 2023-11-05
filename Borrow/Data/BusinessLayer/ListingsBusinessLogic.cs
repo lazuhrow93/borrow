@@ -40,18 +40,6 @@ namespace Borrow.Data.BusinessLayer
             };
         }
 
-        public CreateListingViewModel GetCreateListingViewModel(User user)
-        {
-            //need to get all ITems that are not listed
-            var approfile = AppProfileDataLayer.Get(user.ProfileId);
-            var unlistedItems = ItemDataLayer.GetUnlisted(approfile.OwnerId);
-            var setOfItems = Mapper.Map<List<ItemViewModel>>(unlistedItems);
-            return new CreateListingViewModel()
-            {
-                AvailableItems = setOfItems
-            };
-        }
-
         public PublishListingViewModel GetPublishListingViewModel(int itemId, int profileId)
         {
             var appProfile = AppProfileDataLayer.Get(profileId);
@@ -151,23 +139,6 @@ namespace Borrow.Data.BusinessLayer
                 Name = neighborhood.Name,
                 NeighborhoodListings = results
             };
-        }
-
-        public bool DeactiveListing(IEnumerable<int> listingIds)
-        {
-            var listings = ListingsDataLayer.Get(listingIds).ToList();
-            var items = ItemDataLayer.Get(listings.Select(l => l.ItemId)).ToList();
-
-            for(int i = 0; i <listings.Count; ++i)
-            {
-                listings[i].Active = false;
-                
-            }
-            for (int i = 0; i < items.Count(); ++i)
-            {
-                items[i].IsListed = false;
-            }
-            return (ListingsDataLayer.Update(listings) && ItemDataLayer.Update(items));
         }
 
         #region Helpers

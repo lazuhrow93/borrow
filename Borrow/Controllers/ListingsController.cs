@@ -37,7 +37,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> CreateListing()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var clvm = LBL.GetCreateListingViewModel(user);
+            var clvm = _listingService.GetCreateListingViewModel(user);
             return View(clvm);
         }
 
@@ -69,7 +69,7 @@ namespace Borrow.Controllers
         {
             var user = await _userManager.GetUserAsync(this.User);
             var listingsToDeactive = rlvm.Listings.Where(l => l.IsSelected).ToList();
-            var listings = LBL.DeactiveListing(listingsToDeactive.Select(l => l.Entity.ListingId));
+            var listings = _listingService.DeactiveListing(listingsToDeactive.Select(l => l.Entity.ListingId));
             return RedirectToAction("Index", "Profile");
         }
 
