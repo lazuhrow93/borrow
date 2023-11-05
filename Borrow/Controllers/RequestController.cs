@@ -18,7 +18,6 @@ namespace Borrow.Controllers
         private SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly RequestBusinessLogic RBL;
-        private readonly ListingsBusinessLogic LBL;
 
         public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL)
         {
@@ -26,7 +25,6 @@ namespace Borrow.Controllers
             _signInManager = sm;
             _mapper = mapper;
             RBL = new(masterDL, _mapper);
-            LBL = new(masterDL, _mapper);
         }
 
         [HttpGet]

@@ -20,17 +20,14 @@ namespace Borrow.Controllers
         private UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly IListingService _listingService;
-        private readonly ListingsBusinessLogic LBL;
 
         public ListingsController(UserManager<User> um,
             IMapper mapper,
-            IMasterDL masterDL,
             IListingService listingService)
         {
             _userManager = um;
             _mapper = mapper;
             _listingService = listingService;
-            LBL = new(masterDL, _mapper);
         }
 
         [HttpGet]
@@ -45,7 +42,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> PublishListing(int itemId)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            PublishListingViewModel p = LBL.GetPublishListingViewModel(itemId, user.ProfileId);
+            PublishListingViewModel p = _listingService.GetPublishListingViewModel(itemId, user.ProfileId);
             return View(p);
         }
 
@@ -60,7 +57,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> RemoveListing()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetRemoveListingViewModel(user);
+            var listings = _listingService.GetRemoveListingViewModel(user);
             return View(listings);
         }
 
@@ -77,7 +74,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> UserListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetUserListingsViewModel(user);
+            var listings = _listingService.GetUserListingsViewModel(user);
             return View(listings);
         }
 
@@ -85,7 +82,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var listings = LBL.GetNeighborhoodListingsViewModel(user);
+            var listings = _listingService.GetNeighborhoodListingsViewModel(user);
 
             return View(listings);
         }
@@ -93,7 +90,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> ViewListing(int listingId)
         {
-            var vlvm = LBL.GetViewListingViewModel(listingId);
+            var vlvm = _listingService.GetViewListingViewModel(listingId);
             return View(vlvm);
         }
     }

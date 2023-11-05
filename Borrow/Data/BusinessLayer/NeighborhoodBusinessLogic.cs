@@ -28,12 +28,5 @@ namespace Borrow.Data.BusinessLayer
             Mapper.Map<Neighborhood, HomeViewModel>(neighborhood, homeviewmodel);
             return homeviewmodel;
         }
-
-        public Neighborhood Get(User user)
-        {
-            var appProfile = AppProfileDataLayer.Get(user.ProfileId);
-            return NeighborhoodDataLayer.Get(appProfile);
-        }
-
     }
 }
