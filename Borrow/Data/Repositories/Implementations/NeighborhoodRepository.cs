@@ -1,30 +1,40 @@
 ﻿using Borrow.Data.Repositories.Interfaces;
 using Borrow.Models.Backend;
+using Microsoft.EntityFrameworkCore;
 
 namespace Borrow.Data.Repositories.Implementations
 {
     public class NeighborhoodRepository : IRepository<Neighborhood>
     {
-        public IQueryable<Neighborhood> Query => throw new NotImplementedException();
+        private DbContext Db;
+        public IQueryable<Neighborhood> Query
+        {
+            get { return Db.Set<Neighborhood>().AsQueryable(); }
+        }
+
+        public NeighborhoodRepository(DbContext db)
+        {
+            this.Db = db;
+        }
 
         public void Add(Neighborhood entity)
         {
-            throw new NotImplementedException();
+            Db.Add(entity);
         }
 
         public void Add(List<Neighborhood> entity)
         {
-            throw new NotImplementedException();
+            Db.AddRange(entity);
         }
 
         public void Delete(Neighborhood entity)
         {
-            throw new NotImplementedException();
+            Db.Remove(entity);
         }
 
         public List<Neighborhood> FetchAll()
         {
-            throw new NotImplementedException();
+            return Query.ToList();
         }
 
         public Neighborhood GetById(int id)
@@ -34,7 +44,7 @@ namespace Borrow.Data.Repositories.Implementations
 
         public void Save()
         {
-            throw new NotImplementedException();
+            Db.SaveChanges();
         }
     }
 }

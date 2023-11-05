@@ -4,42 +4,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Borrow.Data.Repositories.Implementations
 {
-    public class ListingRepository : IRepository<Listing>
+    public class RequestRepository : IRepository<Request>
     {
         private DbContext Db { get; set; }
-        public IQueryable<Listing> Query
+
+        public IQueryable<Request> Query
         {
-            get { return Db.Set<Listing>().AsQueryable<Listing>(); }
+            get { return Db.Set<Request>().AsQueryable(); }
+        }
+        
+        public RequestRepository(DbContext db)
+        {
+            Db = db;
         }
 
-        public ListingRepository(DbContext db)
-        {
-            this.Db = db;
-        }
-
-        public void Add(Listing entity)
+        public void Add(Request entity)
         {
             Db.Add(entity);
         }
 
-        public void Add(List<Listing> entity)
+        public void Add(List<Request> entity)
         {
             Db.AddRange(entity);
         }
 
-        public void Delete(Listing entity)
+        public void Delete(Request entity)
         {
             Db.Remove(entity);
         }
 
-        public List<Listing> FetchAll()
+        public List<Request> FetchAll()
         {
             return Query.ToList();
         }
 
-        public Listing GetById(int id)
+        public Request GetById(int id)
         {
-            return Query.First(l => l.Id == id);
+            return Query.First(r => r.Id == id);
         }
 
         public void Save()

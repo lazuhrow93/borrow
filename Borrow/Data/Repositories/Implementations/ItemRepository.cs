@@ -8,14 +8,14 @@ namespace Borrow.Data.Repositories.Implementations
     {
         public BorrowContext Db { get; set; }
 
-        public ItemRepository(BorrowContext db)
-        {
-            this.Db = db;
-        }
-
         public IQueryable<Item> Query
         {
             get { return Db.Set<Item>().AsQueryable<Item>(); }
+        }
+
+        public ItemRepository(BorrowContext db)
+        {
+            this.Db = db;
         }
 
         public Item GetById(int id)

@@ -12,6 +12,11 @@ namespace Borrow.Data.Repositories.Implementations
             get { return Db.Set<AppProfile>().AsQueryable(); }
         }
 
+        public AppProfileRepository(DbContext db)
+        {
+            this.Db = db;
+        }
+
         public List<AppProfile> FetchAll()
         {
             return Query.ToList();
