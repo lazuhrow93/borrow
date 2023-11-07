@@ -8,6 +8,7 @@ using Borrow.Models.Views.Requests;
 using Borrow.Data.BusinessLayer;
 using Borrow.Models.Backend;
 using System.Threading.Tasks.Dataflow;
+using Borrow.Data.Services.Interfaces;
 
 namespace Borrow.Controllers
 {
@@ -18,27 +19,29 @@ namespace Borrow.Controllers
         private SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly RequestBusinessLogic RBL;
+        private readonly IRequestService _requestService;
 
-        public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL)
+        public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL, IRequestService requestService)
         {
             _userManager = um;
             _signInManager = sm;
             _mapper = mapper;
             RBL = new(masterDL, _mapper);
+            _requestService = requestService;
         }
 
         [HttpGet]
         public async Task<ActionResult> SubmitRequestForListing(int ListingId)
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var rvm = RBL.GetCreateRequestViewModel(ListingId, user);
+            var rvm = _requestService.GetCreateRequestViewModel(ListingId, user);
             return View(rvm);
         }
 
         [HttpPost]
         public async Task<ActionResult> SubmitRequestForListing(CreateRequestViewModel crvm)
         {
-            RBL.CreateRequest(crvm);
+            _requestService.CreateRequest(crvm);
             return RedirectToAction("OutgoingRequests", "Request");
         }
 
@@ -46,7 +49,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> IncomingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var incoming = RBL.GetIncomingRequestsViewModel(user);
+            var incoming = _requestService.GetIncomingRequestsViewModel(user);
             return View(incoming);
         }
 
@@ -54,7 +57,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> OutGoingRequests()
         {
             var user = await _userManager.GetUserAsync(this.User);
-            var outgoing = RBL.GetOutgoingRequestsViewModel(user);
+            var outgoing = _requestService.GetOutgoingRequestsViewModel(user);
             return View(outgoing);
         }
 
@@ -77,14 +80,14 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
-            RBL.AcceptRequest(requestId);
+            _requestService.AcceptRequest(requestId);
             return RedirectToAction("ViewIncomingRequest", requestId);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeclineRequest(int requestId)
         {
-            RBL.DeclineRequest(requestId);
+            _requestService.DeclineRequest(requestId);
             return RedirectToAction("IncomingRequests");
         }
 
@@ -97,14 +100,14 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<IActionResult> RequesterSetupMeeting(SetupMeetingViewModel info)
         {
-            RBL.SetUpMeetingSpot(info);
+            _requestService.SetUpMeetingSpot(info);
             return RedirectToAction("OutGoingRequests");
         }
 
         [HttpPost]
         public async Task<IActionResult> AcceptMeetupSpot(int requestId)
         {
-            RBL.ConfirmMeetup(requestId);
+            _requestService.ConfirmMeetup(requestId);
             var rvm = RBL.GetRequestViewModel(requestId);
             return View("ViewMeetupSpot", rvm);
         }
