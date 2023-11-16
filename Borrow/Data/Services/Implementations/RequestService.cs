@@ -140,17 +140,24 @@ namespace Borrow.Data.Services.Implementations
 
         public RequestViewModel GetRequestViewModel(int id)
         {
-            throw new NotImplementedException();
+            return ParseToView(_requestRepository.GetById(id));
         }
 
         public SetupMeetingViewModel GetSetupMeetingViewModel(int requestId)
         {
-            throw new NotImplementedException();
+            return new SetupMeetingViewModel()
+            {
+                MeetUpTime = DateTime.UtcNow,
+                RequestId = requestId
+            };
         }
 
         public void SetUpMeetingSpot(SetupMeetingViewModel meetingInfo)
         {
-            throw new NotImplementedException();
+            var request = _requestRepository.GetById(meetingInfo.RequestId);
+            request.SuggestedMeetingTime = meetingInfo.MeetUpTime;
+            request.Status = Request.RequestStatus.PendingMeetUp;
+            _requestRepository.Save();
         }
 
         public void UpdateStatus(int requestId, Request.RequestStatus newstatus)

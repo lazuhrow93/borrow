@@ -6,20 +6,20 @@ namespace Borrow.Data.Repositories.Implementations
 {
     public class NeighborhoodRepository : IRepository<Neighborhood>
     {
-        private DbContext Db;
+        private BorrowContext Db { get; set; }
         public IQueryable<Neighborhood> Query
         {
             get { return Db.Set<Neighborhood>().AsQueryable(); }
         }
 
-        public NeighborhoodRepository(DbContext db)
+        public NeighborhoodRepository(BorrowContext db)
         {
             this.Db = db;
         }
 
-        public void Add(Neighborhood entity)
+        public Neighborhood Add(Neighborhood entity)
         {
-            Db.Add(entity);
+            return (Db.Add(entity)).Entity;
         }
 
         public void Add(List<Neighborhood> entity)
@@ -39,7 +39,7 @@ namespace Borrow.Data.Repositories.Implementations
 
         public Neighborhood GetById(int id)
         {
-            throw new NotImplementedException();
+            return Query.First(n=>n.Id == id);
         }
 
         public void Save()

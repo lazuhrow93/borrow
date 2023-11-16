@@ -28,9 +28,9 @@ namespace Borrow.Data.Repositories.Implementations
             return Query.ToList();
         }
 
-        public void Add(Item entity)
+        public Item Add(Item entity)
         {
-            Db.Add(entity);
+            return (Db.Add(entity)).Entity;
         }
 
         public void Add(List<Item> entity)

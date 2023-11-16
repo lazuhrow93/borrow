@@ -6,21 +6,21 @@ namespace Borrow.Data.Repositories.Implementations
 {
     public class RequestRepository : IRepository<Request>
     {
-        private DbContext Db { get; set; }
+        private BorrowContext Db { get; set; }
 
         public IQueryable<Request> Query
         {
             get { return Db.Set<Request>().AsQueryable(); }
         }
         
-        public RequestRepository(DbContext db)
+        public RequestRepository(BorrowContext db)
         {
-            Db = db;
+            this.Db = db;
         }
 
-        public void Add(Request entity)
+        public Request Add(Request entity)
         {
-            Db.Add(entity);
+            return (Db.Add(entity)).Entity;
         }
 
         public void Add(List<Request> entity)

@@ -5,6 +5,10 @@ using Borrow.Data.Repositories.Interfaces;
 using Borrow.Data.Repositories;
 using Borrow.Models.Backend;
 using Borrow.Data.Services;
+using Borrow.Data.Services.Interfaces;
+using Borrow.Data.Services.Implementations;
+using Borrow.Data.Repositories.Implementations;
+using Microsoft.EntityFrameworkCore.Internal;
 
 public class Program
 {
@@ -30,10 +34,21 @@ public class Program
         builder.Services.AddMemoryCache();
         builder.Services.AddSession();
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
-        builder.Services.AddTransient<IMasterDL, MasterDL>();
-        builder.Services.AddTransient<IUserDataAccess, UserDataAccess>();
-        builder.Services.AddTransient<IItemService, ItemService>();
-        builder.Services.AddTransient<IAppProfileService, AppProfileService>();
+        //builder.Services.AddTransient<IItemService, ItemService>();
+        builder.Services.
+            AddTransient<IAppProfileService, AppProfileService>().
+            AddTransient<IItemService, ItemService>().
+            AddTransient<IListingService, ListingService>().
+            AddTransient<INeighborhoodService, NeighborhoodService>().
+            AddTransient<IRequestService, RequestService>().
+            AddTransient<IUserService, UserService>().
+            AddTransient<IRepository<User>, UserRepository>().
+            AddTransient<IRepository<AppProfile>, AppProfileRepository>().
+            AddTransient<IRepository<Item>, ItemRepository>().
+            AddTransient<IRepository<Listing>, ListingRepository>().
+            AddTransient<IRepository<Neighborhood>, NeighborhoodRepository>().
+            AddTransient<IRepository<Request>, RequestRepository>();
+
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
@@ -53,9 +68,6 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
-
-
-
 
         app.MapControllerRoute(
             name: "default",

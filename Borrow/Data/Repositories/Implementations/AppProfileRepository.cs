@@ -6,13 +6,14 @@ namespace Borrow.Data.Repositories.Implementations
 {
     public class AppProfileRepository : IRepository<AppProfile>
     {
-        public DbContext Db { get; set; }
+        public BorrowContext Db { get; set; }
+
         public IQueryable<AppProfile> Query
         {
             get { return Db.Set<AppProfile>().AsQueryable(); }
         }
 
-        public AppProfileRepository(DbContext db)
+        public AppProfileRepository(BorrowContext db)
         {
             this.Db = db;
         }
@@ -27,9 +28,9 @@ namespace Borrow.Data.Repositories.Implementations
             return Query.First(a => a.Id == id);
         }
 
-        public void Add(AppProfile entity)
+        public AppProfile Add(AppProfile entity)
         {
-            Db.Add(entity);
+            return (Db.Add(entity)).Entity;
         }
 
         public void Add(List<AppProfile> entity)

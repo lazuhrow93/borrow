@@ -2,28 +2,19 @@
 using Borrow.Data.Repositories.Interfaces;
 using Borrow.Models.Views;
 using Borrow.Models.Backend;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Borrow.Data.BusinessLayer;
+using Borrow.Data.Services.Interfaces;
 
 namespace Borrow.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
-        private readonly IMapper _mapper;
-        private readonly IUserDataAccess _userDataAccess;
-        private readonly IMasterDL _masterDL;
+        private IUserService _userService;
 
-        public AccountController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IUserDataAccess ia, IMasterDL masterDL)
+        public AccountController(IUserService userService)
         {
-            userManager = um;
-            signInManager = sm;
-            _mapper = mapper;
-            _userDataAccess = ia;
-            _masterDL  = masterDL;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -39,15 +30,10 @@ namespace Borrow.Controllers
             
             if (ModelState.IsValid)
             {
-                var loginResult = await signInManager
-                .PasswordSignInAsync(lvm.UserName, lvm.PasswordHash, isPersistent: lvm.RememberMe, lockoutOnFailure: false);
-
-                if (loginResult.Succeeded)
+                if ((await _userService.Login(lvm)).Succeeded)
                 {
                     if(!string.IsNullOrEmpty(lvm.ReturnUrl) && Url.IsLocalUrl(lvm.ReturnUrl))
-                    {
                         return Redirect(lvm.ReturnUrl);
-                    }
                     else
                         return RedirectToAction("Index", "Home");
                 }
@@ -63,49 +49,22 @@ namespace Borrow.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel rvw)
+        public async Task<IActionResult> Register(RegisterViewModel rvm)
         {
             if (ModelState.IsValid)
             {
-                var neighborhood = new Neighborhood()
-                {
-                    Id = rvw.Neighborhood
-                };
+                var successRegister = await _userService.Register(rvm);
 
-                if(_masterDL.NeighborhoodDataLayer.Exist(neighborhood) == false)
-                    return View("NoNeighborhood");
-
-                var newUser = _mapper.Map<User>(rvw);
-                var result = await userManager.CreateAsync(newUser, rvw.Password);
-
-                if (result.Succeeded)
-                {
-                    var signingIn = signInManager.SignInAsync(newUser, isPersistent: false);
-                    var currentNeighborhood = _masterDL.NeighborhoodDataLayer.Get(neighborhood);
-                    var appProfile = _userDataAccess.InsertAppProfile(currentNeighborhood);
-                    await signingIn;
-                    
-                    var user = await userManager.GetUserAsync(this.User);
-                    _userDataAccess.AssociateProfile(newUser, appProfile);
-
-
+                if (successRegister)
                     return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach(var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
             }
-            return View(rvw);
+            return View(rvm);
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _userService.Logout();
             return RedirectToAction("Index", "Home");
         }
     }

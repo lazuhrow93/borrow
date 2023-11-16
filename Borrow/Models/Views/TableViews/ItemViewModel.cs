@@ -20,14 +20,5 @@ namespace Borrow.Models.Views.TableViews
         {
             
         }
-
-        public ItemViewModel(Item item)
-        {
-            ItemId = item.Id;
-            Name = item.Name;
-            Description = item.Description;
-            OwnedSince = item.OwnedSince.ToString("MM/dd/yyyy");
-            Available = item.Available;
-        }
     }
 }

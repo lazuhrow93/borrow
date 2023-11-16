@@ -15,13 +15,5 @@ namespace Borrow.Models.Views.Profile
         {
             
         }
-
-        public EditItemViewModel(ItemViewModel currentItemInfo)
-        {
-            ItemId = currentItemInfo.ItemId;
-            NewName = currentItemInfo.Name;
-            NewDescription = currentItemInfo.Description;
-            OwnedSince = DateTime.Parse(currentItemInfo.OwnedSince);
-        }
     }
 }

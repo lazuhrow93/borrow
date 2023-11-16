@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
-using Borrow.Data.Repositories.Interfaces;
-using Borrow.Models.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Borrow.Models.Views.Requests;
-using Borrow.Data.BusinessLayer;
 using Borrow.Models.Backend;
-using System.Threading.Tasks.Dataflow;
 using Borrow.Data.Services.Interfaces;
 
 namespace Borrow.Controllers
@@ -15,25 +11,22 @@ namespace Borrow.Controllers
     [Authorize]
     public class RequestController : Controller
     {
-        private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
-        private readonly IMapper _mapper;
-        private readonly RequestBusinessLogic RBL;
         private readonly IRequestService _requestService;
+        private readonly IUserService _userService;
 
-        public RequestController(SignInManager<User> sm, UserManager<User> um, IMapper mapper, IMasterDL masterDL, IRequestService requestService)
+        public RequestController(
+            UserManager<User> um, 
+            IRequestService requestService,
+            IUserService userService)
         {
-            _userManager = um;
-            _signInManager = sm;
-            _mapper = mapper;
-            RBL = new(masterDL, _mapper);
+            _userService = userService;
             _requestService = requestService;
         }
 
         [HttpGet]
         public async Task<ActionResult> SubmitRequestForListing(int ListingId)
         {
-            var user = await _userManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var rvm = _requestService.GetCreateRequestViewModel(ListingId, user);
             return View(rvm);
         }
@@ -48,7 +41,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> IncomingRequests()
         {
-            var user = await _userManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var incoming = _requestService.GetIncomingRequestsViewModel(user);
             return View(incoming);
         }
@@ -56,7 +49,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> OutGoingRequests()
         {
-            var user = await _userManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var outgoing = _requestService.GetOutgoingRequestsViewModel(user);
             return View(outgoing);
         }
@@ -64,16 +57,14 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewIncomingRequest(int requestId)
         {
-
-            var request = RBL.GetRequestViewModel(requestId);
+            var request = _requestService.GetRequestViewModel(requestId);
             return View(request);
         }
 
         [HttpGet]
         public async Task<IActionResult> ViewOutgoingRequest(int requestId)
         {
-
-            var request = RBL.GetRequestViewModel(requestId);
+            var request = _requestService.GetRequestViewModel(requestId);
             return View(request);
         }
 
@@ -94,7 +85,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> RequesterSetupMeeting(int requestId)
         {
-            return View(RBL.GetSetupMeetingViewModel(requestId));
+            return View(_requestService.GetSetupMeetingViewModel(requestId));
         }
 
         [HttpPost]
@@ -108,7 +99,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> AcceptMeetupSpot(int requestId)
         {
             _requestService.ConfirmMeetup(requestId);
-            var rvm = RBL.GetRequestViewModel(requestId);
+            var rvm = _requestService.GetRequestViewModel(requestId);
             return View("ViewMeetupSpot", rvm);
         }
 
@@ -121,7 +112,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewMeetupSpot(int requestId)
         {
-            var rvm = RBL.GetRequestViewModel(requestId);
+            var rvm = _requestService.GetRequestViewModel(requestId);
             return View(rvm);
         }
     }

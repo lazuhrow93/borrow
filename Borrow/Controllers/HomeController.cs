@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Borrow.Data.BusinessLayer;
 using Borrow.Data.Repositories.Interfaces;
 using Borrow.Data.Services.Interfaces;
 using Borrow.Models;
@@ -13,21 +12,14 @@ namespace Borrow.Controllers
 {
     public class HomeController : Controller
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
-        private readonly IMapper _mapper;
-        private readonly IMasterDL _masterDl;
         private readonly INeighborhoodService _neighborhoodService;
+        private readonly IUserService _userService;
 
         public HomeController(
-            SignInManager<User> sm, 
-            UserManager<User> um, 
-            INeighborhoodService neighborhoodService,
-            IMapper mapper)
+            IUserService userService,
+            INeighborhoodService neighborhoodService)
         {
-            userManager = um;
-            signInManager = sm;
-            _mapper = mapper;
+            _userService = userService;
             _neighborhoodService = neighborhoodService;
         }
 
@@ -35,9 +27,9 @@ namespace Borrow.Controllers
         public async Task<IActionResult> Index()
         {
             var hvm = new HomeViewModel();
-            if (signInManager.IsSignedIn(this.User))
+            if (_userService.IsSignedIn(this.User))
             {
-                var user = await userManager.GetUserAsync(this.User);
+                var user = await _userService.GetCurrentUser(this.User);
                 hvm = _neighborhoodService.GetHomeViewModel(user);
             }
             return View(hvm);

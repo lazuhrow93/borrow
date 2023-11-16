@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Borrow.Data.BusinessLayer;
-using Borrow.Data.Repositories.Interfaces;
-using Borrow.Data.Services;
+﻿using Borrow.Data.Services;
+using Borrow.Data.Services.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
@@ -13,24 +11,24 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private UserManager<User> _UserManager;
         private readonly IItemService _itemService;
+        private readonly IUserService _userService;
         private readonly IAppProfileService _appProfileService;
 
         public ProfileController(
-            UserManager<User> um, 
             IItemService itemService,
+            IUserService userService,
             IAppProfileService appProfileServices)
         {
-            _UserManager = um;
             _itemService = itemService;
+            _userService = userService;
             _appProfileService = appProfileServices;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var user = await _UserManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var profile = _appProfileService.GetByUser(user);
 
             var items = _itemService.GetUserItems(user);
@@ -65,7 +63,7 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _UserManager.GetUserAsync(this.User);
+                var user = await _userService.GetCurrentUser(this.User);
                 _itemService.CreateItems(user, viewModel);
             }
 
@@ -90,7 +88,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> RemoveItem()
         {
-            var user = await _UserManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var userItems = _itemService.GetUserItems(user);
             return View(new ReviewListingsViewModel()
             {
@@ -102,7 +100,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> RemoveItem(ReviewListingsViewModel rivm)
         {
-            var user = await _UserManager.GetUserAsync(this.User);
+            var user = await _userService.GetCurrentUser(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);
             var ids = selected.Select(i => i.ItemId);
             _itemService.DeleteItems(user, selected.Select(i=>i.ItemId));
