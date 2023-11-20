@@ -191,8 +191,10 @@ namespace Borrow.Data.Services
         {
             var appProfile = _appProfileRepository.GetById(user.ProfileId);
             var items = _itemRepository.FetchAll().ToList();
+            var listings = _listingRepository.FetchAll().ToList();
 
-            var query = _listingRepository.Query.Join(items,
+
+            var query = listings.Join(items,
                 l => l.ItemId,
                 i => i.Id,
                 (l, i) => new
@@ -209,8 +211,8 @@ namespace Borrow.Data.Services
 
             var queryResult = 
                 (all) ? 
-                query.Where(q => q.OwnerId.Equals(appProfile.OwnerId)) 
-                : query.Where(q => q.OwnerId.Equals(appProfile.OwnerId) && q.Active);
+                query.Where(q => q.OwnerId.Equals(appProfile.OwnerId)).ToList() 
+                : query.Where(q => q.OwnerId.Equals(appProfile.OwnerId) && q.Active).ToList();
 
             var results = new List<ListingViewModel>();
 
