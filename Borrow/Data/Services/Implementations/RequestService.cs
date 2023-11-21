@@ -16,7 +16,18 @@ namespace Borrow.Data.Services.Implementations
         private readonly IRepository<AppProfile> _appProfileRepository;
         private readonly IMapper _mapper;
 
-        public RequestService() { }
+        public RequestService(IRepository<Request> requestRepository,
+            IRepository<Listing> listingRepository,
+            IRepository<Item> itemRepository,
+            IRepository<AppProfile> appProfileRepository,
+            IMapper mapper)
+        {
+            _requestRepository = requestRepository;
+            _listingRepository = listingRepository;
+            _itemRepository = itemRepository;
+            _appProfileRepository = appProfileRepository;
+            _mapper = mapper;
+        }
 
         public void AcceptRequest(int requestId)
         {
@@ -103,14 +114,11 @@ namespace Borrow.Data.Services.Implementations
             var requests = _requestRepository.Query.Where(r=>r.LenderKey == profile.RequestKey);
 
             IncomingRequestsViewModel irvm = new();
-            irvm.PendingRequestViewModels = new();
-            irvm.AcceptedRequestViewModel = new();
+            irvm.IncomingRequestsViewModel = new();
 
             foreach (var request in requests)
-            {
-                if (request.Status != Request.RequestStatus.Accepted) irvm.PendingRequestViewModels.Add(ParseToView(request));
-                else irvm.AcceptedRequestViewModel.Add(ParseToView(request));
-            }
+                irvm.IncomingRequestsViewModel.Add(ParseToView(request));
+
             return irvm;
         }
 

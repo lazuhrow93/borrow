@@ -99,9 +99,10 @@ namespace Borrow.Data.Services
             var ap = _appProfileRepository.GetById(user.ProfileId);
             var neighborhood = _neighborhoodRepository.GetById(ap.NeighborhoodId);
             var items = _itemRepository.FetchAll();
+            var listings = _listingRepository.FetchAll();
             var appProfiles = _appProfileRepository.FetchAll();
 
-            var query = _listingRepository.Query.Join(items,
+            var query = listings.Join(items,
                 l => l.ItemId,
                 i => i.Id,
                 (l, i) => new
@@ -133,7 +134,7 @@ namespace Borrow.Data.Services
                 });
 
 
-            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active && q.OwnerId != ap.OwnerId);
+            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active && q.OwnerId != ap.OwnerId).ToList();
             var results = new List<ListingViewModel>();
 
             foreach (var join in queryResult)

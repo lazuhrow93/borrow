@@ -2,7 +2,6 @@
 {
     public class IncomingRequestsViewModel
     {
-        public List<RequestViewModel> PendingRequestViewModels { get; set; }
-        public List<RequestViewModel> AcceptedRequestViewModel { get; set; }
+        public List<RequestViewModel> IncomingRequestsViewModel { get; set; }
     }
 }
