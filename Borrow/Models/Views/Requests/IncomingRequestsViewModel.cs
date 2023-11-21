@@ -2,6 +2,6 @@
 {
     public class IncomingRequestsViewModel
     {
-        public List<RequestViewModel> IncomingRequestsViewModel { get; set; }
+        public List<RequestViewModel> RequestViewModels { get; set; }
     }
 }

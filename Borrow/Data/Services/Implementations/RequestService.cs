@@ -114,10 +114,10 @@ namespace Borrow.Data.Services.Implementations
             var requests = _requestRepository.Query.Where(r=>r.LenderKey == profile.RequestKey);
 
             IncomingRequestsViewModel irvm = new();
-            irvm.IncomingRequestsViewModel = new();
+            irvm.RequestViewModels = new();
 
             foreach (var request in requests)
-                irvm.IncomingRequestsViewModel.Add(ParseToView(request));
+                irvm.RequestViewModels.Add(ParseToView(request));
 
             return irvm;
         }
