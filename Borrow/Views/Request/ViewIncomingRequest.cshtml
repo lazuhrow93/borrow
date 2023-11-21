@@ -51,18 +51,21 @@
     }
     else if (Model.CurrentStatus.Equals(Request.RequestStatus.Accepted))
     {
-        <h1>Thanks for Accepting! Now we wait till the meet up time is offered by the requester</h1>
-    }
-    else if (Model.CurrentStatus.Equals(Request.RequestStatus.PendingMeetUp))
-    {
-        <h1>Requester has offered to meet at @Model.CurrentMeetUpTime</h1>
-        @using (Html.BeginForm("AcceptMeetupSpot", "Request", FormMethod.Post))
+        if (Model.ActionNeededFrom.Equals(Request.WaitingOn.Requester))
         {
-            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
+            <h1>Thanks for Accepting! Now we wait till the meet up time is offered by the requester</h1>
         }
-        @using (Html.BeginForm("DeclineMeetupSpot", "Request", FormMethod.Post))
+        else
         {
-            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
+            <h1>Requester has offered to meet at @Model.CurrentMeetUpTime</h1>
+            @using (Html.BeginForm("AcceptMeetupSpot", "Request", FormMethod.Post))
+            {
+                <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
+            }
+            @using (Html.BeginForm("DeclineMeetupSpot", "Request", FormMethod.Post))
+            {
+                <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
+            }
         }
     }
     else if (Model.CurrentStatus.Equals(Request.RequestStatus.ConfirmedMeetUp))

@@ -42,7 +42,7 @@
     </dl>
 </div>
 <di>
-    @if (Model.CurrentStatus.Equals(Request.RequestStatus.Pending) || Model.CurrentStatus.Equals(Request.RequestStatus.Viewed) || Model.CurrentStatus.Equals(Request.RequestStatus.PendingMeetUp))
+    @if (Model.CurrentStatus.Equals(Request.RequestStatus.Pending) || Model.CurrentStatus.Equals(Request.RequestStatus.Viewed))
     {
         <label>Currently Waiting for Lender to take action!</label>
     }

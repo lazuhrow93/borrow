@@ -31,8 +31,9 @@ namespace Borrow.Data.Services.Implementations
 
         public void AcceptRequest(int requestId)
         {
+            UpdateStatus(requestId, Request.RequestStatus.Accepted);
             var request = _requestRepository.GetById(requestId);
-            request.Status = Request.RequestStatus.Accepted;
+            //request.Status = Request.RequestStatus.Accepted;
 
             var listing = _listingRepository.GetById(request.ListingId);
             listing.Active = false;
@@ -45,12 +46,12 @@ namespace Borrow.Data.Services.Implementations
             _requestRepository.Save();
         }
 
-        public void ConfirmMeetup(int requestId)
+        public void ConfirmMeetupTime(int requestId)
         {
             var request = _requestRepository.GetById(requestId);
             request.MeetupTime = request.SuggestedMeetingTime;
             request.Status = Request.RequestStatus.ConfirmedMeetUp;
-
+            request.ActionNeededFrom = Request.WaitingOn.None;
             _requestRepository.Save();
         }
 
@@ -160,18 +161,18 @@ namespace Borrow.Data.Services.Implementations
             };
         }
 
-        public void SetUpMeetingSpot(SetupMeetingViewModel meetingInfo)
+        public void OfferMeetupTime(SetupMeetingViewModel meetingInfo)
         {
             var request = _requestRepository.GetById(meetingInfo.RequestId);
             request.SuggestedMeetingTime = meetingInfo.MeetUpTime;
-            request.Status = Request.RequestStatus.PendingMeetUp;
+            request.ActionNeededFrom = Request.WaitingOn.Lender;
             _requestRepository.Save();
         }
 
         public void UpdateStatus(int requestId, Request.RequestStatus newstatus)
         {
             var request = _requestRepository.GetById(requestId);
-            request.Status = newstatus;
+            request.Status = request.Status | newstatus;
             _requestRepository.Save();
         }
 

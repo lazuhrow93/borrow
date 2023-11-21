@@ -58,6 +58,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> ViewIncomingRequest(int requestId)
         {
             var request = _requestService.GetRequestViewModel(requestId);
+            _requestService.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
             return View(request);
         }
 
@@ -91,14 +92,14 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<IActionResult> RequesterSetupMeeting(SetupMeetingViewModel info)
         {
-            _requestService.SetUpMeetingSpot(info);
+            _requestService.OfferMeetupTime(info);
             return RedirectToAction("OutGoingRequests");
         }
 
         [HttpPost]
         public async Task<IActionResult> AcceptMeetupSpot(int requestId)
         {
-            _requestService.ConfirmMeetup(requestId);
+            _requestService.ConfirmMeetupTime(requestId);
             var rvm = _requestService.GetRequestViewModel(requestId);
             return View("ViewMeetupSpot", rvm);
         }

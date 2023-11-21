@@ -8,14 +8,20 @@ namespace Borrow.Models.Backend
     {
         public enum RequestStatus
         {
-            Pending,
-            Viewed,
-            Accepted,
-            PendingMeetUp,
-            ConfirmedMeetUp,
-            Lent,
-            Declined,
-            Expired
+            Pending = (1 << 0),
+            Viewed = (1 << 1),
+            Accepted = (1 << 2),
+            ConfirmedMeetUp = (1 << 4),
+            Lent = (1 << 5),
+            Declined = (1 << 6),
+            Expired = (1 << 7)
+        }
+
+        public enum WaitingOn
+        {
+            None,
+            Requester,
+            Lender
         }
 
         public enum RequestType
@@ -28,6 +34,7 @@ namespace Borrow.Models.Backend
         public int ListingId { get; set; }
         public int ItemId { get; set; }
         public RequestStatus Status { get; set; } = RequestStatus.Pending;
+        public WaitingOn ActionNeededFrom { get; set; } = WaitingOn.None;
         public int PayPeriods { get; set; }
         [Precision(18, 2)]
         public decimal Rate { get; set; }

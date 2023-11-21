@@ -29,35 +29,39 @@
                         @item.Periods
                     </td>
                     <td>
-                        @switch (item.CurrentStatus)
+                        @if(item.CurrentStatus.HasFlag(Request.RequestStatus.Expired))
                         {
-                            case Request.RequestStatus.Pending:
-                                <label>Waiting For Owner</label>
-                                break;
-                            case Request.RequestStatus.Viewed:
-                                <label>Viewed</label>
-                                break;
-                            case Request.RequestStatus.Accepted:
-                                <label>Submit your meetup time!</label>
-                                break;
-                            case Request.RequestStatus.PendingMeetUp:
-                                <label>Request Asked to meet up on @item.CurrentMeetUpTime</label>
-                                break;
-                            case Request.RequestStatus.ConfirmedMeetUp:
-                                <label>Meet up!</label>
-                                break;
-                            case Request.RequestStatus.Lent:
-                                <label>Currently Active</label>
-                                break;
-                            case Request.RequestStatus.Declined:
-                                <label>Declined</label>
-                                break;
-                            case Request.RequestStatus.Expired:
-                                <label>Expired</label>
-                                break;
-                            default:
-                                <label>WTF</label>
-                                break;
+                            <label>Expired</label>
+                        }
+                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Declined))
+                        {
+                            <label>Declined</label>
+                        }
+                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Lent))
+                        {
+                            <label>Currently Lent</label>
+                        }
+                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.ConfirmedMeetUp))
+                        {
+                            <label>Time to meetup!</label>
+                        }
+                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Accepted))
+                        {
+                            if (item.ActionNeededFrom.Equals(Request.WaitingOn.Lender))
+                            {
+                                <label>Waiting on Lender to Confirm your Time</label>
+                            }
+                            else{
+                                <label>Lender wants a different Time</label>
+                            }
+                        }
+                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Viewed))
+                        {
+                            <label>Viewed by Lender</label>
+                        }
+                        else //pending
+                        {
+                            <label>WTF</label>
                         }
                     </td>
                     <td>
