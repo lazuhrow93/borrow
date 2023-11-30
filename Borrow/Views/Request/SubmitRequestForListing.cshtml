@@ -21,11 +21,11 @@
             @Html.DisplayFor(model => model.ListingViewModel.WeeklyRate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RequestType)
+            @Html.DisplayNameFor(model => model.TermId)
         </dt>
         <dd class="col-sm-10">
-            <select asp-for="RequestType" asp-items="Html.GetEnumSelectList<Request.RequestType>()"></select>
-            <span asp-validation-for="@Model.RequestType" class="text-danger"></span>
+            <select asp-for="TermId" asp-items="Html.GetEnumSelectList<RequestEnums.Term>()"></select>
+            <span asp-validation-for="@Model.TermId" class="text-danger"></span>
         </dd>
         <dt class="col-sm-2"?>
             Number of Days/Weeks

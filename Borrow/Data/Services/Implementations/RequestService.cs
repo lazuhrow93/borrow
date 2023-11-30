@@ -3,6 +3,7 @@ using Borrow.Data.Repositories;
 using Borrow.Data.Repositories.Interfaces;
 using Borrow.Data.Services.Interfaces;
 using Borrow.Models.Backend;
+using Borrow.Models.Enums;
 using Borrow.Models.Views.Requests;
 using Borrow.Models.Views.TableViews;
 
@@ -14,24 +15,28 @@ namespace Borrow.Data.Services.Implementations
         private readonly IRepository<Listing> _listingRepository;
         private readonly IRepository<Item> _itemRepository;
         private readonly IRepository<AppProfile> _appProfileRepository;
+        private readonly IRepository<BorrowEnumeration> _borrowEnumerationRepository;
         private readonly IMapper _mapper;
 
         public RequestService(IRepository<Request> requestRepository,
             IRepository<Listing> listingRepository,
             IRepository<Item> itemRepository,
             IRepository<AppProfile> appProfileRepository,
+            IRepository<BorrowEnumeration> borrowEnumerationRepository,
             IMapper mapper)
         {
             _requestRepository = requestRepository;
             _listingRepository = listingRepository;
             _itemRepository = itemRepository;
             _appProfileRepository = appProfileRepository;
+            _borrowEnumerationRepository = borrowEnumerationRepository;
             _mapper = mapper;
         }
 
         public void AcceptRequest(int requestId)
         {
-            UpdateStatus(requestId, Request.RequestStatus.Accepted);
+            var acceptedId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Accepted).Id;
+            UpdateStatus(requestId, acceptedId);
             var request = _requestRepository.GetById(requestId);
             //request.Status = Request.RequestStatus.Accepted;
 
@@ -48,16 +53,19 @@ namespace Borrow.Data.Services.Implementations
 
         public void ConfirmMeetupTime(int requestId)
         {
+            var confirmedMeetupId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.ConfirmedMeetUp).Id;
+            var pendingActionId = _borrowEnumerationRepository.GetById((int)RequestEnums.PendingActionFrom.None).Id;
             var request = _requestRepository.GetById(requestId);
-            request.MeetupTime = request.SuggestedMeetingTime;
-            request.Status = Request.RequestStatus.ConfirmedMeetUp;
-            request.ActionNeededFrom = Request.WaitingOn.None;
+            request.MeetupTime = request.MeetupTime;
+            request.StatusId = confirmedMeetupId;
+            request.PendingActionFromId = pendingActionId;
             _requestRepository.Save();
         }
 
         public bool CreateRequest(CreateRequestViewModel crvm)
         {
-            if (crvm.RequestType.Equals(Request.RequestType.Weekly))
+            var weekly = _borrowEnumerationRepository.GetById((int)RequestEnums.Term.Weekly);
+            if (crvm.TermId.Equals(weekly))
             {
                 crvm.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(7 * crvm.PayPeriods);
                 crvm.RequestRate = crvm.ListingViewModel.WeeklyRate;
@@ -81,8 +89,9 @@ namespace Borrow.Data.Services.Implementations
 
         public void DeclineRequest(int requestId)
         {
+            var deleteId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Declined).Id;
             var request = _requestRepository.GetById(requestId);
-            request.Status = Request.RequestStatus.Declined;
+            request.StatusId = deleteId;
             _requestRepository.Save();
         }
 
@@ -164,16 +173,27 @@ namespace Borrow.Data.Services.Implementations
         public void OfferMeetupTime(SetupMeetingViewModel meetingInfo)
         {
             var request = _requestRepository.GetById(meetingInfo.RequestId);
-            request.SuggestedMeetingTime = meetingInfo.MeetUpTime;
-            request.ActionNeededFrom = Request.WaitingOn.Lender;
+            request.RequesterSuggestedMeetingTime = meetingInfo.MeetUpTime;
+            var newEnum = _borrowEnumerationRepository.GetById((int)RequestEnums.PendingActionFrom.Lender);
+            request.PendingActionFromId = newEnum.Id;
             _requestRepository.Save();
         }
 
-        public void UpdateStatus(int requestId, Request.RequestStatus newstatus)
+        public void UpdateStatus(int requestId, int newStatusId)
         {
             var request = _requestRepository.GetById(requestId);
-            request.Status = request.Status | newstatus;
+            request.StatusId = newStatusId;
             _requestRepository.Save();
+        }
+
+        public void OwnerViewed(int requestId)
+        {
+            var newStatus = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Viewed);
+            var currentRequest = _requestRepository.GetById(requestId);
+
+            if (currentRequest.StatusId > newStatus.Id) return;
+
+            UpdateStatus(requestId, newStatus.Id);
         }
 
         private RequestViewModel ParseToView(Request request)
@@ -188,7 +208,6 @@ namespace Borrow.Data.Services.Implementations
             rvm.Requester = requester.UserName;
             rvm.Lender = lender.UserName;
             return rvm;
-
         }
     }
 }

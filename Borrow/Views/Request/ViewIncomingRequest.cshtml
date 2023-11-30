@@ -22,10 +22,10 @@
             @Html.DisplayFor(model => model.Requester)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HowOften)
+            @Html.DisplayNameFor(model => model.Term)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model=>model.HowOften)
+            @Html.DisplayFor(model=>model.Term)
         </dd>
         <dt class ="col-sm-2">
             @Html.DisplayNameFor(model => model.Periods)
@@ -42,38 +42,47 @@
     </dl>
 </div>
 <di>
-    @if (Model.CurrentStatus.Equals(Request.RequestStatus.Pending) || Model.CurrentStatus.Equals(Request.RequestStatus.Viewed))
+    @switch((RequestEnums.Status)Model.StatusId)
     {
-        @using (Html.BeginForm("AcceptRequest", "Request", FormMethod.Post))
-        {
-            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
-        }
-    }
-    else if (Model.CurrentStatus.Equals(Request.RequestStatus.Accepted))
-    {
-        if (Model.ActionNeededFrom.Equals(Request.WaitingOn.Requester))
-        {
-            <h1>Thanks for Accepting! Now we wait till the meet up time is offered by the requester</h1>
-        }
-        else
-        {
-            <h1>Requester has offered to meet at @Model.CurrentMeetUpTime</h1>
-            @using (Html.BeginForm("AcceptMeetupSpot", "Request", FormMethod.Post))
+        case RequestEnums.Status.Pending:
+        case RequestEnums.Status.Viewed:
             {
-                <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
+                @using (Html.BeginForm("AcceptRequest", "Request", FormMethod.Post))
+                {
+                    <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
+                }
+                break;
+
             }
-            @using (Html.BeginForm("DeclineMeetupSpot", "Request", FormMethod.Post))
+        case RequestEnums.Status.Accepted:
             {
-                <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
+                if((RequestEnums.PendingActionFrom)Model.PendingActionFromId == RequestEnums.PendingActionFrom.Requester)
+                {
+                    <h1>Thanks for Accepting! Now we wait till the meet up time is offered by the requester</h1>
+                }
+                else
+                {
+                    <h1>Requester has offered to meet at @Model.MeetupTime</h1>
+                    @using (Html.BeginForm("AcceptMeetupSpot", "Request", FormMethod.Post))
+                    {
+                        <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Accept?</button>
+                    }
+                    @using (Html.BeginForm("DeclineMeetupSpot", "Request", FormMethod.Post))
+                    {
+                        <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>Decline?</button>
+                    }
+                }
             }
-        }
-    }
-    else if (Model.CurrentStatus.Equals(Request.RequestStatus.ConfirmedMeetUp))
-    {
-        @using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
-        {
-            <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>View Meetup Spot</button>
-        }
+            break;
+        case RequestEnums.Status.ConfirmedMeetUp:
+            @using (Html.BeginForm("ViewMeetupSpot", "Request", FormMethod.Get))
+            {
+                <button class="btn btn-primary" type="submit" name="requestId" value=@Model.RequestId>View Meetup Spot</button>
+            }
+            break;
+        default:
+            <label> WTF </label>
+            break;
     }
 </di v>
 <hr />

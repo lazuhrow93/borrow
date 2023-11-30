@@ -58,7 +58,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> ViewIncomingRequest(int requestId)
         {
             var request = _requestService.GetRequestViewModel(requestId);
-            _requestService.UpdateStatus(requestId, Models.Backend.Request.RequestStatus.Viewed);
+            _requestService.OwnerViewed(requestId);
             return View(request);
         }
 

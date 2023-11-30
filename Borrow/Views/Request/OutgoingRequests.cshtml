@@ -29,27 +29,27 @@
                         @item.Periods
                     </td>
                     <td>
-                        @switch (item.CurrentStatus)
+                        @switch ((RequestEnums.Status)item.StatusId)
                         {
-                            case Request.RequestStatus.Pending:
+                            case RequestEnums.Status.Pending:
                                 <label>Pending</label>
                                 break;
-                            case Request.RequestStatus.Viewed:
+                            case RequestEnums.Status.Viewed:
                                 <label>Lender Viewed</label>
                                 break;
-                            case Request.RequestStatus.Accepted:
+                            case RequestEnums.Status.Accepted:
                                 <label>Select Meetup Time</label>
                                 break;
-                            case Request.RequestStatus.ConfirmedMeetUp:
+                            case RequestEnums.Status.ConfirmedMeetUp:
                                 <label>Time to meet! Check your meetup spot and time</label>
                                 break;
-                            case Request.RequestStatus.Lent:
+                            case RequestEnums.Status.Lent:
                                 <label>You currently have this item</label>
                                 break;
-                            case Request.RequestStatus.Declined:
+                            case RequestEnums.Status.Declined:
                                 <label>Declined</label>
                                 break;
-                            case Request.RequestStatus.Expired:
+                            case RequestEnums.Status.Expired:
                                 <label>Expired</label>
                                 break;
                             default:

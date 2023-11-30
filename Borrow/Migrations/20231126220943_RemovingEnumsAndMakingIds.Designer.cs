@@ -4,6 +4,7 @@ using Borrow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Borrow.Migrations
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20231126220943_RemovingEnumsAndMakingIds")]
+    partial class RemovingEnumsAndMakingIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,35 +56,9 @@ namespace Borrow.Migrations
                             Id = 1,
                             NeighborhoodId = 1,
                             OwnerId = 1,
-                            RequestKey = new Guid("ba81dcdd-b56a-4aae-a713-dd31be224917"),
+                            RequestKey = new Guid("9b44c98c-c43d-46de-8090-ad4a7f675718"),
                             UserName = "dummy93"
                         });
-                });
-
-            modelBuilder.Entity("Borrow.Models.Backend.BorrowEnumeration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDateUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TrackingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdateDateUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BorrowEnumerations");
                 });
 
             modelBuilder.Entity("Borrow.Models.Backend.Item", b =>

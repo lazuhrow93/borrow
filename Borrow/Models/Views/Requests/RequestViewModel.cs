@@ -9,11 +9,11 @@ namespace Borrow.Models.Views.Requests
         public string ItemName { get; set; }
         public string Requester { get; set; }
         public string Lender { get; set; }
-        public RequestType HowOften { get; set; }
+        public int Term { get; set; }
         public Decimal Rate { get; set; }
         public int Periods { get; set; }
-        public RequestStatus CurrentStatus { get; set; }
-        public WaitingOn ActionNeededFrom { get; set; }
-        public DateTime CurrentMeetUpTime { get; set; }
+        public int StatusId { get; set; }
+        public int PendingActionFromId { get; set; }
+        public DateTime MeetupTime { get; set; }
     }
 }

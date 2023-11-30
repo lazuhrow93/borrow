@@ -1,5 +1,6 @@
 ﻿using System;
 using Borrow.Models.Backend;
+using Borrow.Models.Enums;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -18,7 +19,7 @@ namespace Borrow.Migrations
                 table: "Request",
                 type: "int",
                 nullable: false,
-                defaultValue: Request.RequestType.Daily);
+                defaultValue: RequestEnums.Term.Daily);
 
             migrationBuilder.AlterColumn<int>(
                 name: "Type",

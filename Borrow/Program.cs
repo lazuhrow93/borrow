@@ -47,7 +47,8 @@ public class Program
             AddTransient<IRepository<Item>, ItemRepository>().
             AddTransient<IRepository<Listing>, ListingRepository>().
             AddTransient<IRepository<Neighborhood>, NeighborhoodRepository>().
-            AddTransient<IRepository<Request>, RequestRepository>();
+            AddTransient<IRepository<Request>, RequestRepository>().
+            AddTransient<IRepository<BorrowEnumeration>, BorrowEnumerationRespositry>();
 
 
         // Add services to the container.

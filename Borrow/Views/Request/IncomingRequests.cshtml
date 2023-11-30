@@ -29,39 +29,37 @@
                         @item.Periods
                     </td>
                     <td>
-                        @if(item.CurrentStatus.HasFlag(Request.RequestStatus.Expired))
+                        @switch ((RequestEnums.Status)item.StatusId)
                         {
-                            <label>Expired</label>
-                        }
-                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Declined))
-                        {
-                            <label>Declined</label>
-                        }
-                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Lent))
-                        {
-                            <label>Currently Lent</label>
-                        }
-                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.ConfirmedMeetUp))
-                        {
-                            <label>Time to meetup!</label>
-                        }
-                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Accepted))
-                        {
-                            if (item.ActionNeededFrom.Equals(Request.WaitingOn.Lender))
-                            {
-                                <label>Waiting on Lender to Confirm your Time</label>
-                            }
-                            else{
-                                <label>Lender wants a different Time</label>
-                            }
-                        }
-                        else if (item.CurrentStatus.HasFlag(Request.RequestStatus.Viewed))
-                        {
-                            <label>Viewed by Lender</label>
-                        }
-                        else //pending
-                        {
-                            <label>WTF</label>
+                            case RequestEnums.Status.Expired:
+                                <label>Expired</label>
+                                break;
+                            case RequestEnums.Status.Declined:
+                                <label>Declined</label>
+                                break;
+                            case RequestEnums.Status.Lent:
+                                <label>Lent</label>
+                                break;
+                            case RequestEnums.Status.ConfirmedMeetUp:
+                                <label>ConfirmedMeetUp</label>
+                                break;
+                            case RequestEnums.Status.Accepted:
+                                if (((RequestEnums.PendingActionFrom)item.PendingActionFromId) == RequestEnums.PendingActionFrom.Lender)
+                                {
+                                    <label>Waiting on Lender to Confirm your Time</label>
+                                }
+                                else
+                                {
+                                    <label>Lender wants a meet up time</label>
+                                }
+                                break;
+                            case RequestEnums.Status.Viewed:
+                                <label>Viewed by Owner</label>
+                                break;
+                            default:
+                                <label> Something is pending</label>
+                                break;
+
                         }
                     </td>
                     <td>

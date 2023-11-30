@@ -13,8 +13,9 @@ namespace Borrow.Data.Services.Interfaces
         public bool CreateRequest(CreateRequestViewModel crvm);
         public void AcceptRequest(int requestId);
         public void DeclineRequest(int requestId);
-        public void UpdateStatus(int RequestId, Request.RequestStatus newstatus);
         public void OfferMeetupTime(SetupMeetingViewModel meetingInfo);
         public void ConfirmMeetupTime(int requestId);
+        public void OwnerViewed(int requestId);
+        public void UpdateStatus(int RequestId, int newstatus);
     }
 }
