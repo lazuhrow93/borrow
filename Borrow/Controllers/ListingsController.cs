@@ -12,23 +12,24 @@ namespace Borrow.Controllers
     [Authorize]
     public class ListingsController : Controller
     {
-        private readonly IListingService _listingService;
         private readonly IUserService _userService;
+        private readonly IListingControllerService _listingControllerService;
 
         public ListingsController(UserManager<User> um,
             IMapper mapper,
             IUserService userService,
+            IListingControllerService controllerService,
             IListingService listingService)
         {
             _userService = userService;
-            _listingService = listingService;
+            _listingControllerService = controllerService;
         }
 
         [HttpGet]
         public async Task<ActionResult> CreateListing()
         {
             var user = await _userService.GetCurrentUser(this.User);
-            var clvm = _listingService.GetCreateListingViewModel(user);
+            var clvm = _listingControllerService.GetCreateListingViewModel(user);
             return View(clvm);
         }
 
@@ -36,31 +37,31 @@ namespace Borrow.Controllers
         public async Task<ActionResult> PublishListing(int itemId)
         {
             var user = await _userService.GetCurrentUser(this.User);
-            PublishListingViewModel p = _listingService.GetPublishListingViewModel(itemId, user.ProfileId);
+            PublishListingViewModel p = _listingControllerService.GetPublishListingViewModel(itemId, user.ProfileId);
             return View(p);
         }
 
         [HttpPost]
         public async Task<ActionResult> PublishListing(PublishListingViewModel plvm)
         {
-            _listingService.CreateListing(plvm);
+            _listingControllerService.CreateListing(plvm);
             return RedirectToAction("Index", "Profile");
         }
 
         [HttpGet]
-        public async Task<ActionResult> RemoveListing()
+        public async Task<ActionResult> RemoveListings()
         {
             var user = await _userService.GetCurrentUser(this.User);
-            var listings = _listingService.GetRemoveListingViewModel(user);
+            var listings = _listingControllerService.GetRemoveListingViewModel(user);
             return View(listings);
         }
 
         [HttpPost]
-        public async Task<ActionResult> RemoveListing(RemoveListingViewModel rlvm)
+        public async Task<ActionResult> RemoveListings(RemoveListingViewModel rlvm)
         {
             var user = await _userService.GetCurrentUser(this.User);
             var listingsToDeactive = rlvm.Listings.Where(l => l.IsSelected).ToList();
-            var listings = _listingService.DeactiveListing(listingsToDeactive.Select(l => l.Entity.ListingId));
+            var listings = _listingControllerService.DeactivateListing(listingsToDeactive.Select(l => l.Entity.ListingId));
             return RedirectToAction("Index", "Profile");
         }
 
@@ -68,7 +69,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> UserListings()
         {
             var user = await _userService.GetCurrentUser(this.User);
-            var listings = _listingService.GetUserListingsViewModel(user);
+            var listings = _listingControllerService.GetUserListingsViewModel(user);
             return View(listings);
         }
 
@@ -76,7 +77,7 @@ namespace Borrow.Controllers
         public async Task<ActionResult> NeighborhoodListings()
         {
             var user = await _userService.GetCurrentUser(this.User);
-            var listings = _listingService.GetNeighborhoodListingsViewModel(user);
+            var listings = _listingControllerService.GetNeighborhoodListingsViewModel(user);
 
             return View(listings);
         }
@@ -84,7 +85,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> ViewListing(int listingId)
         {
-            var vlvm = _listingService.GetViewListingViewModel(listingId);
+            var vlvm = _listingControllerService.GetViewListingViewModel(listingId);
             return View(vlvm);
         }
     }

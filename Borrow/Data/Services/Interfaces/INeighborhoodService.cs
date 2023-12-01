@@ -5,6 +5,9 @@ namespace Borrow.Data.Services.Interfaces
 {
     public interface INeighborhoodService
     {
-        public HomeViewModel GetHomeViewModel(User user); 
+        public HomeViewModel GetHomeViewModel(User user);
+
+        public Neighborhood GetUserNeighborhood(AppProfile user);
+
     }
 }

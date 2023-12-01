@@ -32,5 +32,10 @@ namespace Borrow.Data.Services.Implementations
             _mapper.Map<Neighborhood, HomeViewModel>(neighborhood, homeviewmodel);
             return homeviewmodel;
         }
+
+        public Neighborhood GetUserNeighborhood(AppProfile profile)
+        {
+            return _neighborhoodRepository.GetById(profile.NeighborhoodId);
+        }
     }
 }

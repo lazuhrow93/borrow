@@ -63,129 +63,6 @@ namespace Borrow.Data.Services
             return true;
         }
 
-        public CreateListingViewModel GetCreateListingViewModel(User user)
-        {
-            //need to get all ITems that are not listed
-            var approfile = _appProfileRepository.GetById(user.ProfileId);
-            var unlistedItems = 
-                _itemRepository.Query.
-                Where(i => i.OwnerId == approfile.OwnerId).
-                Where(i => i.IsListed == false).ToList();
-            var setOfItems = _mapper.Map<List<ItemViewModel>>(unlistedItems);
-            return new CreateListingViewModel()
-            {
-                AvailableItems = setOfItems
-            };
-        }
-
-        public ViewListingViewModel GetViewListingViewModel(int id)
-        {
-            var listing = _listingRepository.GetById(id);
-            var appProfile = _appProfileRepository.Query.First(a => a.OwnerId == listing.OwnerId);
-            var item = _itemRepository.GetById(listing.ItemId);
-
-            var lvm = _mapper.Map<ListingViewModel>(item);
-            _mapper.Map<AppProfile, ListingViewModel>(appProfile, lvm);
-            _mapper.Map<Listing, ListingViewModel>(listing, lvm);
-
-            return new ViewListingViewModel()
-            {
-                ListingViewModel = lvm
-            };
-        }
-
-        public NeighborhoodListingsViewModel GetNeighborhoodListingsViewModel(User user)
-        {
-            var ap = _appProfileRepository.GetById(user.ProfileId);
-            var neighborhood = _neighborhoodRepository.GetById(ap.NeighborhoodId);
-            var items = _itemRepository.FetchAll();
-            var listings = _listingRepository.FetchAll();
-            var appProfiles = _appProfileRepository.FetchAll();
-
-            var query = listings.Join(items,
-                l => l.ItemId,
-                i => i.Id,
-                (l, i) => new
-                {
-                    l.Id,
-                    l.ItemId,
-                    l.DailyRate,
-                    l.WeeklyRate,
-                    l.OwnerId,
-                    i.Name,
-                    i.Description,
-                    l.NeighborhoodId,
-                    l.Active
-                }).Join(appProfiles,
-                li => li.OwnerId,
-                p => p.OwnerId,
-                (li, p) => new
-                {
-                    li.Id,
-                    li.ItemId,
-                    li.DailyRate,
-                    li.WeeklyRate,
-                    li.OwnerId,
-                    li.Name,
-                    li.Description,
-                    li.NeighborhoodId,
-                    p.UserName,
-                    li.Active
-                });
-
-
-            var queryResult = query.Where(q => q.NeighborhoodId.Equals(neighborhood.Id) && q.Active && q.OwnerId != ap.OwnerId).ToList();
-            var results = new List<ListingViewModel>();
-
-            foreach (var join in queryResult)
-            {
-                results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, join.UserName, join.OwnerId));
-            }
-
-            return new NeighborhoodListingsViewModel()
-            {
-                Name = neighborhood.Name,
-                NeighborhoodListings = results
-            };
-        }
-
-        public PublishListingViewModel GetPublishListingViewModel(int itemId, int profileId)
-        {
-            var appProfile = _appProfileRepository.GetById(profileId);
-            var item = _itemRepository.GetById(itemId);
-            return new PublishListingViewModel()
-            {
-                ItemInfo = _mapper.Map<ItemViewModel>(item),
-                DailyRate = 0.0M,
-                WeeklyRate = 0.0M,
-                NeighborhoodId = appProfile.NeighborhoodId
-            };
-        }
-
-        public RemoveListingViewModel GetRemoveListingViewModel(User user)
-        {
-            var userListings = GetUserListings(user, all: false);
-            return new RemoveListingViewModel()
-            {
-                Listings = userListings.Select(l =>
-                {
-                    return new SelectorViewModel<ListingViewModel>()
-                    {
-                        IsSelected = false,
-                        Entity = l
-                    };
-                }).ToList()
-            };
-        }
-
-        public UserListingsViewModel GetUserListingsViewModel(User user)
-        {
-            return new UserListingsViewModel()
-            {
-                ActiveListings = GetUserListings(user, all: false).ToList()
-            };
-        }
-
         #region Helpers
 
         private IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
@@ -223,6 +100,11 @@ namespace Borrow.Data.Services
             }
 
             return results;
+        }
+
+        public IEnumerable<Listing> GetNeighborhoodActiveListings(Neighborhood neighborhood)
+        {
+            return _listingRepository.Query.Where(l => l.NeighborhoodId == neighborhood.Id);
         }
 
         #endregion

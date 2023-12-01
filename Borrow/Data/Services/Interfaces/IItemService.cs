@@ -14,6 +14,5 @@ namespace Borrow.Data.Services
         public bool CreateItems(User user, AddItemViewModel viewModel);
         public bool DeleteItem(User user, int ids);
         public bool DeleteItems(User user, IEnumerable<int> ids);
-
     }
 }
