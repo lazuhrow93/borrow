@@ -12,14 +12,14 @@ namespace Borrow.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly INeighborhoodService _neighborhoodService;
-        private readonly IUserService _userService;
+        private readonly INeighborhoodControllerService _neighborhoodService;
+        private readonly IProfileControllerService _profileService;
 
         public HomeController(
-            IUserService userService,
-            INeighborhoodService neighborhoodService)
+            IProfileControllerService profileControllerService,
+            INeighborhoodControllerService neighborhoodService)
         {
-            _userService = userService;
+            _profileService = profileControllerService;
             _neighborhoodService = neighborhoodService;
         }
 
@@ -27,9 +27,9 @@ namespace Borrow.Controllers
         public async Task<IActionResult> Index()
         {
             var hvm = new HomeViewModel();
-            if (_userService.IsSignedIn(this.User))
+            if (_profileService.IsSignedIn(this.User))
             {
-                var user = await _userService.GetCurrentUser(this.User);
+                var user = await _profileService.GetCurrentUser(this.User);
                 hvm = _neighborhoodService.GetHomeViewModel(user);
             }
             return View(hvm);

@@ -11,27 +11,20 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly IItemService _itemService;
-        private readonly IUserService _userService;
-        private readonly IAppProfileService _appProfileService;
+        private readonly IProfileControllerService _profileControllerService;
 
-        public ProfileController(
-            IItemService itemService,
-            IUserService userService,
-            IAppProfileService appProfileServices)
+        public ProfileController(IProfileControllerService profileControllerService)
         {
-            _itemService = itemService;
-            _userService = userService;
-            _appProfileService = appProfileServices;
+            _profileControllerService = profileControllerService;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var user = await _userService.GetCurrentUser(this.User);
-            var profile = _appProfileService.GetByUser(user);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
+            var profile = _profileControllerService.GetByUser(user);
 
-            var items = _itemService.GetUserItems(user);
+            var items = _profileControllerService.GetUserItems(user);
             return View(new ProfileViewModel()
             {
                 Username = profile.UserName,
@@ -63,8 +56,8 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userService.GetCurrentUser(this.User);
-                _itemService.CreateItems(user, viewModel);
+                var user = await _profileControllerService.GetCurrentUser(this.User);
+                _profileControllerService.CreateItems(user, viewModel);
             }
 
             return View(viewModel);
@@ -74,22 +67,22 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditItem(int ItemId)
         {
-            return View(_itemService.GetItem(ItemId));
+            return View(_profileControllerService.GetItem(ItemId));
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
-            _itemService.EditItem(ivm);
+            _profileControllerService.EditItem(ivm);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<ActionResult> RemoveItem()
         {
-            var user = await _userService.GetCurrentUser(this.User);
-            var userItems = _itemService.GetUserItems(user);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
+            var userItems = _profileControllerService.GetUserItems(user);
             return View(new ReviewListingsViewModel()
             {
                 Items = userItems.Where(i=>!i.IsListed).ToList()
@@ -100,10 +93,10 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> RemoveItem(ReviewListingsViewModel rivm)
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var selected = rivm.Items.Where(i => i.IsSelected);
             var ids = selected.Select(i => i.ItemId);
-            _itemService.DeleteItems(user, selected.Select(i=>i.ItemId));
+            _profileControllerService.DeleteItems(user, selected.Select(i=>i.ItemId));
             return RedirectToAction("Index");
         }
     }

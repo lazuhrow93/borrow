@@ -12,23 +12,22 @@ namespace Borrow.Controllers
     [Authorize]
     public class ListingsController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IProfileControllerService _profileControllerService;
         private readonly IListingControllerService _listingControllerService;
 
         public ListingsController(UserManager<User> um,
             IMapper mapper,
-            IUserService userService,
-            IListingControllerService controllerService,
-            IListingService listingService)
+            IProfileControllerService profileControllerService,
+            IListingControllerService controllerService)
         {
-            _userService = userService;
+            _profileControllerService = profileControllerService;
             _listingControllerService = controllerService;
         }
 
         [HttpGet]
         public async Task<ActionResult> CreateListing()
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var clvm = _listingControllerService.GetCreateListingViewModel(user);
             return View(clvm);
         }
@@ -36,7 +35,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> PublishListing(int itemId)
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             PublishListingViewModel p = _listingControllerService.GetPublishListingViewModel(itemId, user.ProfileId);
             return View(p);
         }
@@ -51,7 +50,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> RemoveListings()
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var listings = _listingControllerService.GetRemoveListingViewModel(user);
             return View(listings);
         }
@@ -59,7 +58,7 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> RemoveListings(RemoveListingViewModel rlvm)
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var listingsToDeactive = rlvm.Listings.Where(l => l.IsSelected).ToList();
             var listings = _listingControllerService.DeactivateListing(listingsToDeactive.Select(l => l.Entity.ListingId));
             return RedirectToAction("Index", "Profile");
@@ -68,7 +67,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> UserListings()
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var listings = _listingControllerService.GetUserListingsViewModel(user);
             return View(listings);
         }
@@ -76,7 +75,7 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> NeighborhoodListings()
         {
-            var user = await _userService.GetCurrentUser(this.User);
+            var user = await _profileControllerService.GetCurrentUser(this.User);
             var listings = _listingControllerService.GetNeighborhoodListingsViewModel(user);
 
             return View(listings);

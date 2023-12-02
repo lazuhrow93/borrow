@@ -7,7 +7,7 @@ using Borrow.Models.Views.Home;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public class NeighborhoodService : INeighborhoodService
+    public partial class NeighborhoodService : INeighborhoodControllerService
     {
         private IRepository<AppProfile> _appProfileRepository;
         private IRepository<Neighborhood> _neighborhoodRepository;
@@ -22,20 +22,6 @@ namespace Borrow.Data.Services.Implementations
             _appProfileRepository = appProfileRepository;
             _neighborhoodRepository = neighborhoodRepository;
             _mapper = mapper;
-        }
-
-        public HomeViewModel GetHomeViewModel(User user)
-        {
-            var profile = _appProfileRepository.GetById(user.ProfileId);
-            var neighborhood = _neighborhoodRepository.GetById(profile.NeighborhoodId);
-            var homeviewmodel = _mapper.Map<HomeViewModel>(user);
-            _mapper.Map<Neighborhood, HomeViewModel>(neighborhood, homeviewmodel);
-            return homeviewmodel;
-        }
-
-        public Neighborhood GetUserNeighborhood(AppProfile profile)
-        {
-            return _neighborhoodRepository.GetById(profile.NeighborhoodId);
         }
     }
 }

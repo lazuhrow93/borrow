@@ -36,12 +36,10 @@ public class Program
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
         //builder.Services.AddTransient<IItemService, ItemService>();
         builder.Services.
-            AddTransient<IAppProfileService, AppProfileService>().
-            AddTransient<IItemService, ItemService>().
-            AddTransient<IListingService, ListingService>().
-            AddTransient<INeighborhoodService, NeighborhoodService>().
-            AddTransient<IRequestService, RequestService>().
-            AddTransient<IUserService, UserService>().
+            AddTransient<IProfileControllerService, ProfileControllerService>().
+            AddTransient<INeighborhoodControllerService, NeighborhoodService>().
+            AddTransient<IRequestControllerService, RequestControllerService>().
+            AddTransient<IListingControllerService, ListingControllerService>().
             AddTransient<IRepository<User>, UserRepository>().
             AddTransient<IRepository<AppProfile>, AppProfileRepository>().
             AddTransient<IRepository<Item>, ItemRepository>().
