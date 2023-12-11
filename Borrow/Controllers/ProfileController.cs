@@ -79,22 +79,20 @@ namespace Borrow.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> RemoveItem()
+        public async Task<ActionResult> DeleteItems()
         {
             var user = await _profileControllerService.GetCurrentUser(this.User);
-            var userItems = _profileControllerService.GetUserItems(user);
-            return View(new ReviewListingsViewModel()
-            {
-                Items = userItems.Where(i=>!i.IsListed).ToList()
-            });
+            var profile = _profileControllerService.GetByUser(user);
 
+            var models = _profileControllerService.GetDeleteItemsViewModel(profile);
+            return View(models);
         }
 
         [HttpPost]
-        public async Task<ActionResult> RemoveItem(ReviewListingsViewModel rivm)
+        public async Task<ActionResult> DeleteItems(DeleteItemsViewModel rivm)
         {
             var user = await _profileControllerService.GetCurrentUser(this.User);
-            var selected = rivm.Items.Where(i => i.IsSelected);
+            var selected = rivm.ItemViewModels.Where(i => i.IsSelected).Select(v=>v.Entity);
             var ids = selected.Select(i => i.ItemId);
             _profileControllerService.DeleteItems(user, selected.Select(i=>i.ItemId));
             return RedirectToAction("Index");

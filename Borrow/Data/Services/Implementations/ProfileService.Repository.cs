@@ -35,6 +35,7 @@ namespace Borrow.Data.Services.Implementations
             _userManager = userManager;
             _signInManager = signInManager;
             _userRepository = userRepo;
+            _itemRepository = itemrepo;
             _appProfileRepository = appProfileRepo;
         }
 
@@ -80,7 +81,7 @@ namespace Borrow.Data.Services.Implementations
             return true;
         }
 
-        public AppProfile? GetByUser(User user)
+        public AppProfile GetByUser(User user)
         {
             return _appProfileRepository.GetById(user.ProfileId);
         }

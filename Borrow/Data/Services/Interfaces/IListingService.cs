@@ -13,7 +13,7 @@ namespace Borrow.Data.Services.Interfaces
         public UserListingsViewModel GetUserListingsViewModel(User user);
         public PublishListingViewModel GetPublishListingViewModel(int itemId, int profileId);
         public RemoveListingViewModel GetRemoveListingViewModel(User user);
-        public bool CreateListing(PublishListingViewModel viewModel);
-        public bool DeactivateListing(IEnumerable<int> listingIds);
+        public void CreateListing(PublishListingViewModel viewModel);
+        public void DeactivateListing(IEnumerable<int> listingIds);
     }
 }

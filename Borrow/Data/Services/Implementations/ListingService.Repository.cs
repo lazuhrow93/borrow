@@ -14,7 +14,19 @@ namespace Borrow.Data.Services.Implementations
         protected readonly IRepository<Listing> _listingRepository;
         protected readonly IMapper _mapper;
 
-        public bool CreateListing(PublishListingViewModel viewModel)
+        public ListingService(IRepository<Item> itemRepo,
+            IRepository<AppProfile> appRepo,
+            IRepository<Neighborhood> neighborhoodRepo,
+            IRepository<Listing> listingRepo,
+            IMapper mapper)
+        {
+            _itemRepository = itemRepo;
+            _appProfileRepository = appRepo;
+            _neighborhoodRepository = neighborhoodRepo;
+            _listingRepository = listingRepo;
+            _mapper = mapper;
+        }
+        public void CreateListing(PublishListingViewModel viewModel)
         {
             var item = _itemRepository.GetById(viewModel.ItemInfo.ItemId);
             item.IsListed = true;
@@ -30,10 +42,9 @@ namespace Borrow.Data.Services.Implementations
             };
             _listingRepository.Add(newItem);
             _listingRepository.Save();
-            return true;
         }
 
-        public bool DeactivateListing(IEnumerable<int> listingIds)
+        public void DeactivateListing(IEnumerable<int> listingIds)
         {
             foreach (var id in listingIds)
             {
@@ -44,8 +55,17 @@ namespace Borrow.Data.Services.Implementations
             }
             _listingRepository.Save();
             _itemRepository.Save(); //do i need to do the second one
-            return true;
         }
+
+        #region Private helpers
+
+        private IEnumerable<Listing> GetActiveListings(AppProfile appProfile)
+        {
+            var activeUserListings = _listingRepository.Query.Where(l => l.Active == true && l.OwnerId == appProfile.OwnerId);
+            return activeUserListings;
+        }
+
+        #endregion
     }
 }
 

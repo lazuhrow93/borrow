@@ -1,5 +1,4 @@
-﻿using Borrow.Data.Repositories.Implementations;
-using Borrow.Data.Services.Interfaces;
+﻿using Borrow.Data.Services.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Listings;
@@ -116,10 +115,14 @@ namespace Borrow.Data.Services.Implementations
 
         public RemoveListingViewModel GetRemoveListingViewModel(User user)
         {
-            var userListings = GetUserListings(user, all: false);
+            var profile = _appProfileRepository.GetById(user.ProfileId);
+            var activeListings = GetActiveListings(profile).Where(l=>l.Dealt == false); //make sure the listing isn't lended out
+            var listingViewModels = ToViewModel(activeListings, profile);
+
+            //var userListings = GetUserListings(user, all: false);
             return new RemoveListingViewModel()
             {
-                Listings = userListings.Select(l =>
+                Listings = listingViewModels.Select(l =>
                 {
                     return new SelectorViewModel<ListingViewModel>()
                     {
@@ -131,6 +134,36 @@ namespace Borrow.Data.Services.Implementations
         }
 
         #region Helpers
+
+        private IEnumerable<ListingViewModel> ToViewModel(IEnumerable<Listing> listings, AppProfile appProfile)
+        {
+            var itemIds = listings.Select(l => l.ItemId);
+            var items = _itemRepository.Query.Where(i => itemIds.Contains(i.Id));
+            
+            var query = listings.Join(items,
+                l => l.ItemId,
+                i => i.Id,
+                (l, i) => new
+                {
+                    l.Id,
+                    l.ItemId,
+                    l.DailyRate,
+                    l.WeeklyRate,
+                    l.OwnerId,
+                    i.Name,
+                    i.Description,
+                    l.Active
+                });
+
+
+            var results = new List<ListingViewModel>();
+
+            foreach (var join in query)
+            {
+                results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, appProfile.UserName, join.OwnerId));
+            }
+            return results;
+        }
 
         private IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
         {

@@ -1,7 +1,7 @@
-﻿@model ReviewListingsViewModel
+﻿@model Borrow.Models.Views.Profile.DeleteItemsViewModel
 
 @{
-    ViewData["Title"] = "RemoveItems";
+    ViewData["Title"] = "Delete Items";
 }
 
 <h1>RemoveItems</h1>
@@ -9,7 +9,7 @@
 <h4>Item</h4>
 <hr />
 <div class="row">
-    <form method="post" asp-action="RemoveItem" asp-controller="Profile">
+    <form method="post" asp-action="DeleteItems" asp-controller="Profile">
         <div>
             <table style="width:100%">
                 <tr>
@@ -18,17 +18,15 @@
                     <th>Description</th>
                     <th>Owned Since</th>
                     <th>Available</th>
-                    <th>Daily Rate</th>
-                    <th>Weekly Rate</th>
                 </tr>
-                @for(int i = 0; i<Model.Items.Count(); ++i)
+                @for(int i = 0; i<Model.ItemViewModels.Count(); ++i)
                 {
-                    var item = Model.Items[i];
-                    
-                    @Html.HiddenFor(m=>m.Items[i].ItemId)
+                    var item = Model.ItemViewModels[i].Entity;
+
+                    @Html.HiddenFor(m=>m.ItemViewModels[i].Entity.ItemId)
                     <tr>
                         <td>
-                            @Html.CheckBoxFor(m=>m.Items[i].IsSelected)
+                            @Html.CheckBoxFor(m=>m.ItemViewModels[i].IsSelected)
                         </td>
                         <td>
                             @item.Name
@@ -42,16 +40,10 @@
                         <td>
                             @item.Available
                         </td>
-                        <td>
-                            @item.DailyRate
-                        </td>
-                        <td>
-                            @item.WeeklyRate
-                        </td>
                     </tr>
                 }
             </table>
-            <button class="btn btn-primary" type="submit" disabled="@(Model.Items.Count() == 0)">Delete Selected</button>
+            <button class="btn btn-primary" type="submit" disabled="@(Model.ItemViewModels.Count() == 0)">Delete Selected</button>
         </div>
     </form>
 </div>

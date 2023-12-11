@@ -16,6 +16,8 @@ namespace Borrow.Data.Services.Interfaces
         public bool CreateItems(User user, AddItemViewModel viewModel);
         public bool DeleteItem(User user, int ids);
         public bool DeleteItems(User user, IEnumerable<int> ids);
+        public DeleteItemsViewModel GetDeleteItemsViewModel(AppProfile appProfile);
+
 
         //user
         public Task<bool> Register(RegisterViewModel viewModel);

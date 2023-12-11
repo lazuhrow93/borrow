@@ -58,9 +58,8 @@ namespace Borrow.Controllers
         [HttpPost]
         public async Task<ActionResult> RemoveListings(RemoveListingViewModel rlvm)
         {
-            var user = await _profileControllerService.GetCurrentUser(this.User);
             var listingsToDeactive = rlvm.Listings.Where(l => l.IsSelected).ToList();
-            var listings = _listingControllerService.DeactivateListing(listingsToDeactive.Select(l => l.Entity.ListingId));
+            _listingControllerService.DeactivateListing(listingsToDeactive.Select(l => l.Entity.ListingId));
             return RedirectToAction("Index", "Profile");
         }
 

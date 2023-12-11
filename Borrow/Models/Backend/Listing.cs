@@ -13,5 +13,6 @@ namespace Borrow.Models.Backend
         public int OwnerId { get; set; }
         public int NeighborhoodId { get; set; }
         public bool Active { get; set; }
+        public bool Dealt { get; set; }
     }
 }
