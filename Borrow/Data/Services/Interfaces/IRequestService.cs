@@ -3,7 +3,7 @@ using Borrow.Models.Views.Requests;
 using System;
 namespace Borrow.Data.Services.Interfaces
 {
-    public interface IRequestControllerService
+    public interface IRequestService
     {
         public void AcceptRequest(int requestId);
         public void ConfirmMeetupTime(int requestId);

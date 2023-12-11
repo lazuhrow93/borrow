@@ -7,7 +7,7 @@ using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class ListingControllerService : IListingControllerService
+    public partial class ListingService : IListingService
     {
         public CreateListingViewModel GetCreateListingViewModel(User user)
         {

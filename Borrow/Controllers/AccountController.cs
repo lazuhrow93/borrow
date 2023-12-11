@@ -10,9 +10,9 @@ namespace Borrow.Controllers
 {
     public class AccountController : Controller
     {
-        private IProfileControllerService _profileControllerService;
+        private IProfileService _profileControllerService;
 
-        public AccountController(IProfileControllerService userService)
+        public AccountController(IProfileService userService)
         {
             _profileControllerService = userService;
         }

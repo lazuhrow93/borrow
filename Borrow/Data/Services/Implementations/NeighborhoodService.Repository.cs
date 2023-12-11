@@ -7,7 +7,7 @@ using Borrow.Models.Views.Home;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class NeighborhoodService : INeighborhoodControllerService
+    public partial class NeighborhoodService : INeighborhoodService
     {
         private IRepository<AppProfile> _appProfileRepository;
         private IRepository<Neighborhood> _neighborhoodRepository;

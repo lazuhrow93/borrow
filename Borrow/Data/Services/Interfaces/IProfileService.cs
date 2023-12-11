@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Borrow.Data.Services.Interfaces
 {
-    public interface IProfileControllerService
+    public interface IProfileService
     {
         //item
         public IEnumerable<ItemViewModel> GetUserItems(User user);

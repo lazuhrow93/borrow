@@ -6,7 +6,7 @@ using Borrow.Models.Views.Listings;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class ListingControllerService : IListingControllerService
+    public partial class ListingService : IListingService
     {
         protected readonly IRepository<Item> _itemRepository;
         protected readonly IRepository<AppProfile> _appProfileRepository;

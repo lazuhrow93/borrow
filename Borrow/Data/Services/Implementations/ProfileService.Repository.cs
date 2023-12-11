@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class ProfileControllerService : IProfileControllerService
+    public partial class ProfileService : IProfileService
     {
         private IRepository<Item> _itemRepository;
         private IRepository<AppProfile> _appProfileRepository;
@@ -21,7 +21,7 @@ namespace Borrow.Data.Services.Implementations
         private SignInManager<User> _signInManager;
         public IMapper _mapper;
 
-        public ProfileControllerService(IRepository<Item> itemrepo,
+        public ProfileService(IRepository<Item> itemrepo,
             IRepository<AppProfile> appProfileRepo,
             IRepository<Neighborhood> neighborhoodRepo,
             IRepository<User> userRepo,

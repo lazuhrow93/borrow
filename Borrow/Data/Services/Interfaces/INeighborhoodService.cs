@@ -3,7 +3,7 @@ using Borrow.Models.Views.Home;
 using System;
 namespace Borrow.Data.Services.Interfaces
 {
-    public interface INeighborhoodControllerService
+    public interface INeighborhoodService
     {
         public HomeViewModel GetHomeViewModel(User user);
 

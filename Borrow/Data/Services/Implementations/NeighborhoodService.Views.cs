@@ -4,7 +4,7 @@ using Borrow.Models.Views.Home;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class NeighborhoodService : INeighborhoodControllerService
+    public partial class NeighborhoodService : INeighborhoodService
     {
         public HomeViewModel GetHomeViewModel(User user)
         {

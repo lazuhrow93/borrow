@@ -11,13 +11,13 @@ namespace Borrow.Controllers
     [Authorize]
     public class RequestController : Controller
     {
-        private readonly IRequestControllerService _requestControllerService;
-        private readonly IProfileControllerService _profileControllerService;
+        private readonly IRequestService _requestControllerService;
+        private readonly IProfileService _profileControllerService;
 
         public RequestController(
             UserManager<User> um, 
-            IRequestControllerService requestService,
-            IProfileControllerService profileControllerService)
+            IRequestService requestService,
+            IProfileService profileControllerService)
         {
             _profileControllerService = profileControllerService;
             _requestControllerService = requestService;

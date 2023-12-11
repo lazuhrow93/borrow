@@ -5,7 +5,7 @@ using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class RequestControllerService : IRequestControllerService
+    public partial class RequestService : IRequestService
     {
         public CreateRequestViewModel GetCreateRequestViewModel(int listingId, User Requester)
         {

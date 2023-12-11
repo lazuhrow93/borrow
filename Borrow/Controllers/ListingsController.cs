@@ -12,13 +12,13 @@ namespace Borrow.Controllers
     [Authorize]
     public class ListingsController : Controller
     {
-        private readonly IProfileControllerService _profileControllerService;
-        private readonly IListingControllerService _listingControllerService;
+        private readonly IProfileService _profileControllerService;
+        private readonly IListingService _listingControllerService;
 
         public ListingsController(UserManager<User> um,
             IMapper mapper,
-            IProfileControllerService profileControllerService,
-            IListingControllerService controllerService)
+            IProfileService profileControllerService,
+            IListingService controllerService)
         {
             _profileControllerService = profileControllerService;
             _listingControllerService = controllerService;

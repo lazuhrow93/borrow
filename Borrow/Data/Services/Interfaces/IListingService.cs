@@ -5,7 +5,7 @@ using System;
 
 namespace Borrow.Data.Services.Interfaces
 {
-    public interface IListingControllerService
+    public interface IListingService
     {
         public CreateListingViewModel GetCreateListingViewModel(User user);
         public NeighborhoodListingsViewModel GetNeighborhoodListingsViewModel(User user);

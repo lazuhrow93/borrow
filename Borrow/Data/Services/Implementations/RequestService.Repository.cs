@@ -7,7 +7,7 @@ using Borrow.Models.Views.Requests;
 
 namespace Borrow.Data.Services.Implementations
 {
-    public partial class RequestControllerService : IRequestControllerService
+    public partial class RequestService : IRequestService
     {
         private readonly IRepository<Request> _requestRepository;
         private readonly IRepository<Listing> _listingRepository;

@@ -11,9 +11,9 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly IProfileControllerService _profileControllerService;
+        private readonly IProfileService _profileControllerService;
 
-        public ProfileController(IProfileControllerService profileControllerService)
+        public ProfileController(IProfileService profileControllerService)
         {
             _profileControllerService = profileControllerService;
         }

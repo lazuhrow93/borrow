@@ -12,12 +12,12 @@ namespace Borrow.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly INeighborhoodControllerService _neighborhoodService;
-        private readonly IProfileControllerService _profileService;
+        private readonly INeighborhoodService _neighborhoodService;
+        private readonly IProfileService _profileService;
 
         public HomeController(
-            IProfileControllerService profileControllerService,
-            INeighborhoodControllerService neighborhoodService)
+            IProfileService profileControllerService,
+            INeighborhoodService neighborhoodService)
         {
             _profileService = profileControllerService;
             _neighborhoodService = neighborhoodService;
