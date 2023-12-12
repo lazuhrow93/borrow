@@ -11,20 +11,20 @@ namespace Borrow.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly IProfileService _profileControllerService;
+        private readonly IProfileService _profileService;
 
-        public ProfileController(IProfileService profileControllerService)
+        public ProfileController(IProfileService profileService)
         {
-            _profileControllerService = profileControllerService;
+            _profileService = profileService;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var user = await _profileControllerService.GetCurrentUser(this.User);
-            var profile = _profileControllerService.GetByUser(user);
+            var user = await _profileService.GetCurrentUser(this.User);
+            var profile = _profileService.GetByUser(user);
 
-            var items = _profileControllerService.GetUserItems(user);
+            var items = _profileService.GetUserItems(user);
             return View(new ProfileViewModel()
             {
                 Username = profile.UserName,
@@ -56,8 +56,8 @@ namespace Borrow.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _profileControllerService.GetCurrentUser(this.User);
-                _profileControllerService.CreateItems(user, viewModel);
+                var user = await _profileService.GetCurrentUser(this.User);
+                _profileService.CreateItems(user, viewModel);
             }
 
             return View(viewModel);
@@ -67,34 +67,33 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditItem(int ItemId)
         {
-            return View(_profileControllerService.GetItem(ItemId));
+            return View(_profileService.GetItem(ItemId));
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> EditItem(EditItemViewModel ivm)
         {
-            _profileControllerService.EditItem(ivm);
+            _profileService.EditItem(ivm);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<ActionResult> DeleteItems()
         {
-            var user = await _profileControllerService.GetCurrentUser(this.User);
-            var profile = _profileControllerService.GetByUser(user);
-
-            var models = _profileControllerService.GetDeleteItemsViewModel(profile);
+            var user = await _profileService.GetCurrentUser(this.User);
+            var profile = _profileService.GetByUser(user);
+            var models = _profileService.GetDeleteItemsViewModel(profile);
             return View(models);
         }
 
         [HttpPost]
         public async Task<ActionResult> DeleteItems(DeleteItemsViewModel rivm)
         {
-            var user = await _profileControllerService.GetCurrentUser(this.User);
+            var user = await _profileService.GetCurrentUser(this.User);
             var selected = rivm.ItemViewModels.Where(i => i.IsSelected).Select(v=>v.Entity);
             var ids = selected.Select(i => i.ItemId);
-            _profileControllerService.DeleteItems(user, selected.Select(i=>i.ItemId));
+            _profileService.DeleteItems(user, selected.Select(i=>i.ItemId));
             return RedirectToAction("Index");
         }
     }
