@@ -1,5 +1,6 @@
 ﻿using Borrow.Data.Services.Interfaces;
 using Borrow.Models.Backend;
+using Borrow.Models.Views;
 using Borrow.Models.Views.Profile;
 using Borrow.Models.Views.TableViews;
 
@@ -26,6 +27,32 @@ namespace Borrow.Data.Services.Implementations
                         Entity = s
                     };
                 }).ToList()
+            };
+        }
+
+        public ProfileViewModel GetProfileViewModel(User user)
+        {
+            var profile = _appProfileRepository.GetById(user.ProfileId);
+            var items = _itemRepository.FetchAll().Where(i => i.OwnerId == profile.OwnerId);
+            return new ProfileViewModel()
+            {
+                Username = profile.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Exchanges = 0, // huh?
+                OwnerItems = ToViewModel(items).ToList()
+            };
+        }
+
+        public EditItemViewModel GetEditItemViewModel(int id)
+        {
+            var currentItem = _itemRepository.GetById(id);
+            return new EditItemViewModel()
+            {
+                ItemId = id,
+                NewName = string.Empty,
+                NewDescription = string.Empty,
+                OwnedSince = currentItem.OwnedSince
             };
         }
 

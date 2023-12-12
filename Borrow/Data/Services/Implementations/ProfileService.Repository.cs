@@ -63,9 +63,11 @@ namespace Borrow.Data.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public bool DeleteItems(User user, IEnumerable<int> ids)
+        public void DeleteItems(User user, IEnumerable<int> ids)
         {
-            throw new NotImplementedException();
+            var items = _itemRepository.Query.Where(i => ids.Contains(i.Id));
+            _itemRepository.Delete(items);
+            _itemRepository.Save();
         }
 
         public bool EditItem(EditItemViewModel viewModel)

@@ -32,6 +32,11 @@ namespace Borrow.Data.Repositories.Implementations
             Db.Remove(entity);
         }
 
+        public void Delete(IEnumerable<Neighborhood> entities)
+        {
+            Db.RemoveRange(entities);
+        }
+
         public List<Neighborhood> FetchAll()
         {
             return Query.ToList();

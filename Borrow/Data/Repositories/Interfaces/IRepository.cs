@@ -8,6 +8,7 @@
         TEntity Add(TEntity entity);
         void Add(List<TEntity> entity);
         void Delete(TEntity entity);
+        void Delete(IEnumerable<TEntity> entities);
         void Save();
     }
 }

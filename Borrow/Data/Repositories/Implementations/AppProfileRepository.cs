@@ -43,6 +43,11 @@ namespace Borrow.Data.Repositories.Implementations
             Db.Remove(entity);
         }
 
+        public void Delete(IEnumerable<AppProfile> entities)
+        {
+            Db.RemoveRange(entities);
+        }
+
         public void Save()
         {
             Db.SaveChanges();

@@ -33,6 +33,11 @@ namespace Borrow.Data.Repositories.Implementations
             Db.Remove(entity);
         }
 
+        public void Delete(IEnumerable<User> entities)
+        {
+            Db.RemoveRange(entities);
+        }
+
         public List<User> FetchAll()
         {
             return Query.ToList();

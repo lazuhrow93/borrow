@@ -22,17 +22,8 @@ namespace Borrow.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await _profileService.GetCurrentUser(this.User);
-            var profile = _profileService.GetByUser(user);
-
-            var items = _profileService.GetUserItems(user);
-            return View(new ProfileViewModel()
-            {
-                Username = profile.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Exchanges = 0,
-                OwnerItems = items.ToList()
-            });
+            var viewModel = _profileService.GetProfileViewModel(user);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -67,7 +58,8 @@ namespace Borrow.Controllers
         [HttpGet]
         public async Task<ActionResult> EditItem(int ItemId)
         {
-            return View(_profileService.GetItem(ItemId));
+            var viewModel = _profileService.GetEditItemViewModel(ItemId);
+            return View(viewModel);
         }
 
         [Authorize]

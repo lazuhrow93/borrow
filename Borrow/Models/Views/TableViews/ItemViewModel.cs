@@ -13,6 +13,11 @@ namespace Borrow.Models.Views.TableViews
         public string OwnedSince { get; set; }
         public bool Available { get; set; }
 
+        public ItemViewModel()
+        {
+            
+        }
+
         public ItemViewModel(int id, 
             string onwer,
             bool isListed,
