@@ -16,6 +16,21 @@ namespace Borrow.Data.Services.Implementations
         private readonly IRepository<BorrowEnumeration> _borrowEnumerationRepository;
         private readonly IMapper _mapper;
 
+        public RequestService(IRepository<Request> requestRepo,
+            IRepository<Listing> listingRepo,
+            IRepository<Item> itemRepo,
+            IRepository<AppProfile> appProfileRepo,
+            IRepository<BorrowEnumeration> borrowRepo,
+            IMapper mapper)
+        {
+            _requestRepository = requestRepo;
+            _listingRepository = listingRepo;
+            _itemRepository = itemRepo;
+            _appProfileRepository = appProfileRepo;
+            _borrowEnumerationRepository = borrowRepo;
+            _mapper = mapper;
+        }
+
         public void AcceptRequest(int requestId)
         {
             var acceptedId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Accepted).Id;

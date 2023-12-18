@@ -27,7 +27,7 @@ namespace Borrow.Models.Views.TableViews
             bool available)
         {
             ItemId = id;
-            IsListed = IsListed;
+            IsListed = isListed;
             OwnerUserName = onwer;
             Name = itemName;
             Description = desc;

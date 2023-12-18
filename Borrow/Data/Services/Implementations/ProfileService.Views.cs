@@ -21,7 +21,7 @@ namespace Borrow.Data.Services.Implementations
             {
                 ItemViewModels = parsed.Select(s =>
                 {
-                    return new Models.Views.SelectorViewModel<ItemViewModel>()
+                    return new SelectorViewModel<ItemViewModel>()
                     {
                         IsSelected = false,
                         Entity = s
@@ -80,11 +80,13 @@ namespace Borrow.Data.Services.Implementations
                     i.Available
                 }).ToList();
 
-            return query.Select(q =>
+            var collection = query.Select(q =>
             {
                 return new ItemViewModel(q.Id, q.UserName, q.IsListed, q.Name, q.Description, q.OwnedSince.ToString(), q.Available);
             });
-            
+            return collection;
+
+
 
         }
 
