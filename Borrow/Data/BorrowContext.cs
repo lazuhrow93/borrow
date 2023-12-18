@@ -19,7 +19,8 @@ namespace Borrow.Data
         public DbSet<Listing> Listing { get; set; }
         public DbSet<Neighborhood> Neighborhood { get; set; }
         public DbSet<AppProfile> AppProfile { get; set; }
-        public DbSet<BorrowEnumeration> BorrowEnumerations { get; set; }
+        public DbSet<ListValue> BorrowEnumeration { get; set; }
+        public DbSet<ListValue> ListValue { get; set; }
         public DbSet<Request> Request { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

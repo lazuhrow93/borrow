@@ -46,7 +46,7 @@ namespace Borrow.Data.Services.Implementations
             foreach (var item in viewModel.ItemsToSave)
             {
                 var newItem = _mapper.Map<Item>(item);
-                newItem.Available = false;
+                newItem.Available = true;
                 newItem.OwnerId = appProfile.OwnerId;
                 newItem.IsListed = false;
                 newItem.NeighborhoodId = appProfile.NeighborhoodId;

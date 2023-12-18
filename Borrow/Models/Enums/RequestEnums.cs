@@ -4,7 +4,7 @@
     {
         public enum Status
         {
-            Pending,
+            Pending = 10,
             Viewed,
             Accepted,
             ConfirmedMeetUp,
@@ -15,15 +15,15 @@
 
         public enum PendingActionFrom
         {
-            None,
+            None = 2,
             Requester,
-            Lender
+            Lender 
         }
 
         public enum Term
         {
-            Daily,
-            Weekly
+            Daily = 1,
+            Weekly = 7
         }
     }
 }

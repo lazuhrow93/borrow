@@ -1,6 +1,6 @@
 ﻿using Borrow.Models.Backend;
+using Borrow.Models.Enums;
 using Borrow.Models.Views.TableViews;
-using static Borrow.Models.Backend.Request;
 
 namespace Borrow.Models.Views.Requests
 {
@@ -10,7 +10,7 @@ namespace Borrow.Models.Views.Requests
         public int PayPeriods { get; set; } = 0;
         public DateTime EstimatedReturnDateUtc { get; set; } = DateTime.UtcNow;
         public Decimal RequestRate { get; set; }
-        public int TermId { get; set; }
+        public RequestEnums.Term TermId { get; set; }
         public Guid RequesterKey { get; set; }
         public Guid LenderKey { get; set; }
 

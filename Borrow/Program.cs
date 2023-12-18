@@ -46,7 +46,7 @@ public class Program
             AddTransient<IRepository<Listing>, ListingRepository>().
             AddTransient<IRepository<Neighborhood>, NeighborhoodRepository>().
             AddTransient<IRepository<Request>, RequestRepository>().
-            AddTransient<IRepository<BorrowEnumeration>, BorrowEnumerationRespositry>();
+            AddTransient<IRepository<ListValue>, Borrow.Data.Repositories.Implementations.ListValueRepository>();
 
 
         // Add services to the container.

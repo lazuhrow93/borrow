@@ -13,27 +13,27 @@ namespace Borrow.Data.Services.Implementations
         private readonly IRepository<Listing> _listingRepository;
         private readonly IRepository<Item> _itemRepository;
         private readonly IRepository<AppProfile> _appProfileRepository;
-        private readonly IRepository<BorrowEnumeration> _borrowEnumerationRepository;
+        private readonly IRepository<ListValue> _listValueRepository;
         private readonly IMapper _mapper;
 
         public RequestService(IRepository<Request> requestRepo,
             IRepository<Listing> listingRepo,
             IRepository<Item> itemRepo,
             IRepository<AppProfile> appProfileRepo,
-            IRepository<BorrowEnumeration> borrowRepo,
+            IRepository<ListValue> borrowRepo,
             IMapper mapper)
         {
             _requestRepository = requestRepo;
             _listingRepository = listingRepo;
             _itemRepository = itemRepo;
             _appProfileRepository = appProfileRepo;
-            _borrowEnumerationRepository = borrowRepo;
+            _listValueRepository = borrowRepo;
             _mapper = mapper;
         }
 
         public void AcceptRequest(int requestId)
         {
-            var acceptedId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Accepted).Id;
+            var acceptedId = _listValueRepository.GetById((int)RequestEnums.Status.Accepted).Id;
             UpdateStatus(requestId, acceptedId);
             var request = _requestRepository.GetById(requestId);
             //request.Status = Request.RequestStatus.Accepted;
@@ -56,8 +56,13 @@ namespace Borrow.Data.Services.Implementations
 
         public bool CreateRequest(CreateRequestViewModel viewModel)
         {
-            var weekly = _borrowEnumerationRepository.GetById((int)RequestEnums.Term.Weekly);
-            if (viewModel.TermId.Equals(weekly))
+            var weekly = _listValueRepository.GetById((int)RequestEnums.Term.Weekly);
+            var selectedListValue = new ListValue()
+            {
+                Value = (int)viewModel.TermId
+            };
+
+            if (selectedListValue.Equals(weekly))
             {
                 viewModel.EstimatedReturnDateUtc = DateTime.UtcNow.AddDays(7 * viewModel.PayPeriods);
                 viewModel.RequestRate = viewModel.ListingViewModel.WeeklyRate;
@@ -81,7 +86,7 @@ namespace Borrow.Data.Services.Implementations
 
         public void DeclineRequest(int requestId)
         {
-            var deleteId = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Declined).Id;
+            var deleteId = _listValueRepository.GetById((int)RequestEnums.Status.Declined).Id;
             var request = _requestRepository.GetById(requestId);
             request.StatusId = deleteId;
             _requestRepository.Save();
@@ -91,19 +96,19 @@ namespace Borrow.Data.Services.Implementations
         {
             var request = _requestRepository.GetById(viewModel.RequestId);
             request.RequesterSuggestedMeetingTime = viewModel.MeetUpTime;
-            var newEnum = _borrowEnumerationRepository.GetById((int)RequestEnums.PendingActionFrom.Lender);
+            var newEnum = _listValueRepository.GetById((int)RequestEnums.PendingActionFrom.Lender);
             request.PendingActionFromId = newEnum.Id;
             _requestRepository.Save();
         }
 
         public void OwnerViewed(int requestId)
         {
-            var newStatus = _borrowEnumerationRepository.GetById((int)RequestEnums.Status.Viewed);
+            var newStatus = _listValueRepository.GetById((int)RequestEnums.Status.Viewed);
             var currentRequest = _requestRepository.GetById(requestId);
 
-            if (currentRequest.StatusId > newStatus.Id) return;
+            if (currentRequest.StatusId > newStatus.Value) return;
 
-            UpdateStatus(requestId, newStatus.Id);
+            UpdateStatus(requestId, newStatus.Value);
         }
 
 

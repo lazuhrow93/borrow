@@ -26,7 +26,7 @@
                         @item.Rate
                     </td>
                     <td>
-                        @item.Periods
+                        @($"{item.Periods}  {((RequestEnums.Term)item.Term).ToString()}")
                     </td>
                     <td>
                         @switch ((RequestEnums.Status)item.StatusId)
