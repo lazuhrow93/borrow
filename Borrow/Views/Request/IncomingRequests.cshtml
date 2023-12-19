@@ -29,43 +29,15 @@
                         @($"{item.Periods}  {((RequestEnums.Term)item.Term).ToString()}")
                     </td>
                     <td>
-                        @switch ((RequestEnums.Status)item.StatusId)
-                        {
-                            case RequestEnums.Status.Expired:
-                                <label>Expired</label>
-                                break;
-                            case RequestEnums.Status.Declined:
-                                <label>Declined</label>
-                                break;
-                            case RequestEnums.Status.Lent:
-                                <label>Lent</label>
-                                break;
-                            case RequestEnums.Status.ConfirmedMeetUp:
-                                <label>ConfirmedMeetUp</label>
-                                break;
-                            case RequestEnums.Status.Accepted:
-                                if (((RequestEnums.PendingActionFrom)item.PendingActionFromId) == RequestEnums.PendingActionFrom.Lender)
-                                {
-                                    <label>Waiting on Lender to Confirm your Time</label>
-                                }
-                                else
-                                {
-                                    <label>Lender wants a meet up time</label>
-                                }
-                                break;
-                            case RequestEnums.Status.Viewed:
-                                <label>Viewed by Owner</label>
-                                break;
-                            default:
-                                <label> Something is pending</label>
-                                break;
-
-                        }
+                        <label>@item.GetStatus().Lender</label>
                     </td>
                     <td>
-                        @using (Html.BeginForm("ViewIncomingRequest", "Request", FormMethod.Get))
+                        @if((RequestEnums.Status)item.StatusId != RequestEnums.Status.Declined)
                         {
-                            <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View</button>
+                            @using (Html.BeginForm("ViewIncomingRequest", "Request", FormMethod.Get))
+                            {
+                                <button class="btn btn-primary" type="submit" name="requestId" value=@item.RequestId>View</button>
+                            }
                         }
                     </td>
                 </tr>

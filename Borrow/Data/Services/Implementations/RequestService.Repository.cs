@@ -77,6 +77,7 @@ namespace Borrow.Data.Services.Implementations
             newRequest.UpdatedBy = $"Request Business Logic";
             newRequest.CreatedDateUtc = DateTime.UtcNow;
             newRequest.UpdateDateUtc = DateTime.UtcNow;
+            newRequest.StatusId = (int)RequestEnums.Status.Pending;
             newRequest.TrackingId = Guid.NewGuid();
 
             _requestRepository.Add(newRequest);
@@ -86,10 +87,8 @@ namespace Borrow.Data.Services.Implementations
 
         public void DeclineRequest(int requestId)
         {
-            var deleteId = _listValueRepository.GetById((int)RequestEnums.Status.Declined).Id;
-            var request = _requestRepository.GetById(requestId);
-            request.StatusId = deleteId;
-            _requestRepository.Save();
+            var deletelistValue = _listValueRepository.GetById((int)RequestEnums.Status.Declined);
+            UpdateStatus(requestId, deletelistValue.Value);
         }
 
         public void OfferMeetupTime(SetupMeetingViewModel viewModel)

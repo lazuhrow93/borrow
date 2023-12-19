@@ -5,12 +5,12 @@
         public enum Status
         {
             Pending = 10,
-            Viewed,
-            Accepted,
-            ConfirmedMeetUp,
-            Lent,
-            Declined,
-            Expired
+            Viewed = 11,
+            Accepted = 12,
+            ConfirmedMeetUp = 13,
+            Lent = 14,
+            Declined = 15,
+            Expired = 16
         }
 
         public enum PendingActionFrom

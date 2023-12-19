@@ -9,7 +9,7 @@
         public bool Equals(ListValue other)
         {
             if (other is null) return false;
-            return other.Value == other.Value;
+            return this.Value == other.Value;
         }
 
     }

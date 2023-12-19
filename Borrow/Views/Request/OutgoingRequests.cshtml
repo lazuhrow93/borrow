@@ -29,33 +29,7 @@
                         @($"{item.Periods}  {((RequestEnums.Term)item.Term).ToString()}")
                     </td>
                     <td>
-                        @switch ((RequestEnums.Status)item.StatusId)
-                        {
-                            case RequestEnums.Status.Pending:
-                                <label>Pending</label>
-                                break;
-                            case RequestEnums.Status.Viewed:
-                                <label>Lender Viewed</label>
-                                break;
-                            case RequestEnums.Status.Accepted:
-                                <label>Select Meetup Time</label>
-                                break;
-                            case RequestEnums.Status.ConfirmedMeetUp:
-                                <label>Time to meet! Check your meetup spot and time</label>
-                                break;
-                            case RequestEnums.Status.Lent:
-                                <label>You currently have this item</label>
-                                break;
-                            case RequestEnums.Status.Declined:
-                                <label>Declined</label>
-                                break;
-                            case RequestEnums.Status.Expired:
-                                <label>Expired</label>
-                                break;
-                            default:
-                                <label>WTF</label>
-                                break;
-                        }
+                        <label>@item.GetStatus().Requester</label>
                     </td>
                     <td>
                         @using (Html.BeginForm("ViewOutGoingRequest", "Request", FormMethod.Get))
