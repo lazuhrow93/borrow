@@ -3,6 +3,7 @@ using Borrow.Data.Repositories.Interfaces;
 using Borrow.Data.Services.Interfaces;
 using Borrow.Models.Backend;
 using Borrow.Models.Views.Listings;
+using Borrow.Models.Views.TableViews;
 
 namespace Borrow.Data.Services.Implementations
 {

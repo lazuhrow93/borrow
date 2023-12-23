@@ -33,13 +33,10 @@ namespace Borrow.Data.Services.Implementations
 
         public void AcceptRequest(int requestId)
         {
-            var acceptedId = _listValueRepository.GetById((int)RequestEnums.Status.Accepted).Id;
-            UpdateStatus(requestId, acceptedId);
             var request = _requestRepository.GetById(requestId);
-            //request.Status = Request.RequestStatus.Accepted;
 
             var listing = _listingRepository.GetById(request.ListingId);
-            listing.Active = false;
+            listing.Dealt = true;
 
             var item = _itemRepository.GetById(listing.ItemId);
             item.Available = false;
@@ -47,6 +44,7 @@ namespace Borrow.Data.Services.Implementations
             _itemRepository.Save();
             _listingRepository.Save();
             _requestRepository.Save();
+            UpdateStatus(requestId, (int)RequestEnums.Status.Accepted);
         }
 
         public void ConfirmMeetupTime(int requestId)
@@ -87,8 +85,7 @@ namespace Borrow.Data.Services.Implementations
 
         public void DeclineRequest(int requestId)
         {
-            var deletelistValue = _listValueRepository.GetById((int)RequestEnums.Status.Declined);
-            UpdateStatus(requestId, deletelistValue.Value);
+            UpdateStatus(requestId, (int)RequestEnums.Status.Declined);
         }
 
         public void OfferMeetupTime(SetupMeetingViewModel viewModel)
@@ -102,19 +99,18 @@ namespace Borrow.Data.Services.Implementations
 
         public void OwnerViewed(int requestId)
         {
-            var newStatus = _listValueRepository.GetById((int)RequestEnums.Status.Viewed);
             var currentRequest = _requestRepository.GetById(requestId);
 
-            if (currentRequest.StatusId > newStatus.Value) return;
+            if (currentRequest.StatusId > (int)RequestEnums.Status.Viewed) return;
 
-            UpdateStatus(requestId, newStatus.Value);
+            UpdateStatus(requestId, (int)RequestEnums.Status.Viewed);
         }
 
 
-        public void UpdateStatus(int requestId, int newStatusId)
+        public void UpdateStatus(int requestId, int newStatusValue)
         {
             var request = _requestRepository.GetById(requestId);
-            request.StatusId = newStatusId;
+            request.StatusId = newStatusValue;
             _requestRepository.Save();
         }
     }

@@ -3,6 +3,7 @@ using Borrow.Models.Backend;
 using Borrow.Models.Views;
 using Borrow.Models.Views.Listings;
 using Borrow.Models.Views.TableViews;
+using Microsoft.AspNetCore.Http;
 
 namespace Borrow.Data.Services.Implementations
 {
@@ -95,7 +96,7 @@ namespace Borrow.Data.Services.Implementations
         {
             return new UserListingsViewModel()
             {
-                ActiveListings = GetUserListings(user, all: false).ToList()
+                ActiveListings = GetUserListingViewModels2(user, l => l.Active).ToList()
             };
 
         }
@@ -165,7 +166,41 @@ namespace Borrow.Data.Services.Implementations
             return results;
         }
 
-        private IEnumerable<ListingViewModel> GetUserListings(User user, bool all = false)
+        private IEnumerable<ListingViewModel> GetUserListingViewModels2(User user, Func<Listing, bool> listingPredicate)
+        {
+            var appProfile = _appProfileRepository.GetById(user.ProfileId);
+            var allUserListings = _listingRepository.FetchAll().Where(l => l.OwnerId == appProfile.OwnerId);
+            var listings = allUserListings.Where(listingPredicate);
+
+            var listingItems = listings.Select(l => l.ItemId);
+            var items = _itemRepository.FetchAll().Where(i => listingItems.Contains(i.Id));
+
+            var query = listings.Join(items,
+                l => l.ItemId,
+                i => i.Id,
+                (l, i) => new
+                {
+                    l.Id,
+                    l.ItemId,
+                    l.DailyRate,
+                    l.WeeklyRate,
+                    l.OwnerId,
+                    i.Name,
+                    i.Description,
+                    l.Active
+                });
+
+            var results = new List<ListingViewModel>();
+
+            foreach (var join in query)
+            {
+                results.Add(new ListingViewModel(join.Id, join.ItemId, join.Name, join.Description, join.DailyRate, join.WeeklyRate, appProfile.UserName, join.OwnerId));
+            }
+
+            return results;
+        }
+
+        private IEnumerable<ListingViewModel> GetUserListingViewModels(User user, bool onlyActive = false)
         {
             var appProfile = _appProfileRepository.GetById(user.ProfileId);
             var items = _itemRepository.FetchAll().ToList();
@@ -187,10 +222,9 @@ namespace Borrow.Data.Services.Implementations
                     l.Active
                 });
 
-            var queryResult =
-                (all) ?
-                query.Where(q => q.OwnerId.Equals(appProfile.OwnerId)).ToList()
-                : query.Where(q => q.OwnerId.Equals(appProfile.OwnerId) && q.Active).ToList();
+            var queryResult = (onlyActive) ?
+                query.Where(q => q.OwnerId.Equals(appProfile.OwnerId) && q.Active).ToList()
+                : query.Where(q => q.OwnerId.Equals(appProfile.OwnerId)).ToList();
 
             var results = new List<ListingViewModel>();
 

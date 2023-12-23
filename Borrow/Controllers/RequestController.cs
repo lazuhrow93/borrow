@@ -73,7 +73,7 @@ namespace Borrow.Controllers
         public async Task<IActionResult> AcceptRequest(int requestId)
         {
             _requestControllerService.AcceptRequest(requestId);
-            return RedirectToAction("ViewIncomingRequest", requestId);
+            return RedirectToAction("IncomingRequests");
         }
 
         [HttpPost]
